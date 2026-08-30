@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +36,27 @@ export function TransactionFilters({
     onCategoryChange,
     onClear,
 }: TransactionFiltersProps) {
-    const hasFilters = search || type !== "all" || category !== "all";
+    const [searchValue, setSearchValue] =
+        useState(search);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (searchValue !== search) {
+                onSearchChange(searchValue);
+            }
+        }, 400);
+
+        return () => clearTimeout(timeout);
+    }, [
+        searchValue,
+        search,
+        onSearchChange,
+    ]);
+
+    const hasFilters =
+        search ||
+        type !== "all" ||
+        category !== "all";
 
     return (
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
@@ -43,9 +64,9 @@ export function TransactionFilters({
                 <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 
                 <Input
-                    value={search}
+                    value={searchValue}
                     onChange={(event) =>
-                        onSearchChange(event.target.value)
+                        setSearchValue(event.target.value)
                     }
                     placeholder="Search transactions..."
                     className="pl-9"
@@ -76,7 +97,10 @@ export function TransactionFilters({
                 <option value="all">All categories</option>
 
                 {categories.map((item) => (
-                    <option key={item} value={item}>
+                    <option
+                        key={item}
+                        value={item}
+                    >
                         {item}
                     </option>
                 ))}
@@ -84,9 +108,13 @@ export function TransactionFilters({
 
             {hasFilters && (
                 <Button
+                    type="button"
                     variant="ghost"
                     size="sm"
-                    onClick={onClear}
+                    onClick={() => {
+                        setSearchValue("");
+                        onClear();
+                    }}
                 >
                     <X />
                     Clear
