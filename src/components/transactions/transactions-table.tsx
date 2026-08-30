@@ -1,12 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import {
     ArrowDownRight,
     ArrowUpRight,
     ChevronLeft,
     ChevronRight,
 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,103 +25,121 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import type { Transaction, Category } from "@/generated/prisma/client";
-
 import { formatCurrency } from "@/lib/format-currency";
 
 import { TransactionFilters } from "./transaction-filters";
 
-const ITEMS_PER_PAGE = 5;
-
-type TransactionWithCategory = Omit<
-    Transaction,
-    "amount"
-> & {
+type TransactionWithCategory = {
+    id: string;
+    description: string;
     amount: number;
-    category: Category;
+    type: "income" | "expense";
+    date: Date;
+    notes: string | null;
+    category: {
+        id: string;
+        name: string;
+        icon: string | null;
+        color: string | null;
+    };
+};
+
+type TransactionsTableProps = {
+    transactions: TransactionWithCategory[];
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+    search: string;
+    type: string;
+    category: string;
 };
 
 export function TransactionsTable({
     transactions,
-}: {
-    transactions: TransactionWithCategory[];
-}) {
-    const [search, setSearch] = useState("");
-    const [type, setType] = useState("all");
-    const [category, setCategory] = useState("all");
-    const [currentPage, setCurrentPage] = useState(1);
+    totalCount,
+    totalPages,
+    currentPage,
+    search,
+    type,
+    category,
+}: TransactionsTableProps) {
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
-    const filteredTransactions = useMemo(() => {
-        const searchTerm = search.trim().toLowerCase();
+    const updateParams = (
+        updates: Record<string, string | null>,
+    ) => {
+        const params = new URLSearchParams(
+            searchParams.toString(),
+        );
 
-        return transactions.filter((transaction) => {
-            const matchesSearch =
-                !searchTerm ||
-                transaction.description
-                    .toLowerCase()
-                    .includes(searchTerm) ||
-                transaction.category.name
-                    .toLowerCase()
-                    .includes(searchTerm);
+        Object.entries(updates).forEach(
+            ([key, value]) => {
+                if (value && value !== "all") {
+                    params.set(key, value);
+                } else {
+                    params.delete(key);
+                }
+            },
+        );
 
-            const matchesType =
-                type === "all" || transaction.type === type;
+        params.set("page", "1");
 
-            const matchesCategory =
-                category === "all" ||
-                transaction.category.name === category;
-
-            return (
-                matchesSearch &&
-                matchesType &&
-                matchesCategory
-            );
-        });
-    }, [transactions, search, type, category]);
-
-    const totalPages = Math.max(
-        1,
-        Math.ceil(
-            filteredTransactions.length / ITEMS_PER_PAGE,
-        ),
-    );
-
-    const paginatedTransactions = filteredTransactions.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE,
-    );
-
-    const clearFilters = () => {
-        setSearch("");
-        setType("all");
-        setCategory("all");
-        setCurrentPage(1);
+        router.push(
+            `/transactions?${params.toString()}`,
+        );
     };
 
     const handleSearchChange = (value: string) => {
-        setSearch(value);
-        setCurrentPage(1);
+        updateParams({
+            search: value.trim() || null,
+        });
     };
 
     const handleTypeChange = (value: string) => {
-        setType(value);
-        setCurrentPage(1);
+        updateParams({
+            type: value === "all" ? null : value,
+        });
     };
 
     const handleCategoryChange = (value: string) => {
-        setCategory(value);
-        setCurrentPage(1);
+        updateParams({
+            category:
+                value === "all" ? null : value,
+        });
+    };
+
+    const clearFilters = () => {
+        router.push("/transactions");
+    };
+
+    const changePage = (page: number) => {
+        const params = new URLSearchParams(
+            searchParams.toString(),
+        );
+
+        if (page === 1) {
+            params.delete("page");
+        } else {
+            params.set("page", String(page));
+        }
+
+        router.push(
+            `/transactions?${params.toString()}`,
+        );
     };
 
     return (
         <Card>
             <CardHeader className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <CardTitle>All transactions</CardTitle>
+                    <CardTitle>
+                        All transactions
+                    </CardTitle>
 
                     <span className="text-sm text-muted-foreground">
-                        {filteredTransactions.length}{" "}
-                        {filteredTransactions.length === 1
+                        {totalCount}{" "}
+                        {totalCount === 1
                             ? "transaction"
                             : "transactions"}
                     </span>
@@ -131,8 +149,12 @@ export function TransactionsTable({
                     search={search}
                     type={type}
                     category={category}
-                    onSearchChange={handleSearchChange}
-                    onTypeChange={handleTypeChange}
+                    onSearchChange={
+                        handleSearchChange
+                    }
+                    onTypeChange={
+                        handleTypeChange
+                    }
                     onCategoryChange={
                         handleCategoryChange
                     }
@@ -141,7 +163,7 @@ export function TransactionsTable({
             </CardHeader>
 
             <CardContent>
-                {paginatedTransactions.length > 0 ? (
+                {transactions.length > 0 ? (
                     <>
                         <div className="overflow-x-auto">
                             <Table>
@@ -170,7 +192,7 @@ export function TransactionsTable({
                                 </TableHeader>
 
                                 <TableBody>
-                                    {paginatedTransactions.map(
+                                    {transactions.map(
                                         (transaction) => {
                                             const isIncome =
                                                 transaction.type ===
@@ -186,8 +208,8 @@ export function TransactionsTable({
                                                         <div className="flex items-center gap-3">
                                                             <div
                                                                 className={`flex size-8 shrink-0 items-center justify-center rounded-full ${isIncome
-                                                                    ? "bg-emerald-500/10 text-emerald-600"
-                                                                    : "bg-muted text-muted-foreground"
+                                                                        ? "bg-emerald-500/10 text-emerald-600"
+                                                                        : "bg-muted text-muted-foreground"
                                                                     }`}
                                                             >
                                                                 {isIncome ? (
@@ -208,17 +230,22 @@ export function TransactionsTable({
                                                     <TableCell>
                                                         <Badge variant="secondary">
                                                             {
-                                                                transaction.category.name
+                                                                transaction
+                                                                    .category
+                                                                    .name
                                                             }
                                                         </Badge>
                                                     </TableCell>
 
                                                     <TableCell className="text-muted-foreground">
-                                                        {transaction.date.toLocaleDateString("en-IN", {
-                                                            day: "2-digit",
-                                                            month: "short",
-                                                            year: "numeric",
-                                                        })}
+                                                        {transaction.date.toLocaleDateString(
+                                                            "en-IN",
+                                                            {
+                                                                day: "2-digit",
+                                                                month: "short",
+                                                                year: "numeric",
+                                                            },
+                                                        )}
                                                     </TableCell>
 
                                                     <TableCell>
@@ -237,14 +264,17 @@ export function TransactionsTable({
 
                                                     <TableCell
                                                         className={`text-right font-semibold ${isIncome
-                                                            ? "text-emerald-600"
-                                                            : ""
+                                                                ? "text-emerald-600"
+                                                                : ""
                                                             }`}
                                                     >
                                                         {isIncome
                                                             ? "+"
                                                             : "-"}
-                                                        {formatCurrency(transaction.amount)}
+
+                                                        {formatCurrency(
+                                                            transaction.amount,
+                                                        )}
                                                     </TableCell>
                                                 </TableRow>
                                             );
@@ -265,12 +295,13 @@ export function TransactionsTable({
                                     variant="outline"
                                     size="sm"
                                     disabled={
-                                        currentPage === 1
+                                        currentPage ===
+                                        1
                                     }
                                     onClick={() =>
-                                        setCurrentPage(
-                                            (page) =>
-                                                page - 1,
+                                        changePage(
+                                            currentPage -
+                                            1,
                                         )
                                     }
                                 >
@@ -286,9 +317,9 @@ export function TransactionsTable({
                                         totalPages
                                     }
                                     onClick={() =>
-                                        setCurrentPage(
-                                            (page) =>
-                                                page + 1,
+                                        changePage(
+                                            currentPage +
+                                            1,
                                         )
                                     }
                                 >
@@ -305,8 +336,8 @@ export function TransactionsTable({
                         </p>
 
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Try adjusting your search or
-                            filters.
+                            Try adjusting your search
+                            or filters.
                         </p>
 
                         <Button
