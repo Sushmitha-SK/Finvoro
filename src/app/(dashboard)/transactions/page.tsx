@@ -1,7 +1,18 @@
+import { auth } from "@clerk/nextjs/server";
+
 import { AddTransactionDialog } from "@/components/transactions/add-transaction-dialog";
 import { TransactionsTable } from "@/components/transactions/transactions-table";
+import { getTransactions } from "@/lib/transactions";
 
-export default function TransactionsPage() {
+export default async function TransactionsPage() {
+    const { userId } = await auth();
+
+    if (!userId) {
+        return null;
+    }
+
+    const transactions = await getTransactions(userId);
+
     return (
         <div className="p-4 md:p-6">
             <div className="mx-auto max-w-7xl space-y-6">
@@ -19,7 +30,7 @@ export default function TransactionsPage() {
                     <AddTransactionDialog />
                 </div>
 
-                <TransactionsTable />
+                <TransactionsTable transactions={transactions} />
             </div>
         </div>
     );

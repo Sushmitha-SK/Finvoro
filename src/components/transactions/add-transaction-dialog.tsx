@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,15 +16,23 @@ import {
 import { AddTransactionForm } from "./add-transaction-form";
 import type { TransactionFormValues } from "./transaction-schema";
 
+import { createTransaction } from "@/app/(dashboard)/transactions/actions";
+
 export function AddTransactionDialog() {
-    const handleSuccess = (
+    const [open, setOpen] = useState(false);
+
+    const handleSuccess = async (
         data: TransactionFormValues,
     ) => {
-        console.log("Transaction:", data);
+        await createTransaction(data);
+        setOpen(false);
     };
 
     return (
-        <Dialog>
+        <Dialog
+            open={open}
+            onOpenChange={setOpen}
+        >
             <DialogTrigger render={<Button />}>
                 <Plus />
                 Add transaction
@@ -43,7 +52,7 @@ export function AddTransactionDialog() {
 
                 <AddTransactionForm
                     onSuccess={handleSuccess}
-                    onCancel={() => { }}
+                    onCancel={() => setOpen(false)}
                 />
             </DialogContent>
         </Dialog>

@@ -22,7 +22,9 @@ const categories = [
 ];
 
 type AddTransactionFormProps = {
-    onSuccess: (data: TransactionFormValues) => void;
+    onSuccess: (
+        data: TransactionFormValues,
+    ) => Promise<void>;
     onCancel: () => void;
 };
 
@@ -48,10 +50,9 @@ export function AddTransactionForm({
         },
     });
 
-    const onSubmit = (data: TransactionFormValues) => {
-        onSuccess(data);
+    const onSubmit = async (data: TransactionFormValues) => {
+        await onSuccess(data);
     };
-
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}

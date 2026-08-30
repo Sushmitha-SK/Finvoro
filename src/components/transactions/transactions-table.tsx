@@ -25,14 +25,27 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { transactions } from "@/lib/mock-data";
+import type { Transaction, Category } from "@/generated/prisma/client";
+
 import { formatCurrency } from "@/lib/format-currency";
 
 import { TransactionFilters } from "./transaction-filters";
 
 const ITEMS_PER_PAGE = 5;
 
-export function TransactionsTable() {
+type TransactionWithCategory = Omit<
+    Transaction,
+    "amount"
+> & {
+    amount: number;
+    category: Category;
+};
+
+export function TransactionsTable({
+    transactions,
+}: {
+    transactions: TransactionWithCategory[];
+}) {
     const [search, setSearch] = useState("");
     const [type, setType] = useState("all");
     const [category, setCategory] = useState("all");
@@ -47,7 +60,7 @@ export function TransactionsTable() {
                 transaction.description
                     .toLowerCase()
                     .includes(searchTerm) ||
-                transaction.category
+                transaction.category.name
                     .toLowerCase()
                     .includes(searchTerm);
 
@@ -56,7 +69,7 @@ export function TransactionsTable() {
 
             const matchesCategory =
                 category === "all" ||
-                transaction.category === category;
+                transaction.category.name === category;
 
             return (
                 matchesSearch &&
@@ -64,7 +77,7 @@ export function TransactionsTable() {
                 matchesCategory
             );
         });
-    }, [search, type, category]);
+    }, [transactions, search, type, category]);
 
     const totalPages = Math.max(
         1,
@@ -173,8 +186,8 @@ export function TransactionsTable() {
                                                         <div className="flex items-center gap-3">
                                                             <div
                                                                 className={`flex size-8 shrink-0 items-center justify-center rounded-full ${isIncome
-                                                                        ? "bg-emerald-500/10 text-emerald-600"
-                                                                        : "bg-muted text-muted-foreground"
+                                                                    ? "bg-emerald-500/10 text-emerald-600"
+                                                                    : "bg-muted text-muted-foreground"
                                                                     }`}
                                                             >
                                                                 {isIncome ? (
@@ -195,15 +208,17 @@ export function TransactionsTable() {
                                                     <TableCell>
                                                         <Badge variant="secondary">
                                                             {
-                                                                transaction.category
+                                                                transaction.category.name
                                                             }
                                                         </Badge>
                                                     </TableCell>
 
                                                     <TableCell className="text-muted-foreground">
-                                                        {
-                                                            transaction.date
-                                                        }
+                                                        {transaction.date.toLocaleDateString("en-IN", {
+                                                            day: "2-digit",
+                                                            month: "short",
+                                                            year: "numeric",
+                                                        })}
                                                     </TableCell>
 
                                                     <TableCell>
@@ -222,16 +237,14 @@ export function TransactionsTable() {
 
                                                     <TableCell
                                                         className={`text-right font-semibold ${isIncome
-                                                                ? "text-emerald-600"
-                                                                : ""
+                                                            ? "text-emerald-600"
+                                                            : ""
                                                             }`}
                                                     >
                                                         {isIncome
                                                             ? "+"
                                                             : "-"}
-                                                        {formatCurrency(
-                                                            transaction.amount,
-                                                        )}
+                                                        {formatCurrency(transaction.amount)}
                                                     </TableCell>
                                                 </TableRow>
                                             );
