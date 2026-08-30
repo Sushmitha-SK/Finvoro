@@ -17,8 +17,17 @@ type Category = {
     name: string;
 };
 
+export type BudgetInitialValues = {
+    categoryId: string;
+    amount: string;
+    month: string;
+    year: string;
+};
+
 type AddBudgetFormProps = {
     categories: Category[];
+    initialValues?: BudgetInitialValues;
+    budgetId?: string;
     onSuccess: () => void;
     onCancel: () => void;
 };
@@ -47,16 +56,21 @@ const years = Array.from(
 
 export function AddBudgetForm({
     categories,
+    initialValues,
+    budgetId,
     onSuccess,
     onCancel,
 }: AddBudgetFormProps) {
+    const isEditMode = Boolean(budgetId);
+
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm<BudgetFormValues>({
         resolver: zodResolver(budgetSchema),
-        defaultValues: {
+        defaultValues: initialValues ?? {
             categoryId: "",
             amount: "",
             month: String(new Date().getMonth() + 1),
@@ -67,22 +81,46 @@ export function AddBudgetForm({
     const onSubmit = async (data: BudgetFormValues) => {
         try {
             const response = await fetch("/api/budgets", {
-                method: "POST",
+                method: isEditMode ? "PUT" : "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(
+                    isEditMode
+                        ? {
+                            ...data,
+                            id: budgetId,
+                        }
+                        : data,
+                ),
             });
 
+            const result = await response.json();
+
             if (!response.ok) {
-                throw new Error("Failed to create budget");
+                setError("root", {
+                    message:
+                        result.error ||
+                        `Failed to ${isEditMode ? "update" : "create"} budget.`,
+                });
+
+                return;
             }
 
             onSuccess();
         } catch (error) {
-            console.error("Failed to create budget:", error);
+            console.error(
+                `Failed to ${isEditMode ? "update" : "create"} budget:`,
+                error,
+            );
+
+            setError("root", {
+                message:
+                    "Something went wrong. Please try again.",
+            });
         }
     };
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -196,11 +234,18 @@ export function AddBudgetForm({
                 </div>
             </div>
 
+            {errors.root && (
+                <p className="text-sm text-destructive">
+                    {errors.root.message}
+                </p>
+            )}
+
             <div className="flex justify-end gap-2 border-t pt-4">
                 <Button
                     type="button"
                     variant="outline"
                     onClick={onCancel}
+                    disabled={isSubmitting}
                 >
                     Cancel
                 </Button>
@@ -210,8 +255,12 @@ export function AddBudgetForm({
                     disabled={isSubmitting}
                 >
                     {isSubmitting
-                        ? "Adding..."
-                        : "Add budget"}
+                        ? isEditMode
+                            ? "Saving..."
+                            : "Adding..."
+                        : isEditMode
+                            ? "Save changes"
+                            : "Add budget"}
                 </Button>
             </div>
         </form>

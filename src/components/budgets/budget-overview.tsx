@@ -11,6 +11,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { EditBudgetDialog } from "./edit-budget-dialog";
 
 import { formatCurrency } from "@/lib/format-currency";
 
@@ -26,8 +27,14 @@ type Budget = {
     year: number;
 };
 
+type Category = {
+    id: string;
+    name: string;
+};
+
 type BudgetOverviewProps = {
     budgets: Budget[];
+    categories: Category[];
 };
 
 const monthFormatter = new Intl.DateTimeFormat(
@@ -46,6 +53,7 @@ function getBudgetMonth(month: number, year: number) {
 
 export function BudgetOverview({
     budgets,
+    categories,
 }: BudgetOverviewProps) {
     if (budgets.length === 0) {
         return (
@@ -81,7 +89,7 @@ export function BudgetOverview({
                 return (
                     <Card key={budget.id}>
                         <CardHeader>
-                            <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-start justify-between gap-4">
                                 <div>
                                     <CardTitle className="text-base">
                                         {budget.category}
@@ -95,13 +103,20 @@ export function BudgetOverview({
                                     </p>
                                 </div>
 
-                                {isExceeded ? (
-                                    <AlertCircle className="size-5 text-destructive" />
-                                ) : isNearLimit ? (
-                                    <AlertCircle className="size-5 text-amber-500" />
-                                ) : (
-                                    <CheckCircle2 className="size-5 text-emerald-500" />
-                                )}
+                                <div className="flex items-center gap-2">
+                                    {isExceeded ? (
+                                        <AlertCircle className="size-5 text-destructive" />
+                                    ) : isNearLimit ? (
+                                        <AlertCircle className="size-5 text-amber-500" />
+                                    ) : (
+                                        <CheckCircle2 className="size-5 text-emerald-500" />
+                                    )}
+
+                                    <EditBudgetDialog
+                                        budget={budget}
+                                        categories={categories}
+                                    />
+                                </div>
                             </div>
                         </CardHeader>
 

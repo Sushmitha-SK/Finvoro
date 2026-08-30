@@ -3,53 +3,54 @@ import { unstable_noStore as noStore } from "next/cache";
 
 import { AddBudgetDialog } from "@/components/budgets/add-budget-dialog";
 import { BudgetOverview } from "@/components/budgets/budget-overview";
+
 import { prisma } from "@/lib/prisma";
 
 export default async function BudgetsPage() {
     noStore();
+
     const user = await currentUser();
 
     if (!user) {
         return null;
     }
 
-    const [budgets, categories] =
-        await Promise.all([
-            prisma.budget.findMany({
-                where: {
-                    clerkUserId: user.id,
+    const [budgets, categories] = await Promise.all([
+        prisma.budget.findMany({
+            where: {
+                clerkUserId: user.id,
+            },
+            include: {
+                category: true,
+            },
+            orderBy: [
+                {
+                    year: "desc",
                 },
-                include: {
-                    category: true,
+                {
+                    month: "desc",
                 },
-                orderBy: [
-                    {
-                        year: "desc",
+                {
+                    category: {
+                        name: "asc",
                     },
-                    {
-                        month: "desc",
-                    },
-                    {
-                        category: {
-                            name: "asc",
-                        },
-                    },
-                ],
-            }),
+                },
+            ],
+        }),
 
-            prisma.category.findMany({
-                where: {
-                    clerkUserId: user.id,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                },
-                orderBy: {
-                    name: "asc",
-                },
-            }),
-        ]);
+        prisma.category.findMany({
+            where: {
+                clerkUserId: user.id,
+            },
+            select: {
+                id: true,
+                name: true,
+            },
+            orderBy: {
+                name: "asc",
+            },
+        }),
+    ]);
 
     const budgetData = await Promise.all(
         budgets.map(async (budget) => {
@@ -85,17 +86,17 @@ export default async function BudgetsPage() {
                 expenseResult._sum.amount ?? 0,
             );
 
-            const limit = Number(budget.amount);
+            const amount = Number(budget.amount);
 
             const remaining = Math.max(
-                limit - spent,
+                amount - spent,
                 0,
             );
 
             const percentage =
-                limit > 0
+                amount > 0
                     ? Math.min(
-                        (spent / limit) * 100,
+                        (spent / amount) * 100,
                         100,
                     )
                     : 0;
@@ -104,7 +105,7 @@ export default async function BudgetsPage() {
                 id: budget.id,
                 category: budget.category.name,
                 categoryId: budget.categoryId,
-                amount: limit,
+                amount,
                 spent,
                 remaining,
                 percentage,
@@ -136,6 +137,7 @@ export default async function BudgetsPage() {
 
                 <BudgetOverview
                     budgets={budgetData}
+                    categories={categories}
                 />
             </div>
         </div>
