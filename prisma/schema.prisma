@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TransactionType {
+  income
+  expense
+}
+
+model Category {
+  id          String @id @default(cuid())
+  clerkUserId String
+
+  name  String
+  icon  String?
+  color String?
+
+  transactions Transaction[]
+  budgets      Budget[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([clerkUserId, name])
+  @@index([clerkUserId])
+}
+
+model Transaction {
+  id          String @id @default(cuid())
+  clerkUserId String
+
+  description String
+  amount      Decimal         @db.Decimal(12, 2)
+  type        TransactionType
+
+  date  DateTime
+  notes String?
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clerkUserId])
+  @@index([categoryId])
+  @@index([date])
+  @@index([clerkUserId, date])
+}
+
+model Budget {
+  id          String @id @default(cuid())
+  clerkUserId String
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  amount Decimal @db.Decimal(12, 2)
+  month  Int
+  year   Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([clerkUserId, categoryId, month, year])
+  @@index([clerkUserId])
+}
+
+model Notification {
+  id          String @id @default(cuid())
+  clerkUserId String
+
+  title   String
+  message String
+
+  type String
+  read Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clerkUserId])
+  @@index([clerkUserId, read])
+}
