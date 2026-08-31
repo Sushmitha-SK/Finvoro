@@ -17,16 +17,20 @@ type FinancialSummary = {
 
 type SummaryCardsProps = {
     financialSummary: FinancialSummary;
+    currency: string;
 };
 
 export function SummaryCards({
     financialSummary,
+    currency
+
 }: SummaryCardsProps) {
     const cards = [
         {
             title: "Total Balance",
             value: formatCurrency(
                 financialSummary.balance,
+                currency,
             ),
             description: "Available balance",
             icon: Wallet,
@@ -35,6 +39,7 @@ export function SummaryCards({
             title: "Total Income",
             value: formatCurrency(
                 financialSummary.income,
+                currency,
             ),
             description: "This month",
             icon: ArrowUpRight,
@@ -43,6 +48,7 @@ export function SummaryCards({
             title: "Total Expenses",
             value: formatCurrency(
                 financialSummary.expenses,
+                currency,
             ),
             description: "This month",
             icon: ArrowDownRight,

@@ -52,6 +52,7 @@ type TransactionsTableProps = {
     search: string;
     type: string;
     category: string;
+    currency: string;
 };
 
 export function TransactionsTable({
@@ -62,6 +63,7 @@ export function TransactionsTable({
     search,
     type,
     category,
+    currency,
 }: TransactionsTableProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -208,8 +210,8 @@ export function TransactionsTable({
                                                         <div className="flex items-center gap-3">
                                                             <div
                                                                 className={`flex size-8 shrink-0 items-center justify-center rounded-full ${isIncome
-                                                                        ? "bg-emerald-500/10 text-emerald-600"
-                                                                        : "bg-muted text-muted-foreground"
+                                                                    ? "bg-emerald-500/10 text-emerald-600"
+                                                                    : "bg-muted text-muted-foreground"
                                                                     }`}
                                                             >
                                                                 {isIncome ? (
@@ -264,8 +266,8 @@ export function TransactionsTable({
 
                                                     <TableCell
                                                         className={`text-right font-semibold ${isIncome
-                                                                ? "text-emerald-600"
-                                                                : ""
+                                                            ? "text-emerald-600"
+                                                            : ""
                                                             }`}
                                                     >
                                                         {isIncome
@@ -274,6 +276,7 @@ export function TransactionsTable({
 
                                                         {formatCurrency(
                                                             transaction.amount,
+                                                            currency
                                                         )}
                                                     </TableCell>
                                                 </TableRow>

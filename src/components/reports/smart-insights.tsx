@@ -27,6 +27,7 @@ type SmartInsightsProps = {
 
     previousIncome: number;
     previousExpenses: number;
+    currency: string;
 };
 
 function formatPercentage(value: number) {
@@ -251,6 +252,7 @@ export function SmartInsights({
     savingsRateChange,
     previousIncome,
     previousExpenses,
+    currency
 }: SmartInsightsProps) {
     const insights = getInsights({
         totalIncome,
@@ -261,6 +263,7 @@ export function SmartInsights({
         savingsRateChange,
         previousIncome,
         previousExpenses,
+        currency
     });
 
     const incomeHasPreviousData =
@@ -306,7 +309,7 @@ export function SmartInsights({
                             </div>
 
                             <p className="mt-2 font-semibold">
-                                {formatCurrency(totalIncome)}
+                                {formatCurrency(totalIncome, currency)}
                             </p>
 
                             <div className="mt-1">
@@ -329,7 +332,7 @@ export function SmartInsights({
                             </div>
 
                             <p className="mt-2 font-semibold">
-                                {formatCurrency(totalExpenses)}
+                                {formatCurrency(totalExpenses, currency)}
                             </p>
 
                             <div className="mt-1">
