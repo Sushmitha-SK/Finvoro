@@ -10,18 +10,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const categories = [
-    "Food",
-    "Entertainment",
-    "Transport",
-    "Freelance",
-    "Utilities",
-    "Shopping",
-    "Health",
-    "Salary",
-];
+type Category = {
+    id: string;
+    name: string;
+};
 
 type AddTransactionFormProps = {
+    categories: Category[];
     onSuccess: (
         data: TransactionFormValues,
     ) => Promise<void>;
@@ -29,6 +24,7 @@ type AddTransactionFormProps = {
 };
 
 export function AddTransactionForm({
+    categories,
     onSuccess,
     onCancel,
 }: AddTransactionFormProps) {
@@ -141,10 +137,10 @@ export function AddTransactionForm({
 
                     {categories.map((category) => (
                         <option
-                            key={category}
-                            value={category}
+                            key={category.id}
+                            value={category.name}
                         >
-                            {category}
+                            {category.name}
                         </option>
                     ))}
                 </select>

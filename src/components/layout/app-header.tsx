@@ -1,14 +1,13 @@
 "use client";
 
 import {
-    Bell,
     Search,
 } from "lucide-react";
 
 import { UserButton } from "@clerk/nextjs";
+import { NotificationsPopover } from "./notifications-popover";
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
@@ -34,13 +33,7 @@ export function AppHeader() {
             </div>
 
             <div className="ml-auto flex items-center gap-1">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Notifications"
-                >
-                    <Bell className="size-5" />
-                </Button>
+                <NotificationsPopover />
 
                 <UserButton
                     appearance={{
