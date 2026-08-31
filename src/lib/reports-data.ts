@@ -24,12 +24,14 @@ function calculatePercentage(
     previous: number,
 ) {
     if (previous === 0) {
-        return current > 0 ? 100 : 0;
+        return 0;
     }
 
-    return ((current - previous) / previous) * 100;
+    return (
+        ((current - previous) / previous) *
+        100
+    );
 }
-
 function getMonthKey(date: Date) {
     return `${date.getFullYear()}-${String(
         date.getMonth() + 1,

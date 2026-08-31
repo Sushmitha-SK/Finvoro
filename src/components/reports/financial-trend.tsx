@@ -31,9 +31,31 @@ type FinancialTrendProps = {
     data: FinancialTrendItem[];
 };
 
+function formatTooltipValue(value: number) {
+    return formatCurrency(value);
+}
+
+function formatAxisValue(value: number) {
+    if (value >= 100000) {
+        return `₹${Math.round(value / 100000)}L`;
+    }
+
+    if (value >= 1000) {
+        return `₹${Math.round(value / 1000)}K`;
+    }
+
+    return `₹${Math.round(value)}`;
+}
+
 export function FinancialTrend({
     data,
 }: FinancialTrendProps) {
+    const hasTransactions = data.some(
+        (item) =>
+            item.income > 0 ||
+            item.expenses > 0,
+    );
+
     return (
         <Card>
             <CardHeader>
@@ -43,21 +65,21 @@ export function FinancialTrend({
 
                 <p className="text-sm text-muted-foreground">
                     Compare your income, expenses, and net balance
-                    over time.
+                    over the selected period.
                 </p>
             </CardHeader>
 
             <CardContent>
-                {data.length === 0 ? (
+                {!hasTransactions ? (
                     <div className="flex min-h-72 items-center justify-center text-center">
                         <div>
                             <p className="font-medium">
-                                No financial data yet
+                                No transactions for this period
                             </p>
 
                             <p className="mt-1 text-sm text-muted-foreground">
-                                Your financial trend will appear
-                                here once you have transactions.
+                                Your financial trend will appear here
+                                when you have income or expenses.
                             </p>
                         </div>
                     </div>
@@ -72,7 +94,7 @@ export function FinancialTrend({
                                 margin={{
                                     top: 10,
                                     right: 10,
-                                    left: 10,
+                                    left: 0,
                                     bottom: 0,
                                 }}
                             >
@@ -87,6 +109,7 @@ export function FinancialTrend({
                                     axisLine={false}
                                     tickMargin={8}
                                     fontSize={12}
+                                    minTickGap={24}
                                 />
 
                                 <YAxis
@@ -94,16 +117,27 @@ export function FinancialTrend({
                                     axisLine={false}
                                     tickMargin={8}
                                     fontSize={12}
+                                    width={60}
                                     tickFormatter={(value) =>
-                                        formatCurrency(
+                                        formatAxisValue(
                                             Number(value),
                                         )
                                     }
                                 />
 
                                 <Tooltip
+                                    cursor={{
+                                        strokeDasharray: "4 4",
+                                    }}
+                                    contentStyle={{
+                                        borderRadius: "0.75rem",
+                                        border: "1px solid var(--border)",
+                                        backgroundColor:
+                                            "var(--background)",
+                                        color: "var(--foreground)",
+                                    }}
                                     formatter={(value, name) => [
-                                        formatCurrency(
+                                        formatTooltipValue(
                                             Number(value),
                                         ),
                                         name === "income"
@@ -118,6 +152,9 @@ export function FinancialTrend({
                                 />
 
                                 <Legend
+                                    verticalAlign="bottom"
+                                    height={36}
+                                    iconType="line"
                                     formatter={(value) =>
                                         value === "income"
                                             ? "Income"
