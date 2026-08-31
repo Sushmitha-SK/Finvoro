@@ -259,3 +259,72 @@ export async function PUT(request: Request) {
         );
     }
 }
+
+export async function DELETE(request: Request) {
+    try {
+        const user = await currentUser();
+
+        if (!user) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
+        }
+
+        const body = await request.json();
+        const id = String(body.id ?? "");
+
+        if (!id) {
+            return NextResponse.json(
+                { error: "Budget ID is required." },
+                { status: 400 },
+            );
+        }
+
+        const budget =
+            await prisma.budget.findUnique({
+                where: {
+                    id,
+                },
+                select: {
+                    id: true,
+                    clerkUserId: true,
+                },
+            });
+
+        if (
+            !budget ||
+            budget.clerkUserId !== user.id
+        ) {
+            return NextResponse.json(
+                {
+                    error: "Budget not found.",
+                },
+                { status: 404 },
+            );
+        }
+
+        await prisma.budget.delete({
+            where: {
+                id: budget.id,
+            },
+        });
+
+        return NextResponse.json({
+            success: true,
+        });
+    } catch (error) {
+        console.error(
+            "Failed to delete budget:",
+            error,
+        );
+
+        return NextResponse.json(
+            {
+                error:
+                    "Unable to delete budget. Please try again.",
+            },
+            { status: 500 },
+        );
+    }
+}

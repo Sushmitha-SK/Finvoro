@@ -11,8 +11,8 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { DeleteBudgetDialog } from "./delete-budget-dialog";
 import { EditBudgetDialog } from "./edit-budget-dialog";
-
 import { formatCurrency } from "@/lib/format-currency";
 
 type Budget = {
@@ -115,6 +115,11 @@ export function BudgetOverview({
                                     <EditBudgetDialog
                                         budget={budget}
                                         categories={categories}
+                                    />
+
+                                    <DeleteBudgetDialog
+                                        budgetId={budget.id}
+                                        category={budget.category}
                                     />
                                 </div>
                             </div>
