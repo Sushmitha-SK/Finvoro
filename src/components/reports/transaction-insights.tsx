@@ -2,6 +2,7 @@ import {
     ArrowDownRight,
     ArrowUpRight,
     CalendarDays,
+    CircleDollarSign,
     Receipt,
     TrendingUp,
     WalletCards,
@@ -47,14 +48,25 @@ type TransactionInsightsProps = {
 };
 
 function formatDay(date: string) {
-    return new Intl.DateTimeFormat(
-        "en-IN",
-        {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-        },
-    ).format(new Date(`${date}T00:00:00`));
+    return new Intl.DateTimeFormat("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    }).format(new Date(`${date}T00:00:00`));
+}
+
+function EmptyInsight({
+    message,
+}: {
+    message: string;
+}) {
+    return (
+        <div className="flex min-h-24 items-center">
+            <p className="text-sm text-muted-foreground">
+                {message}
+            </p>
+        </div>
+    );
 }
 
 export function TransactionInsights({
@@ -85,7 +97,9 @@ export function TransactionInsights({
                             Transactions
                         </CardTitle>
 
-                        <Receipt className="size-4 text-muted-foreground" />
+                        <div className="flex size-8 items-center justify-center rounded-lg bg-muted">
+                            <Receipt className="size-4 text-muted-foreground" />
+                        </div>
                     </CardHeader>
 
                     <CardContent>
@@ -105,7 +119,9 @@ export function TransactionInsights({
                             Average transaction
                         </CardTitle>
 
-                        <WalletCards className="size-4 text-muted-foreground" />
+                        <div className="flex size-8 items-center justify-center rounded-lg bg-muted">
+                            <WalletCards className="size-4 text-muted-foreground" />
+                        </div>
                     </CardHeader>
 
                     <CardContent>
@@ -127,7 +143,9 @@ export function TransactionInsights({
                             Average expense
                         </CardTitle>
 
-                        <TrendingUp className="size-4 text-muted-foreground" />
+                        <div className="flex size-8 items-center justify-center rounded-lg bg-muted">
+                            <TrendingUp className="size-4 text-muted-foreground" />
+                        </div>
                     </CardHeader>
 
                     <CardContent>
@@ -150,7 +168,7 @@ export function TransactionInsights({
                         </CardTitle>
 
                         <div
-                            className="flex size-7 items-center justify-center rounded-lg"
+                            className="flex size-8 items-center justify-center rounded-lg"
                             style={
                                 topSpendingCategory?.color
                                     ? {
@@ -162,14 +180,22 @@ export function TransactionInsights({
                                     : undefined
                             }
                         >
-                            {topSpendingCategory?.icon ?? "📁"}
+                            {topSpendingCategory?.icon ? (
+                                <span className="text-sm">
+                                    {
+                                        topSpendingCategory.icon
+                                    }
+                                </span>
+                            ) : (
+                                <CircleDollarSign className="size-4 text-muted-foreground" />
+                            )}
                         </div>
                     </CardHeader>
 
                     <CardContent>
                         <p className="truncate text-2xl font-semibold tracking-tight">
                             {topSpendingCategory?.name ??
-                                "—"}
+                                "No category"}
                         </p>
 
                         <p className="mt-1 text-xs text-muted-foreground">
@@ -177,7 +203,7 @@ export function TransactionInsights({
                                 ? formatCurrency(
                                     topSpendingCategory.amount,
                                 )
-                                : "No expenses yet"}
+                                : "No expenses in this period"}
                         </p>
                     </CardContent>
                 </Card>
@@ -187,7 +213,9 @@ export function TransactionInsights({
                 <Card>
                     <CardHeader>
                         <div className="flex items-center gap-2">
-                            <ArrowDownRight className="size-4 text-destructive" />
+                            <div className="flex size-8 items-center justify-center rounded-lg bg-destructive/10">
+                                <ArrowDownRight className="size-4 text-destructive" />
+                            </div>
 
                             <CardTitle className="text-base">
                                 Largest expense
@@ -197,29 +225,27 @@ export function TransactionInsights({
 
                     <CardContent>
                         {largestExpense ? (
-                            <div>
-                                <p className="text-2xl font-semibold">
+                            <div className="space-y-1">
+                                <p className="text-2xl font-semibold tracking-tight">
                                     {formatCurrency(
                                         largestExpense.amount,
                                     )}
                                 </p>
 
-                                <p className="mt-1 font-medium">
+                                <p className="truncate font-medium">
                                     {
                                         largestExpense.description
                                     }
                                 </p>
 
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="text-sm text-muted-foreground">
                                     {
                                         largestExpense.category
                                     }
                                 </p>
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">
-                                No expenses in this period.
-                            </p>
+                            <EmptyInsight message="No expenses in this period." />
                         )}
                     </CardContent>
                 </Card>
@@ -227,7 +253,9 @@ export function TransactionInsights({
                 <Card>
                     <CardHeader>
                         <div className="flex items-center gap-2">
-                            <ArrowUpRight className="size-4 text-emerald-500" />
+                            <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-500/10">
+                                <ArrowUpRight className="size-4 text-emerald-500" />
+                            </div>
 
                             <CardTitle className="text-base">
                                 Largest income
@@ -237,29 +265,27 @@ export function TransactionInsights({
 
                     <CardContent>
                         {largestIncome ? (
-                            <div>
-                                <p className="text-2xl font-semibold">
+                            <div className="space-y-1">
+                                <p className="text-2xl font-semibold tracking-tight">
                                     {formatCurrency(
                                         largestIncome.amount,
                                     )}
                                 </p>
 
-                                <p className="mt-1 font-medium">
+                                <p className="truncate font-medium">
                                     {
                                         largestIncome.description
                                     }
                                 </p>
 
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="text-sm text-muted-foreground">
                                     {
                                         largestIncome.category
                                     }
                                 </p>
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">
-                                No income in this period.
-                            </p>
+                            <EmptyInsight message="No income in this period." />
                         )}
                     </CardContent>
                 </Card>
@@ -267,7 +293,9 @@ export function TransactionInsights({
                 <Card>
                     <CardHeader>
                         <div className="flex items-center gap-2">
-                            <CalendarDays className="size-4 text-muted-foreground" />
+                            <div className="flex size-8 items-center justify-center rounded-lg bg-muted">
+                                <CalendarDays className="size-4 text-muted-foreground" />
+                            </div>
 
                             <CardTitle className="text-base">
                                 Highest spending day
@@ -277,23 +305,21 @@ export function TransactionInsights({
 
                     <CardContent>
                         {highestSpendingDay ? (
-                            <div>
-                                <p className="text-2xl font-semibold">
+                            <div className="space-y-1">
+                                <p className="text-2xl font-semibold tracking-tight">
                                     {formatCurrency(
                                         highestSpendingDay.amount,
                                     )}
                                 </p>
 
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="text-sm text-muted-foreground">
                                     {formatDay(
                                         highestSpendingDay.date,
                                     )}
                                 </p>
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">
-                                No spending data yet.
-                            </p>
+                            <EmptyInsight message="No spending data in this period." />
                         )}
                     </CardContent>
                 </Card>
@@ -301,7 +327,9 @@ export function TransactionInsights({
                 <Card>
                     <CardHeader>
                         <div className="flex items-center gap-2">
-                            <TrendingUp className="size-4 text-muted-foreground" />
+                            <div className="flex size-8 items-center justify-center rounded-lg bg-muted">
+                                <TrendingUp className="size-4 text-muted-foreground" />
+                            </div>
 
                             <CardTitle className="text-base">
                                 Spending focus
@@ -311,19 +339,19 @@ export function TransactionInsights({
 
                     <CardContent>
                         {topSpendingCategory ? (
-                            <div>
+                            <div className="space-y-1">
                                 <p className="text-sm text-muted-foreground">
                                     Most of your spending is going
                                     toward
                                 </p>
 
-                                <p className="mt-1 text-xl font-semibold">
+                                <p className="truncate text-xl font-semibold">
                                     {
                                         topSpendingCategory.name
                                     }
                                 </p>
 
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="text-sm text-muted-foreground">
                                     {Math.round(
                                         topSpendingCategory.percentage,
                                     )}
@@ -331,10 +359,7 @@ export function TransactionInsights({
                                 </p>
                             </div>
                         ) : (
-                            <p className="text-sm text-muted-foreground">
-                                Add expenses to see your spending
-                                focus.
-                            </p>
+                            <EmptyInsight message="Add expenses to see your spending focus." />
                         )}
                     </CardContent>
                 </Card>

@@ -30,16 +30,27 @@ type SmartInsightsProps = {
 };
 
 function formatPercentage(value: number) {
-    return `${Math.abs(Math.round(value))}%`;
+    return `${Math.abs(Math.round(value))}% `;
 }
 
 function ChangeIndicator({
     value,
     positiveIsGood = true,
+    hasPreviousValue = true,
 }: {
     value: number;
     positiveIsGood?: boolean;
+    hasPreviousValue?: boolean;
 }) {
+    if (!hasPreviousValue) {
+        return (
+            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                <Minus className="size-3" />
+                No previous data
+            </span>
+        );
+    }
+
     if (Math.round(value) === 0) {
         return (
             <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
@@ -50,16 +61,17 @@ function ChangeIndicator({
     }
 
     const isPositive = value > 0;
+
     const isGood = positiveIsGood
         ? isPositive
         : !isPositive;
 
     return (
         <span
-            className={`inline-flex items-center gap-1 text-xs ${isGood
-                    ? "text-emerald-600"
-                    : "text-destructive"
-                }`}
+            className={`inline - items - center gap - 1 text - xs ${isGood
+                ? "text-emerald-600"
+                : "text-destructive"
+                } `}
         >
             {isPositive ? (
                 <ArrowUpRight className="size-3" />
@@ -67,14 +79,12 @@ function ChangeIndicator({
                 <ArrowDownRight className="size-3" />
             )}
 
-            {formatPercentage(value)}
-            {" "}
-            vs previous period
+            {formatPercentage(value)} vs previous period
         </span>
     );
 }
 
-export function SmartInsights({
+function getInsights({
     totalIncome,
     totalExpenses,
     savingsRate,
@@ -86,6 +96,30 @@ export function SmartInsights({
 }: SmartInsightsProps) {
     const insights: string[] = [];
 
+    const hasCurrentActivity =
+        totalIncome > 0 || totalExpenses > 0;
+
+    const hasPreviousActivity =
+        previousIncome > 0 || previousExpenses > 0;
+
+    if (!hasCurrentActivity && !hasPreviousActivity) {
+        return [
+            "No financial activity was recorded for the selected or previous period. Start tracking your income and expenses to unlock personalized insights.",
+        ];
+    }
+
+    if (!hasCurrentActivity && hasPreviousActivity) {
+        return [
+            "No financial activity was recorded in the selected period. Your previous period contains activity for comparison.",
+        ];
+    }
+
+    if (hasCurrentActivity && !hasPreviousActivity) {
+        insights.push(
+            "This is your first active comparison period. Keep tracking your finances to build meaningful trends.",
+        );
+    }
+
     if (
         totalExpenses > 0 &&
         previousExpenses > 0
@@ -94,15 +128,31 @@ export function SmartInsights({
             insights.push(
                 `Expenses increased by ${formatPercentage(
                     expenseChange,
-                )} compared with the previous period.`,
+                )
+                }. Review your largest spending categories to see where the increase came from.`,
             );
         } else if (expenseChange < -5) {
             insights.push(
                 `Expenses decreased by ${formatPercentage(
                     expenseChange,
-                )} compared with the previous period.`,
+                )
+                }. You're spending less than in the previous period.`,
             );
         }
+    } else if (
+        totalExpenses > 0 &&
+        previousExpenses === 0
+    ) {
+        insights.push(
+            "You recorded expenses this period after having no expenses in the previous period.",
+        );
+    } else if (
+        totalExpenses === 0 &&
+        previousExpenses > 0
+    ) {
+        insights.push(
+            "You recorded no expenses this period, which is lower than the previous period.",
+        );
     }
 
     if (
@@ -122,40 +172,106 @@ export function SmartInsights({
                 )} compared with the previous period.`,
             );
         }
+    } else if (
+        totalIncome > 0 &&
+        previousIncome === 0
+    ) {
+        insights.push(
+            "You recorded income this period after having no income in the previous period.",
+        );
+    } else if (
+        totalIncome === 0 &&
+        previousIncome > 0
+    ) {
+        insights.push(
+            "No income was recorded this period, compared with income in the previous period.",
+        );
     }
 
-    if (savingsRateChange > 2) {
-        insights.push(
-            `Your savings rate improved by ${Math.round(
-                savingsRateChange,
-            )} percentage points.`,
-        );
-    } else if (savingsRateChange < -2) {
-        insights.push(
-            `Your savings rate decreased by ${Math.abs(
-                Math.round(savingsRateChange),
-            )} percentage points.`,
-        );
+    if (
+        hasCurrentActivity &&
+        hasPreviousActivity
+    ) {
+        if (savingsRateChange > 2) {
+            insights.push(
+                `Your savings rate improved by ${Math.round(
+                    savingsRateChange,
+                )} percentage points compared with the previous period.`,
+            );
+        } else if (
+            savingsRateChange < -2
+        ) {
+            insights.push(
+                `Your savings rate decreased by ${Math.abs(
+                    Math.round(savingsRateChange),
+                )} percentage points compared with the previous period.`,
+            );
+        }
     }
 
     if (savingsRate >= 30) {
         insights.push(
             "You're maintaining a strong savings rate this period.",
         );
+    } else if (savingsRate >= 20) {
+        insights.push(
+            "You're maintaining a healthy savings rate. Small improvements could help you save even more.",
+        );
     } else if (
         savingsRate > 0 &&
-        savingsRate < 10
+        savingsRate < 20
     ) {
         insights.push(
-            "Your savings rate is relatively low. Consider reviewing your largest expense categories.",
+            "Your savings rate is relatively low. Reviewing your largest expense categories could help improve it.",
+        );
+    } else if (
+        totalIncome > 0 &&
+        savingsRate <= 0
+    ) {
+        insights.push(
+            "Your expenses are matching or exceeding your income. Consider reviewing your largest spending categories.",
         );
     }
 
     if (insights.length === 0) {
         insights.push(
-            "Keep tracking your finances to uncover more spending patterns.",
+            "Your finances are relatively stable this period. Keep tracking your activity to uncover more useful spending patterns.",
         );
     }
+
+    return insights.slice(0, 3);
+}
+
+export function SmartInsights({
+    totalIncome,
+    totalExpenses,
+    savingsRate,
+    incomeChange,
+    expenseChange,
+    savingsRateChange,
+    previousIncome,
+    previousExpenses,
+}: SmartInsightsProps) {
+    const insights = getInsights({
+        totalIncome,
+        totalExpenses,
+        savingsRate,
+        incomeChange,
+        expenseChange,
+        savingsRateChange,
+        previousIncome,
+        previousExpenses,
+    });
+
+    const incomeHasPreviousData =
+        previousIncome > 0;
+
+    const expensesHavePreviousData =
+        previousExpenses > 0;
+
+    const savingsHasPreviousData =
+        previousIncome > 0 ||
+        previousExpenses > 0;
 
     return (
         <Card>
@@ -190,14 +306,15 @@ export function SmartInsights({
                             </div>
 
                             <p className="mt-2 font-semibold">
-                                {formatCurrency(
-                                    totalIncome,
-                                )}
+                                {formatCurrency(totalIncome)}
                             </p>
 
                             <div className="mt-1">
                                 <ChangeIndicator
                                     value={incomeChange}
+                                    hasPreviousValue={
+                                        incomeHasPreviousData
+                                    }
                                 />
                             </div>
                         </div>
@@ -212,18 +329,15 @@ export function SmartInsights({
                             </div>
 
                             <p className="mt-2 font-semibold">
-                                {formatCurrency(
-                                    totalExpenses,
-                                )}
+                                {formatCurrency(totalExpenses)}
                             </p>
 
                             <div className="mt-1">
                                 <ChangeIndicator
-                                    value={
-                                        expenseChange
-                                    }
-                                    positiveIsGood={
-                                        false
+                                    value={expenseChange}
+                                    positiveIsGood={false}
+                                    hasPreviousValue={
+                                        expensesHavePreviousData
                                     }
                                 />
                             </div>
@@ -239,16 +353,14 @@ export function SmartInsights({
                             </div>
 
                             <p className="mt-2 font-semibold">
-                                {Math.round(
-                                    savingsRate,
-                                )}
-                                %
+                                {Math.round(savingsRate)}%
                             </p>
 
                             <div className="mt-1">
                                 <ChangeIndicator
-                                    value={
-                                        savingsRateChange
+                                    value={savingsRateChange}
+                                    hasPreviousValue={
+                                        savingsHasPreviousData
                                     }
                                 />
                             </div>
@@ -264,9 +376,7 @@ export function SmartInsights({
                                 >
                                     <Lightbulb className="mt-0.5 size-4 shrink-0 text-primary" />
 
-                                    <p>
-                                        {insight}
-                                    </p>
+                                    <p>{insight}</p>
                                 </div>
                             ),
                         )}
@@ -276,3 +386,4 @@ export function SmartInsights({
         </Card>
     );
 }
+
