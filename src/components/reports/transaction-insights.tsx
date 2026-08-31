@@ -45,6 +45,7 @@ type TransactionInsightsProps = {
     largestExpense: InsightTransaction | null;
     topSpendingCategory: SpendingCategory | null;
     highestSpendingDay: HighestSpendingDay | null;
+    currency: string,
 };
 
 function formatDay(date: string) {
@@ -77,6 +78,7 @@ export function TransactionInsights({
     largestExpense,
     topSpendingCategory,
     highestSpendingDay,
+    currency,
 }: TransactionInsightsProps) {
     return (
         <div className="space-y-4">
@@ -128,6 +130,7 @@ export function TransactionInsights({
                         <p className="text-2xl font-semibold tracking-tight">
                             {formatCurrency(
                                 averageTransaction,
+                                currency,
                             )}
                         </p>
 
@@ -152,6 +155,7 @@ export function TransactionInsights({
                         <p className="text-2xl font-semibold tracking-tight">
                             {formatCurrency(
                                 averageExpense,
+                                currency
                             )}
                         </p>
 
@@ -202,6 +206,7 @@ export function TransactionInsights({
                             {topSpendingCategory
                                 ? formatCurrency(
                                     topSpendingCategory.amount,
+                                    currency,
                                 )
                                 : "No expenses in this period"}
                         </p>
@@ -229,6 +234,7 @@ export function TransactionInsights({
                                 <p className="text-2xl font-semibold tracking-tight">
                                     {formatCurrency(
                                         largestExpense.amount,
+                                        currency,
                                     )}
                                 </p>
 
@@ -269,6 +275,7 @@ export function TransactionInsights({
                                 <p className="text-2xl font-semibold tracking-tight">
                                     {formatCurrency(
                                         largestIncome.amount,
+                                        currency
                                     )}
                                 </p>
 
@@ -309,6 +316,7 @@ export function TransactionInsights({
                                 <p className="text-2xl font-semibold tracking-tight">
                                     {formatCurrency(
                                         highestSpendingDay.amount,
+                                        currency,
                                     )}
                                 </p>
 

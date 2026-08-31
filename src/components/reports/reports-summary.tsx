@@ -18,6 +18,7 @@ type ReportsSummaryProps = {
     totalExpenses: number;
     netBalance: number;
     savingsRate: number;
+    currency: string;
 };
 
 export function ReportsSummary({
@@ -25,6 +26,7 @@ export function ReportsSummary({
     totalExpenses,
     netBalance,
     savingsRate,
+    currency
 }: ReportsSummaryProps) {
     const hasIncome = totalIncome > 0;
     const hasExpenses = totalExpenses > 0;
@@ -50,7 +52,7 @@ export function ReportsSummary({
 
                 <CardContent>
                     <p className="text-2xl font-semibold tracking-tight">
-                        {formatCurrency(totalIncome)}
+                        {formatCurrency(totalIncome, currency)}
                     </p>
 
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -72,7 +74,7 @@ export function ReportsSummary({
 
                 <CardContent>
                     <p className="text-2xl font-semibold tracking-tight">
-                        {formatCurrency(totalExpenses)}
+                        {formatCurrency(totalExpenses, currency)}
                     </p>
 
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -91,8 +93,8 @@ export function ReportsSummary({
 
                     <Wallet
                         className={`size-4 ${isPositiveBalance
-                                ? "text-emerald-500"
-                                : "text-destructive"
+                            ? "text-emerald-500"
+                            : "text-destructive"
                             }`}
                     />
                 </CardHeader>
@@ -100,11 +102,11 @@ export function ReportsSummary({
                 <CardContent>
                     <p
                         className={`text-2xl font-semibold tracking-tight ${isPositiveBalance
-                                ? "text-foreground"
-                                : "text-destructive"
+                            ? "text-foreground"
+                            : "text-destructive"
                             }`}
                     >
-                        {formatCurrency(netBalance)}
+                        {formatCurrency(netBalance, currency)}
                     </p>
 
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -127,8 +129,8 @@ export function ReportsSummary({
                 <CardContent>
                     <p
                         className={`text-2xl font-semibold tracking-tight ${isPositiveSavings
-                                ? "text-foreground"
-                                : "text-destructive"
+                            ? "text-foreground"
+                            : "text-destructive"
                             }`}
                     >
                         {Math.round(savingsRate)}%

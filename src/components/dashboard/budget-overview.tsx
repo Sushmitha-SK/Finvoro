@@ -22,10 +22,12 @@ type Budget = {
 
 type BudgetOverviewProps = {
     budgets: Budget[];
+    currency: string,
 };
 
 export function BudgetOverview({
     budgets,
+    currency,
 }: BudgetOverviewProps) {
     return (
         <Card>
@@ -74,10 +76,12 @@ export function BudgetOverview({
                                         <span className="text-sm text-muted-foreground">
                                             {formatCurrency(
                                                 budget.spent,
+                                                currency,
                                             )}{" "}
                                             /{" "}
                                             {formatCurrency(
                                                 budget.limit,
+                                                currency,
                                             )}
                                         </span>
                                     </div>
@@ -95,6 +99,7 @@ export function BudgetOverview({
                                                 budget.spent,
                                                 0,
                                             ),
+                                            currency,
                                         )}{" "}
                                         remaining
                                     </p>

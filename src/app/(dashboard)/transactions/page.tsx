@@ -25,18 +25,33 @@ export default async function TransactionsPage({
         return null;
     }
 
-    const categories = await prisma.category.findMany({
-        where: {
-            clerkUserId: userId,
-        },
-        select: {
-            id: true,
-            name: true,
-        },
-        orderBy: {
-            name: "asc",
-        },
-    });
+    const [categories, preference] =
+        await Promise.all([
+            prisma.category.findMany({
+                where: {
+                    clerkUserId: userId,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                },
+                orderBy: {
+                    name: "asc",
+                },
+            }),
+
+            prisma.userPreference.findUnique({
+                where: {
+                    clerkUserId: userId,
+                },
+                select: {
+                    currency: true,
+                },
+            }),
+        ]);
+
+    const currency =
+        preference?.currency ?? "INR";
 
     const params = await searchParams;
 
@@ -159,6 +174,7 @@ export default async function TransactionsPage({
                     search={search}
                     type={type}
                     category={category}
+                    currency={currency}
                 />
             </div>
         </div>

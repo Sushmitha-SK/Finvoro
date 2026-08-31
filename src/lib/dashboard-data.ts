@@ -21,9 +21,13 @@ const getMonthRange = () => {
     };
 };
 
-export async function getDashboardData(clerkUserId: string) {
-    const { startOfMonth, startOfNextMonth } =
-        getMonthRange();
+export async function getDashboardData(
+    clerkUserId: string,
+) {
+    const {
+        startOfMonth,
+        startOfNextMonth,
+    } = getMonthRange();
 
     const [
         allIncome,
@@ -33,6 +37,7 @@ export async function getDashboardData(clerkUserId: string) {
         spendingByCategory,
         budgets,
         recentTransactions,
+        preference,
     ] = await Promise.all([
         prisma.transaction.aggregate({
             where: {
@@ -105,8 +110,10 @@ export async function getDashboardData(clerkUserId: string) {
         prisma.budget.findMany({
             where: {
                 clerkUserId,
-                month: startOfMonth.getMonth() + 1,
-                year: startOfMonth.getFullYear(),
+                month:
+                    startOfMonth.getMonth() + 1,
+                year:
+                    startOfMonth.getFullYear(),
             },
             include: {
                 category: true,
@@ -128,11 +135,21 @@ export async function getDashboardData(clerkUserId: string) {
             },
             take: 5,
         }),
+
+        prisma.userPreference.findUnique({
+            where: {
+                clerkUserId,
+            },
+            select: {
+                currency: true,
+            },
+        }),
     ]);
 
-    const categoryIds = spendingByCategory.map(
-        (item) => item.categoryId,
-    );
+    const categoryIds =
+        spendingByCategory.map(
+            (item) => item.categoryId,
+        );
 
     const categories =
         categoryIds.length > 0
@@ -160,12 +177,17 @@ export async function getDashboardData(clerkUserId: string) {
         Number(allExpenses._sum.amount ?? 0);
 
     const currentMonthIncome =
-        Number(monthlyIncome._sum.amount ?? 0);
+        Number(
+            monthlyIncome._sum.amount ?? 0,
+        );
 
     const currentMonthExpenses =
-        Number(monthlyExpenses._sum.amount ?? 0);
+        Number(
+            monthlyExpenses._sum.amount ?? 0,
+        );
 
-    const balance = totalIncome - totalExpenses;
+    const balance =
+        totalIncome - totalExpenses;
 
     const savingsRate =
         currentMonthIncome > 0
@@ -180,7 +202,10 @@ export async function getDashboardData(clerkUserId: string) {
     const totalCategoryExpenses =
         spendingByCategory.reduce(
             (total, item) =>
-                total + Number(item._sum.amount ?? 0),
+                total +
+                Number(
+                    item._sum.amount ?? 0,
+                ),
             0,
         );
 
@@ -190,15 +215,19 @@ export async function getDashboardData(clerkUserId: string) {
                 item._sum.amount ?? 0,
             );
 
-            const category = categoryMap.get(
-                item.categoryId,
-            );
+            const category =
+                categoryMap.get(
+                    item.categoryId,
+                );
 
             return {
-                name: category?.name ?? "Other",
+                name:
+                    category?.name ??
+                    "Other",
                 amount,
                 percentage:
-                    totalCategoryExpenses > 0
+                    totalCategoryExpenses >
+                        0
                         ? Math.round(
                             (amount /
                                 totalCategoryExpenses) *
@@ -208,39 +237,55 @@ export async function getDashboardData(clerkUserId: string) {
             };
         });
 
-    const budgetOverview = await Promise.all(
-        budgets.map(async (budget) => {
-            const spent = await prisma.transaction.aggregate({
-                where: {
-                    clerkUserId,
-                    categoryId: budget.categoryId,
-                    type: "expense",
-                    date: {
-                        gte: startOfMonth,
-                        lt: startOfNextMonth,
-                    },
-                },
-                _sum: {
-                    amount: true,
-                },
-            });
+    const budgetOverview =
+        await Promise.all(
+            budgets.map(
+                async (budget) => {
+                    const spent =
+                        await prisma.transaction.aggregate(
+                            {
+                                where: {
+                                    clerkUserId,
+                                    categoryId:
+                                        budget.categoryId,
+                                    type: "expense",
+                                    date: {
+                                        gte: startOfMonth,
+                                        lt: startOfNextMonth,
+                                    },
+                                },
+                                _sum: {
+                                    amount: true,
+                                },
+                            },
+                        );
 
-            return {
-                id: budget.id,
-                category: budget.category.name,
-                spent: Number(
-                    spent._sum.amount ?? 0,
-                ),
-                limit: Number(budget.amount),
-            };
-        }),
-    );
+                    return {
+                        id: budget.id,
+                        category:
+                            budget.category
+                                .name,
+                        spent: Number(
+                            spent._sum
+                                .amount ?? 0,
+                        ),
+                        limit: Number(
+                            budget.amount,
+                        ),
+                    };
+                },
+            ),
+        );
 
     return {
+        currency:
+            preference?.currency ?? "INR",
+
         financialSummary: {
             balance,
             income: currentMonthIncome,
-            expenses: currentMonthExpenses,
+            expenses:
+                currentMonthExpenses,
             savingsRate,
         },
 
@@ -255,7 +300,8 @@ export async function getDashboardData(clerkUserId: string) {
                     description:
                         transaction.description,
                     category:
-                        transaction.category.name,
+                        transaction.category
+                            .name,
                     type: transaction.type,
                     amount: Number(
                         transaction.amount,

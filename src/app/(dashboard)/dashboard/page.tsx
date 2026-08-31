@@ -38,6 +38,7 @@ export default async function DashboardPage() {
                     financialSummary={
                         dashboardData.financialSummary
                     }
+                    currency={dashboardData.currency}
                 />
 
                 <div className="grid gap-6 lg:grid-cols-2">
@@ -45,12 +46,14 @@ export default async function DashboardPage() {
                         spendingCategories={
                             dashboardData.spendingCategories
                         }
+                        currency={dashboardData.currency}
                     />
 
                     <BudgetOverview
                         budgets={
                             dashboardData.budgets
                         }
+                        currency={dashboardData.currency}
                     />
                 </div>
 

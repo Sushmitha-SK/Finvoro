@@ -15,42 +15,55 @@ export default async function BudgetsPage() {
         return null;
     }
 
-    const [budgets, categories] = await Promise.all([
-        prisma.budget.findMany({
-            where: {
-                clerkUserId: user.id,
-            },
-            include: {
-                category: true,
-            },
-            orderBy: [
-                {
-                    year: "desc",
+    const [budgets, categories, preference] =
+        await Promise.all([
+            prisma.budget.findMany({
+                where: {
+                    clerkUserId: user.id,
                 },
-                {
-                    month: "desc",
+                include: {
+                    category: true,
                 },
-                {
-                    category: {
-                        name: "asc",
+                orderBy: [
+                    {
+                        year: "desc",
                     },
-                },
-            ],
-        }),
+                    {
+                        month: "desc",
+                    },
+                    {
+                        category: {
+                            name: "asc",
+                        },
+                    },
+                ],
+            }),
 
-        prisma.category.findMany({
-            where: {
-                clerkUserId: user.id,
-            },
-            select: {
-                id: true,
-                name: true,
-            },
-            orderBy: {
-                name: "asc",
-            },
-        }),
-    ]);
+            prisma.category.findMany({
+                where: {
+                    clerkUserId: user.id,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                },
+                orderBy: {
+                    name: "asc",
+                },
+            }),
+
+            prisma.userPreference.findUnique({
+                where: {
+                    clerkUserId: user.id,
+                },
+                select: {
+                    currency: true,
+                },
+            }),
+        ]);
+
+    const currency =
+        preference?.currency ?? "INR";
 
     const budgetData = await Promise.all(
         budgets.map(async (budget) => {
@@ -138,6 +151,7 @@ export default async function BudgetsPage() {
                 <BudgetOverview
                     budgets={budgetData}
                     categories={categories}
+                    currency={currency}
                 />
             </div>
         </div>

@@ -15,10 +15,12 @@ type SpendingCategory = {
 
 type SpendingCategoriesProps = {
     spendingCategories: SpendingCategory[];
+    currency: string,
 };
 
 export function SpendingCategories({
     spendingCategories,
+    currency,
 }: SpendingCategoriesProps) {
     return (
         <Card className="h-full">
@@ -46,6 +48,7 @@ export function SpendingCategories({
                                         <span className="text-muted-foreground">
                                             {formatCurrency(
                                                 category.amount,
+                                                currency,
                                             )}
                                         </span>
                                     </div>

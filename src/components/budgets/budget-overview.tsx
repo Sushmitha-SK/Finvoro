@@ -35,6 +35,7 @@ type Category = {
 type BudgetOverviewProps = {
     budgets: Budget[];
     categories: Category[];
+    currency: string;
 };
 
 const monthFormatter = new Intl.DateTimeFormat(
@@ -54,6 +55,7 @@ function getBudgetMonth(month: number, year: number) {
 export function BudgetOverview({
     budgets,
     categories,
+    currency,
 }: BudgetOverviewProps) {
     if (budgets.length === 0) {
         return (
@@ -131,6 +133,7 @@ export function BudgetOverview({
                                     <p className="text-2xl font-semibold tracking-tight">
                                         {formatCurrency(
                                             budget.spent,
+                                            currency,
                                         )}
                                     </p>
 
@@ -138,6 +141,7 @@ export function BudgetOverview({
                                         of{" "}
                                         {formatCurrency(
                                             budget.amount,
+                                            currency,
                                         )}
                                     </p>
                                 </div>
@@ -167,9 +171,11 @@ export function BudgetOverview({
                                         ? `${formatCurrency(
                                             budget.spent -
                                             budget.amount,
+                                            currency,
                                         )} over budget`
                                         : `${formatCurrency(
                                             budget.remaining,
+                                            currency,
                                         )} remaining`}
                                 </span>
 

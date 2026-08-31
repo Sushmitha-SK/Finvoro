@@ -16,6 +16,7 @@ import { SmartInsights } from "@/components/reports/smart-insights";
 import { ReportsExport } from "@/components/reports/reports-export";
 
 import { getReportsData } from "@/lib/reports-data";
+import { prisma } from "@/lib/prisma";
 
 type ReportsPageProps = {
     searchParams: Promise<{
@@ -163,6 +164,19 @@ export default async function ReportsPage({
             to,
         });
 
+    const preference =
+        await prisma.userPreference.findUnique({
+            where: {
+                clerkUserId: user.id,
+            },
+            select: {
+                currency: true,
+            },
+        });
+
+    const currency =
+        preference?.currency ?? "INR";
+
     const hasTransactions =
         reportsData.insights.transactionCount > 0;
 
@@ -217,6 +231,7 @@ export default async function ReportsPage({
                     savingsRate={
                         reportsData.savingsRate
                     }
+                    currency={currency}
                 />
 
                 <SmartInsights
@@ -244,6 +259,7 @@ export default async function ReportsPage({
                     previousExpenses={
                         reportsData.comparison.previousExpenses
                     }
+                    currency={currency}
                 />
 
                 {!hasTransactions ? (
@@ -282,6 +298,7 @@ export default async function ReportsPage({
                             data={
                                 reportsData.financialTrend
                             }
+                            currency={currency}
                         />
 
                         <TransactionInsights
@@ -306,12 +323,14 @@ export default async function ReportsPage({
                             highestSpendingDay={
                                 reportsData.insights.highestSpendingDay
                             }
+                            currency={currency}
                         />
 
                         <SpendingByCategory
                             categories={
                                 reportsData.spendingByCategory
                             }
+                            currency={currency}
                         />
                     </>
                 )}

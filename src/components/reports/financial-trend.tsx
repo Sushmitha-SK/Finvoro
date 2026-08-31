@@ -29,26 +29,45 @@ type FinancialTrendItem = {
 
 type FinancialTrendProps = {
     data: FinancialTrendItem[];
+    currency: string;
 };
 
-function formatTooltipValue(value: number) {
-    return formatCurrency(value);
+function formatTooltipValue(
+    value: number,
+    currency: string,
+) {
+    return formatCurrency(value, currency);
 }
 
-function formatAxisValue(value: number) {
+function formatAxisValue(
+    value: number,
+    currency: string,
+) {
+    const currencySymbols: Record<string, string> = {
+        INR: "₹",
+        USD: "$",
+        EUR: "€",
+        GBP: "£",
+        AED: "د.إ",
+    };
+
+    const symbol =
+        currencySymbols[currency] ?? currency;
+
     if (value >= 100000) {
-        return `₹${Math.round(value / 100000)}L`;
+        return `${symbol}${Math.round(value / 100000)}L`;
     }
 
     if (value >= 1000) {
-        return `₹${Math.round(value / 1000)}K`;
+        return `${symbol}${Math.round(value / 1000)}K`;
     }
 
-    return `₹${Math.round(value)}`;
+    return `${symbol}${Math.round(value)}`;
 }
 
 export function FinancialTrend({
     data,
+    currency,
 }: FinancialTrendProps) {
     const hasTransactions = data.some(
         (item) =>
@@ -121,6 +140,7 @@ export function FinancialTrend({
                                     tickFormatter={(value) =>
                                         formatAxisValue(
                                             Number(value),
+                                            currency,
                                         )
                                     }
                                 />
@@ -139,6 +159,7 @@ export function FinancialTrend({
                                     formatter={(value, name) => [
                                         formatTooltipValue(
                                             Number(value),
+                                            currency,
                                         ),
                                         name === "income"
                                             ? "Income"

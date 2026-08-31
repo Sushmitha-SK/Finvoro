@@ -19,10 +19,12 @@ type SpendingCategory = {
     color: string | null;
     amount: number;
     percentage: number;
+
 };
 
 type SpendingByCategoryProps = {
     categories: SpendingCategory[];
+    currency: string,
 };
 
 function getPercentageLabel(
@@ -37,6 +39,7 @@ function getPercentageLabel(
 
 export function SpendingByCategory({
     categories,
+    currency,
 }: SpendingByCategoryProps) {
     const totalExpenses = categories.reduce(
         (total, category) =>
@@ -68,6 +71,7 @@ export function SpendingByCategory({
                             <p className="mt-0.5 text-sm font-semibold">
                                 {formatCurrency(
                                     totalExpenses,
+                                    currency,
                                 )}
                             </p>
                         </div>
@@ -85,6 +89,7 @@ export function SpendingByCategory({
                         <span className="text-sm font-semibold">
                             {formatCurrency(
                                 totalExpenses,
+                                currency,
                             )}
                         </span>
                     </div>
@@ -177,6 +182,7 @@ export function SpendingByCategory({
                                             <p className="shrink-0 text-sm font-semibold">
                                                 {formatCurrency(
                                                     category.amount,
+                                                    currency
                                                 )}
                                             </p>
                                         </div>
