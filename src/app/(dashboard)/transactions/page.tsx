@@ -25,6 +25,19 @@ export default async function TransactionsPage({
         return null;
     }
 
+    const categories = await prisma.category.findMany({
+        where: {
+            clerkUserId: userId,
+        },
+        select: {
+            id: true,
+            name: true,
+        },
+        orderBy: {
+            name: "asc",
+        },
+    });
+
     const params = await searchParams;
 
     const search = params.search?.trim() ?? "";
@@ -131,7 +144,9 @@ export default async function TransactionsPage({
                         </p>
                     </div>
 
-                    <AddTransactionDialog />
+                    <AddTransactionDialog
+                        categories={categories}
+                    />
                 </div>
 
                 <TransactionsTable

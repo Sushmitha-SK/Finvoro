@@ -18,7 +18,18 @@ import type { TransactionFormValues } from "./transaction-schema";
 
 import { createTransaction } from "@/app/(dashboard)/transactions/actions";
 
-export function AddTransactionDialog() {
+type Category = {
+    id: string;
+    name: string;
+};
+
+type AddTransactionDialogProps = {
+    categories: Category[];
+};
+
+export function AddTransactionDialog({
+    categories,
+}: AddTransactionDialogProps) {
     const [open, setOpen] = useState(false);
 
     const handleSuccess = async (
@@ -51,6 +62,7 @@ export function AddTransactionDialog() {
                 </DialogHeader>
 
                 <AddTransactionForm
+                    categories={categories}
                     onSuccess={handleSuccess}
                     onCancel={() => setOpen(false)}
                 />
