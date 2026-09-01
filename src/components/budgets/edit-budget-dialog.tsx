@@ -69,7 +69,7 @@ export function EditBudgetDialog({
 
             </DialogTrigger>
 
-            <DialogContent>
+            <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>
                         Edit budget

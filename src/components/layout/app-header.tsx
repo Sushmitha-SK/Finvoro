@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 
 export function AppHeader() {
     return (
-        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80">
             <SidebarTrigger />
 
             <Separator
@@ -27,7 +27,7 @@ export function AppHeader() {
 
                     <Input
                         placeholder="Search transactions..."
-                        className="h-9 w-full pl-9"
+                        className="h-9 w-full rounded-full border-transparent bg-muted pl-9 focus-visible:border-ring focus-visible:bg-background"
                     />
                 </div>
             </div>

@@ -27,9 +27,9 @@ export function CategoriesOverview({
     if (categories.length === 0) {
         return (
             <Card>
-                <CardContent className="flex min-h-64 flex-col items-center justify-center text-center">
-                    <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-                        <FolderOpen className="size-5 text-muted-foreground" />
+                <CardContent className="flex min-h-64 flex-col items-center justify-center px-4 text-center">
+                    <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
+                        <FolderOpen className="size-5 text-primary" />
                     </div>
 
                     <h2 className="mt-4 font-semibold">
@@ -51,7 +51,7 @@ export function CategoriesOverview({
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 className="text-lg font-semibold">
                         Your categories
@@ -70,12 +70,15 @@ export function CategoriesOverview({
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {categories.map((category) => (
-                    <Card key={category.id}>
+                    <Card
+                        key={category.id}
+                        className="transition-shadow hover:shadow-md"
+                    >
                         <CardHeader>
                             <div className="flex items-center justify-between gap-3">
                                 <div className="flex min-w-0 items-center gap-3">
                                     <div
-                                        className="flex size-10 shrink-0 items-center justify-center rounded-lg"
+                                        className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-accent"
                                         style={
                                             category.color
                                                 ? {
@@ -90,7 +93,7 @@ export function CategoriesOverview({
                                                 {category.icon}
                                             </span>
                                         ) : (
-                                            <FolderOpen className="size-5" />
+                                            <FolderOpen className="size-5 text-primary" />
                                         )}
                                     </div>
 

@@ -105,7 +105,7 @@ export function TransactionInsights({
                     </CardHeader>
 
                     <CardContent>
-                        <p className="text-2xl font-semibold tracking-tight">
+                        <p className="text-2xl font-semibold tracking-tight tabular-nums">
                             {transactionCount}
                         </p>
 
@@ -127,7 +127,7 @@ export function TransactionInsights({
                     </CardHeader>
 
                     <CardContent>
-                        <p className="text-2xl font-semibold tracking-tight">
+                        <p className="text-2xl font-semibold tracking-tight tabular-nums">
                             {formatCurrency(
                                 averageTransaction,
                                 currency,
@@ -152,7 +152,7 @@ export function TransactionInsights({
                     </CardHeader>
 
                     <CardContent>
-                        <p className="text-2xl font-semibold tracking-tight">
+                        <p className="text-2xl font-semibold tracking-tight tabular-nums">
                             {formatCurrency(
                                 averageExpense,
                                 currency
@@ -197,7 +197,7 @@ export function TransactionInsights({
                     </CardHeader>
 
                     <CardContent>
-                        <p className="truncate text-2xl font-semibold tracking-tight">
+                        <p className="truncate text-2xl font-semibold tracking-tight tabular-nums">
                             {topSpendingCategory?.name ??
                                 "No category"}
                         </p>
@@ -231,7 +231,7 @@ export function TransactionInsights({
                     <CardContent>
                         {largestExpense ? (
                             <div className="space-y-1">
-                                <p className="text-2xl font-semibold tracking-tight">
+                                <p className="text-2xl font-semibold tracking-tight tabular-nums">
                                     {formatCurrency(
                                         largestExpense.amount,
                                         currency,
@@ -272,7 +272,7 @@ export function TransactionInsights({
                     <CardContent>
                         {largestIncome ? (
                             <div className="space-y-1">
-                                <p className="text-2xl font-semibold tracking-tight">
+                                <p className="text-2xl font-semibold tracking-tight tabular-nums">
                                     {formatCurrency(
                                         largestIncome.amount,
                                         currency
@@ -313,7 +313,7 @@ export function TransactionInsights({
                     <CardContent>
                         {highestSpendingDay ? (
                             <div className="space-y-1">
-                                <p className="text-2xl font-semibold tracking-tight">
+                                <p className="text-2xl font-semibold tracking-tight tabular-nums">
                                     {formatCurrency(
                                         highestSpendingDay.amount,
                                         currency,

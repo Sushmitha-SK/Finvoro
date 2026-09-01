@@ -39,7 +39,7 @@ export function AddCategoryDialog() {
                 }
             />
 
-            <DialogContent>
+            <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>
                         Add category

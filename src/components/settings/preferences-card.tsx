@@ -156,7 +156,7 @@ export function PreferencesCard() {
                                 event.target.value,
                             )
                         }
-                        className="flex h-9 w-full rounded-md border bg-background px-3 text-sm shadow-xs outline-none"
+                        className="flex h-9 w-full rounded-lg border border-input bg-background px-3 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-60"
                     >
                         {currencies.map(
                             (item) => (
@@ -181,7 +181,7 @@ export function PreferencesCard() {
                     </p>
                 </div>
 
-                <div className="flex items-center justify-between gap-4 border-t pt-4">
+                <div className="flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-sm text-muted-foreground">
                         {message}
                     </p>
@@ -192,6 +192,7 @@ export function PreferencesCard() {
                             loading ||
                             saving
                         }
+                        className="sm:self-end"
                     >
                         {saving
                             ? "Saving..."
