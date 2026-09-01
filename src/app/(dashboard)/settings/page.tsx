@@ -40,21 +40,29 @@ export default async function SettingsPage() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Profile</CardTitle>
+                        <div className="flex items-center gap-3">
+                            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                                {name.charAt(0).toUpperCase()}
+                            </div>
 
-                        <CardDescription>
-                            Your account information from your Finvoro profile.
-                        </CardDescription>
+                            <div>
+                                <CardTitle>Profile</CardTitle>
+
+                                <CardDescription>
+                                    Your account information from your Finvoro profile.
+                                </CardDescription>
+                            </div>
+                        </div>
                     </CardHeader>
 
                     <CardContent>
-                        <div className="space-y-4">
+                        <div className="grid gap-4 sm:grid-cols-2">
                             <div>
                                 <p className="text-sm font-medium">
                                     Name
                                 </p>
 
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="mt-1 truncate text-sm text-muted-foreground">
                                     {name}
                                 </p>
                             </div>
@@ -64,7 +72,7 @@ export default async function SettingsPage() {
                                     Email
                                 </p>
 
-                                <p className="mt-1 text-sm text-muted-foreground">
+                                <p className="mt-1 truncate text-sm text-muted-foreground">
                                     {email}
                                 </p>
                             </div>

@@ -51,7 +51,7 @@ export function ReportsSummary({
                 </CardHeader>
 
                 <CardContent>
-                    <p className="text-2xl font-semibold tracking-tight">
+                    <p className="text-2xl font-semibold tracking-tight tabular-nums">
                         {formatCurrency(totalIncome, currency)}
                     </p>
 
@@ -73,7 +73,7 @@ export function ReportsSummary({
                 </CardHeader>
 
                 <CardContent>
-                    <p className="text-2xl font-semibold tracking-tight">
+                    <p className="text-2xl font-semibold tracking-tight tabular-nums">
                         {formatCurrency(totalExpenses, currency)}
                     </p>
 
@@ -101,7 +101,7 @@ export function ReportsSummary({
 
                 <CardContent>
                     <p
-                        className={`text-2xl font-semibold tracking-tight ${isPositiveBalance
+                        className={`text-2xl font-semibold tracking-tight tabular-nums ${isPositiveBalance
                             ? "text-foreground"
                             : "text-destructive"
                             }`}
@@ -128,7 +128,7 @@ export function ReportsSummary({
 
                 <CardContent>
                     <p
-                        className={`text-2xl font-semibold tracking-tight ${isPositiveSavings
+                        className={`text-2xl font-semibold tracking-tight tabular-nums ${isPositiveSavings
                             ? "text-foreground"
                             : "text-destructive"
                             }`}

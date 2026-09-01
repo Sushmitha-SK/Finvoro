@@ -60,9 +60,9 @@ export function BudgetOverview({
     if (budgets.length === 0) {
         return (
             <Card>
-                <CardContent className="flex min-h-64 flex-col items-center justify-center text-center">
-                    <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-                        <PiggyBank className="size-5 text-muted-foreground" />
+                <CardContent className="flex min-h-64 flex-col items-center justify-center px-4 text-center">
+                    <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
+                        <PiggyBank className="size-5 text-primary" />
                     </div>
 
                     <h2 className="mt-4 font-semibold">
@@ -79,7 +79,7 @@ export function BudgetOverview({
     }
 
     return (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {budgets.map((budget) => {
                 const isExceeded =
                     budget.spent > budget.amount;
@@ -88,12 +88,21 @@ export function BudgetOverview({
                     !isExceeded &&
                     budget.percentage >= 80;
 
+                const statusIndicatorClassName = isExceeded
+                    ? "bg-destructive"
+                    : isNearLimit
+                        ? "bg-amber-500"
+                        : "bg-primary";
+
                 return (
-                    <Card key={budget.id}>
+                    <Card
+                        key={budget.id}
+                        className="flex flex-col"
+                    >
                         <CardHeader>
                             <div className="flex items-start justify-between gap-4">
-                                <div>
-                                    <CardTitle className="text-base">
+                                <div className="min-w-0">
+                                    <CardTitle className="truncate text-base">
                                         {budget.category}
                                     </CardTitle>
 
@@ -105,7 +114,7 @@ export function BudgetOverview({
                                     </p>
                                 </div>
 
-                                <div className="flex items-center gap-2">
+                                <div className="flex shrink-0 items-center gap-1.5">
                                     {isExceeded ? (
                                         <AlertCircle className="size-5 text-destructive" />
                                     ) : isNearLimit ? (
@@ -127,10 +136,10 @@ export function BudgetOverview({
                             </div>
                         </CardHeader>
 
-                        <CardContent>
-                            <div className="flex items-end justify-between">
+                        <CardContent className="flex flex-1 flex-col">
+                            <div className="flex flex-wrap items-end justify-between gap-2">
                                 <div>
-                                    <p className="text-2xl font-semibold tracking-tight">
+                                    <p className="text-2xl font-semibold tracking-tight tabular-nums">
                                         {formatCurrency(
                                             budget.spent,
                                             currency,
@@ -146,7 +155,7 @@ export function BudgetOverview({
                                     </p>
                                 </div>
 
-                                <span className="text-sm font-medium">
+                                <span className="text-sm font-medium tabular-nums">
                                     {Math.round(
                                         budget.percentage,
                                     )}
@@ -156,10 +165,13 @@ export function BudgetOverview({
 
                             <Progress
                                 value={budget.percentage}
+                                indicatorClassName={
+                                    statusIndicatorClassName
+                                }
                                 className="mt-4"
                             />
 
-                            <div className="mt-3 flex items-center justify-between text-xs">
+                            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
                                 <span
                                     className={
                                         isExceeded

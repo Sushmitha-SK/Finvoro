@@ -38,14 +38,14 @@ export function SpendingCategories({
                                 <div
                                     key={category.name}
                                 >
-                                    <div className="mb-2 flex items-center justify-between text-sm">
-                                        <span className="font-medium">
+                                    <div className="mb-2 flex items-center justify-between gap-3 text-sm">
+                                        <span className="truncate font-medium">
                                             {
                                                 category.name
                                             }
                                         </span>
 
-                                        <span className="text-muted-foreground">
+                                        <span className="shrink-0 text-muted-foreground tabular-nums">
                                             {formatCurrency(
                                                 category.amount,
                                                 currency,
@@ -55,7 +55,7 @@ export function SpendingCategories({
 
                                     <div className="h-2 overflow-hidden rounded-full bg-muted">
                                         <div
-                                            className="h-full rounded-full bg-primary"
+                                            className="h-full rounded-full bg-primary transition-all"
                                             style={{
                                                 width: `${category.percentage}%`,
                                             }}

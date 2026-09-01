@@ -55,7 +55,7 @@ export function EditCategoryDialog({
                 }
             />
 
-            <DialogContent>
+            <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>
                         Edit category

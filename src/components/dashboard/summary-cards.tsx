@@ -34,6 +34,7 @@ export function SummaryCards({
             ),
             description: "Available balance",
             icon: Wallet,
+            iconClassName: "bg-primary/10 text-primary",
         },
         {
             title: "Total Income",
@@ -43,6 +44,7 @@ export function SummaryCards({
             ),
             description: "This month",
             icon: ArrowUpRight,
+            iconClassName: "bg-emerald-500/10 text-emerald-600",
         },
         {
             title: "Total Expenses",
@@ -52,12 +54,14 @@ export function SummaryCards({
             ),
             description: "This month",
             icon: ArrowDownRight,
+            iconClassName: "bg-rose-500/10 text-rose-500",
         },
         {
             title: "Savings Rate",
             value: `${financialSummary.savingsRate}%`,
             description: "Of your income",
             icon: PiggyBank,
+            iconClassName: "bg-accent text-brand-deep",
         },
     ];
 
@@ -67,11 +71,16 @@ export function SummaryCards({
                 const Icon = card.icon;
 
                 return (
-                    <Card key={card.title}>
+                    <Card
+                        key={card.title}
+                        className="shadow-sm transition-shadow hover:shadow-md"
+                    >
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between">
-                                <div className="flex size-9 items-center justify-center rounded-lg bg-muted">
-                                    <Icon className="size-4 text-muted-foreground" />
+                                <div
+                                    className={`flex size-9 items-center justify-center rounded-lg ${card.iconClassName}`}
+                                >
+                                    <Icon className="size-4" />
                                 </div>
                             </div>
 
@@ -80,7 +89,7 @@ export function SummaryCards({
                                     {card.title}
                                 </p>
 
-                                <p className="mt-1 text-2xl font-semibold tracking-tight">
+                                <p className="mt-1 text-2xl font-semibold tracking-tight tabular-nums">
                                     {card.value}
                                 </p>
 

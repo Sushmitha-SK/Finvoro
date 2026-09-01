@@ -58,12 +58,12 @@ export function BudgetOverview({
                                 <div
                                     key={budget.id}
                                 >
-                                    <div className="mb-2 flex items-center justify-between">
+                                    <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
                                         <div className="flex items-center gap-2">
                                             {isNearLimit ? (
-                                                <AlertCircle className="size-4 text-amber-500" />
+                                                <AlertCircle className="size-4 shrink-0 text-amber-500" />
                                             ) : (
-                                                <CheckCircle2 className="size-4 text-emerald-500" />
+                                                <CheckCircle2 className="size-4 shrink-0 text-emerald-500" />
                                             )}
 
                                             <span className="text-sm font-medium">
@@ -73,7 +73,7 @@ export function BudgetOverview({
                                             </span>
                                         </div>
 
-                                        <span className="text-sm text-muted-foreground">
+                                        <span className="text-sm text-muted-foreground tabular-nums">
                                             {formatCurrency(
                                                 budget.spent,
                                                 currency,
@@ -89,6 +89,11 @@ export function BudgetOverview({
                                     <Progress
                                         value={
                                             percentage
+                                        }
+                                        indicatorClassName={
+                                            isNearLimit
+                                                ? "bg-amber-500"
+                                                : "bg-primary"
                                         }
                                     />
 

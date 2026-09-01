@@ -63,8 +63,8 @@ export function RecentTransactions({
                                     >
                                         <div
                                             className={`flex size-9 shrink-0 items-center justify-center rounded-full ${isIncome
-                                                    ? "bg-emerald-500/10 text-emerald-600"
-                                                    : "bg-muted text-muted-foreground"
+                                                ? "bg-emerald-500/10 text-emerald-600"
+                                                : "bg-muted text-muted-foreground"
                                                 }`}
                                         >
                                             {isIncome ? (
@@ -81,7 +81,7 @@ export function RecentTransactions({
                                                 }
                                             </p>
 
-                                            <div className="mt-0.5 flex items-center gap-2">
+                                            <div className="mt-0.5 flex flex-wrap items-center gap-2">
                                                 <Badge variant="secondary">
                                                     {
                                                         transaction.category
@@ -102,9 +102,9 @@ export function RecentTransactions({
                                         </div>
 
                                         <span
-                                            className={`text-sm font-semibold ${isIncome
-                                                    ? "text-emerald-600"
-                                                    : "text-foreground"
+                                            className={`shrink-0 text-sm font-semibold tabular-nums ${isIncome
+                                                ? "text-emerald-600"
+                                                : "text-foreground"
                                                 }`}
                                         >
                                             {isIncome

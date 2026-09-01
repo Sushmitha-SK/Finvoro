@@ -134,7 +134,7 @@ export function TransactionsTable({
     return (
         <Card>
             <CardHeader className="space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                     <CardTitle>
                         All transactions
                     </CardTitle>
@@ -167,7 +167,89 @@ export function TransactionsTable({
             <CardContent>
                 {transactions.length > 0 ? (
                     <>
-                        <div className="overflow-x-auto">
+                        {/* Mobile: stacked card list */}
+                        <div className="space-y-3 sm:hidden">
+                            {transactions.map(
+                                (transaction) => {
+                                    const isIncome =
+                                        transaction.type ===
+                                        "income";
+
+                                    return (
+                                        <div
+                                            key={
+                                                transaction.id
+                                            }
+                                            className="rounded-lg border p-3"
+                                        >
+                                            <div className="flex items-start gap-3">
+                                                <div
+                                                    className={`flex size-9 shrink-0 items-center justify-center rounded-full ${isIncome
+                                                        ? "bg-emerald-500/10 text-emerald-600"
+                                                        : "bg-muted text-muted-foreground"
+                                                        }`}
+                                                >
+                                                    {isIncome ? (
+                                                        <ArrowUpRight className="size-4" />
+                                                    ) : (
+                                                        <ArrowDownRight className="size-4" />
+                                                    )}
+                                                </div>
+
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="flex items-start justify-between gap-2">
+                                                        <p className="truncate text-sm font-medium">
+                                                            {
+                                                                transaction.description
+                                                            }
+                                                        </p>
+
+                                                        <span
+                                                            className={`shrink-0 text-sm font-semibold tabular-nums ${isIncome
+                                                                ? "text-emerald-600"
+                                                                : "text-foreground"
+                                                                }`}
+                                                        >
+                                                            {isIncome
+                                                                ? "+"
+                                                                : "-"}
+                                                            {formatCurrency(
+                                                                transaction.amount,
+                                                                currency,
+                                                            )}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                                        <Badge variant="secondary">
+                                                            {
+                                                                transaction
+                                                                    .category
+                                                                    .name
+                                                            }
+                                                        </Badge>
+
+                                                        <span className="text-xs text-muted-foreground">
+                                                            {transaction.date.toLocaleDateString(
+                                                                "en-IN",
+                                                                {
+                                                                    day: "2-digit",
+                                                                    month: "short",
+                                                                    year: "numeric",
+                                                                },
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                },
+                            )}
+                        </div>
+
+                        {/* Desktop / tablet: full table */}
+                        <div className="hidden overflow-x-auto sm:block">
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -265,7 +347,7 @@ export function TransactionsTable({
                                                     </TableCell>
 
                                                     <TableCell
-                                                        className={`text-right font-semibold ${isIncome
+                                                        className={`text-right font-semibold tabular-nums ${isIncome
                                                             ? "text-emerald-600"
                                                             : ""
                                                             }`}
@@ -287,7 +369,7 @@ export function TransactionsTable({
                             </Table>
                         </div>
 
-                        <div className="mt-4 flex items-center justify-between border-t pt-4">
+                        <div className="mt-4 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
                             <p className="text-sm text-muted-foreground">
                                 Page {currentPage} of{" "}
                                 {totalPages}
@@ -297,6 +379,7 @@ export function TransactionsTable({
                                 <Button
                                     variant="outline"
                                     size="sm"
+                                    className="flex-1 sm:flex-initial"
                                     disabled={
                                         currentPage ===
                                         1
@@ -315,6 +398,7 @@ export function TransactionsTable({
                                 <Button
                                     variant="outline"
                                     size="sm"
+                                    className="flex-1 sm:flex-initial"
                                     disabled={
                                         currentPage ===
                                         totalPages
@@ -333,7 +417,7 @@ export function TransactionsTable({
                         </div>
                     </>
                 ) : (
-                    <div className="flex min-h-48 flex-col items-center justify-center text-center">
+                    <div className="flex min-h-48 flex-col items-center justify-center px-4 text-center">
                         <p className="font-medium">
                             No transactions found
                         </p>

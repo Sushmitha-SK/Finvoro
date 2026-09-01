@@ -73,44 +73,47 @@ export function TransactionFilters({
                 />
             </div>
 
-            <select
-                value={type}
-                onChange={(event) =>
-                    onTypeChange(event.target.value)
-                }
-                className="h-9 rounded-md border bg-background px-3 text-sm"
-                aria-label="Filter by transaction type"
-            >
-                <option value="all">All types</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select>
+            <div className="grid grid-cols-2 gap-3 lg:flex lg:shrink-0">
+                <select
+                    value={type}
+                    onChange={(event) =>
+                        onTypeChange(event.target.value)
+                    }
+                    className="h-9 rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                    aria-label="Filter by transaction type"
+                >
+                    <option value="all">All types</option>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
 
-            <select
-                value={category}
-                onChange={(event) =>
-                    onCategoryChange(event.target.value)
-                }
-                className="h-9 rounded-md border bg-background px-3 text-sm"
-                aria-label="Filter by category"
-            >
-                <option value="all">All categories</option>
+                <select
+                    value={category}
+                    onChange={(event) =>
+                        onCategoryChange(event.target.value)
+                    }
+                    className="h-9 rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                    aria-label="Filter by category"
+                >
+                    <option value="all">All categories</option>
 
-                {categories.map((item) => (
-                    <option
-                        key={item}
-                        value={item}
-                    >
-                        {item}
-                    </option>
-                ))}
-            </select>
+                    {categories.map((item) => (
+                        <option
+                            key={item}
+                            value={item}
+                        >
+                            {item}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
             {hasFilters && (
                 <Button
                     type="button"
                     variant="ghost"
                     size="sm"
+                    className="self-start lg:self-auto"
                     onClick={() => {
                         setSearchValue("");
                         onClear();
