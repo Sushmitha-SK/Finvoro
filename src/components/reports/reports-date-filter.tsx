@@ -163,9 +163,15 @@ export function ReportsDateFilter() {
         useState(currentTo);
 
     useEffect(() => {
-        setPreset(currentPreset);
-        setFrom(currentFrom);
-        setTo(currentTo);
+        const timeout = setTimeout(() => {
+            setPreset(currentPreset);
+            setFrom(currentFrom);
+            setTo(currentTo);
+        }, 0);
+
+        return () => {
+            clearTimeout(timeout);
+        };
     }, [
         currentPreset,
         currentFrom,
