@@ -154,13 +154,16 @@ export function NotificationsPopover() {
         };
 
     useEffect(() => {
-        fetchNotifications();
+        const timeout = setTimeout(() => {
+            fetchNotifications();
+        }, 0);
 
         const interval = setInterval(() => {
             fetchNotifications();
         }, 30000);
 
         return () => {
+            clearTimeout(timeout);
             clearInterval(interval);
         };
     }, []);
@@ -311,7 +314,7 @@ export function NotificationsPopover() {
                         <p className="text-xs text-muted-foreground">
                             {unreadCount > 0
                                 ? `${unreadCount} unread`
-                                : "You're all caught up"}
+                                : `You&apos;re all caught up.`}
                         </p>
                     </div>
 
@@ -368,7 +371,7 @@ export function NotificationsPopover() {
                         </p>
 
                         <p className="mt-1 text-xs text-muted-foreground">
-                            You're all caught up. New updates will appear here.
+                            You&apos;re all caught up. New updates will appear here.
                         </p>
                     </div>
                 ) : (

@@ -153,7 +153,13 @@ export function NotificationsList() {
     };
 
     useEffect(() => {
-        fetchNotifications();
+        const timeout = setTimeout(() => {
+            fetchNotifications();
+        }, 0);
+
+        return () => {
+            clearTimeout(timeout);
+        };
     }, []);
 
     const markAsRead = async (id: string) => {
@@ -332,7 +338,7 @@ export function NotificationsList() {
                         </div>
 
                         <h2 className="mt-5 text-lg font-semibold">
-                            You're all caught up
+                            You&apos;re all caught up
                         </h2>
 
                         <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
