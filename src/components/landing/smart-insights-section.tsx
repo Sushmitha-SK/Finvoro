@@ -50,7 +50,7 @@ export function SmartInsightsSection() {
                         </div>
 
                         <h2 className="mt-5 max-w-xl text-3xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-[2.65rem] lg:leading-tight">
-                            Don't just track your money.
+                            Don&apos;t just track your money.
                             <br className="hidden sm:block" />
                             Understand it.
                         </h2>

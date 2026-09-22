@@ -1,13 +1,24 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+import { getCategoryOptions } from "@/lib/data/categories";
 import { prisma } from "@/lib/prisma";
+
+export async function GET() {
+    const { userId } = await auth();
+
+    if (!userId) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    return NextResponse.json({ categories: await getCategoryOptions(userId) });
+}
 
 export async function POST(request: Request) {
     try {
-        const user = await currentUser();
+        const { userId } = await auth();
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 },
@@ -47,7 +58,7 @@ export async function POST(request: Request) {
             await prisma.category.findUnique({
                 where: {
                     clerkUserId_name: {
-                        clerkUserId: user.id,
+                        clerkUserId: userId,
                         name,
                     },
                 },
@@ -65,7 +76,7 @@ export async function POST(request: Request) {
 
         const category = await prisma.category.create({
             data: {
-                clerkUserId: user.id,
+                clerkUserId: userId,
                 name,
                 icon,
                 color,

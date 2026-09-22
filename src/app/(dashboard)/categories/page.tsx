@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getUserId } from "@/lib/auth";
 import { unstable_noStore as noStore } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
@@ -7,15 +7,15 @@ import { CategoriesOverview } from "@/components/categories/categories-overview"
 export default async function CategoriesPage() {
     noStore();
 
-    const user = await currentUser();
+    const userId = await getUserId();
 
-    if (!user) {
+    if (!userId) {
         return null;
     }
 
     const categories = await prisma.category.findMany({
         where: {
-            clerkUserId: user.id,
+            clerkUserId: userId,
         },
         orderBy: {
             name: "asc",

@@ -1,68 +1,74 @@
-import { currentUser } from "@clerk/nextjs/server";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { BudgetOverview } from "@/components/dashboard/budget-overview";
+import { InsightsCard } from "@/components/ai/insights-card";
+import { BudgetProgressCard } from "@/components/dashboard/budget-progress";
+import { CashflowChart } from "@/components/dashboard/cashflow-chart";
+import { DashboardEmptyState } from "@/components/dashboard/dashboard-empty-state";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { ForecastCard } from "@/components/dashboard/forecast-card";
+import { GoalsCard } from "@/components/dashboard/goals-card";
+import { HealthScoreCard } from "@/components/dashboard/health-score";
+import { KpiCards } from "@/components/dashboard/kpi-cards";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
-import { SpendingCategories } from "@/components/dashboard/spending-categories";
-import { SummaryCards } from "@/components/dashboard/summary-cards";
-import { getDashboardData } from "@/lib/dashboard-data";
+import { SpendingDonut } from "@/components/dashboard/spending-donut";
+import { SubscriptionsCard } from "@/components/dashboard/subscriptions-card";
+import { getUserId } from "@/lib/auth";
+import { getDashboardData } from "@/lib/data/dashboard";
+
+export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
-    const user = await currentUser();
+    const userId = await getUserId();
 
-    if (!user) {
-        redirect("/sign-in");
-    }
+    console.log("USER ID", userId)
+    if (!userId) redirect("/sign-in");
 
-    const dashboardData =
-        await getDashboardData(user.id);
 
-    const firstName =
-        user.firstName || "there";
+    const data = await getDashboardData(userId);
 
     return (
-        <div className="p-4 md:p-6">
-            <div className="mx-auto max-w-7xl space-y-6">
-                <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                        Good morning, {firstName}
-                    </h1>
+        <div className="mx-auto w-full max-w-7xl space-y-6 p-4 sm:p-6">
+            <DashboardHeader monthLabel={data.monthLabel} />
 
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        Here&apos;s an overview of your
-                        finances this month.
-                    </p>
-                </div>
+            {!data.hasData ? (
+                <DashboardEmptyState />
+            ) : (
+                <>
+                    <KpiCards data={data} />
 
-                <SummaryCards
-                    financialSummary={
-                        dashboardData.financialSummary
-                    }
-                    currency={dashboardData.currency}
-                />
+                    <div className="grid gap-4 lg:grid-cols-3">
+                        <div className="lg:col-span-2">
+                            <CashflowChart data={data.cashflow} />
+                        </div>
+                        <HealthScoreCard health={data.health} />
+                    </div>
 
-                <div className="grid gap-6 lg:grid-cols-2">
-                    <SpendingCategories
-                        spendingCategories={
-                            dashboardData.spendingCategories
-                        }
-                        currency={dashboardData.currency}
-                    />
+                    <div className="grid gap-4 lg:grid-cols-3">
+                        <div className="lg:col-span-2">
+                            <InsightsCard
+                                scopeKey="dashboard"
+                                request={{ scope: "dashboard" }}
+                                fallback={data.heuristicInsights}
+                            />
+                        </div>
+                        <ForecastCard data={data} />
+                    </div>
 
-                    <BudgetOverview
-                        budgets={
-                            dashboardData.budgets
-                        }
-                        currency={dashboardData.currency}
-                    />
-                </div>
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        <SpendingDonut categories={data.spendingCategories} total={data.month.expenses} />
+                        <BudgetProgressCard budgets={data.budgets} />
+                        <GoalsCard goals={data.goals} />
+                    </div>
 
-                <RecentTransactions
-                    transactions={
-                        dashboardData.recentTransactions
-                    }
-                />
-            </div>
+                    <div className="grid gap-4 lg:grid-cols-3">
+                        <div className="lg:col-span-2">
+                            <RecentTransactions transactions={data.recentTransactions} />
+                        </div>
+                        <SubscriptionsCard items={data.subscriptions.items} monthlyTotal={data.subscriptions.monthlyTotal} />
+                    </div>
+                </>
+            )}
         </div>
     );
 }

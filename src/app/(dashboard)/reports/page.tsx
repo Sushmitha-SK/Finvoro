@@ -4,9 +4,9 @@ import {
     ReceiptText,
 } from "lucide-react";
 import Link from "next/link";
-import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
+import { InsightsCard } from "@/components/ai/insights-card";
 import { ReportsDateFilter } from "@/components/reports/reports-date-filter";
 import { FinancialTrend } from "@/components/reports/financial-trend";
 import { ReportsSummary } from "@/components/reports/reports-summary";
@@ -16,7 +16,9 @@ import { SmartInsights } from "@/components/reports/smart-insights";
 import { ReportsExport } from "@/components/reports/reports-export";
 
 import { getReportsData } from "@/lib/reports-data";
-import { prisma } from "@/lib/prisma";
+import { getUserId } from "@/lib/auth";
+import { getUserPreferences } from "@/lib/data/preferences";
+import { toDateInput } from "@/lib/dates";
 
 type ReportsPageProps = {
     searchParams: Promise<{
@@ -144,9 +146,9 @@ function formatReportDate(date: Date) {
 export default async function ReportsPage({
     searchParams,
 }: ReportsPageProps) {
-    const user = await currentUser();
+    const userId = await getUserId();
 
-    if (!user) {
+    if (!userId) {
         redirect("/sign-in");
     }
 
@@ -159,23 +161,16 @@ export default async function ReportsPage({
     );
 
     const reportsData =
-        await getReportsData(user.id, {
+        await getReportsData(userId, {
             from,
             to,
         });
 
-    const preference =
-        await prisma.userPreference.findUnique({
-            where: {
-                clerkUserId: user.id,
-            },
-            select: {
-                currency: true,
-            },
-        });
+    const { currency, aiEnabled } =
+        await getUserPreferences(userId);
 
-    const currency =
-        preference?.currency ?? "INR";
+    const rangeFrom = toDateInput(from);
+    const rangeTo = toDateInput(new Date(to.getTime() - 1));
 
     const hasTransactions =
         reportsData.insights.transactionCount > 0;
@@ -261,6 +256,16 @@ export default async function ReportsPage({
                     }
                     currency={currency}
                 />
+
+                {aiEnabled && hasTransactions && (
+                    <InsightsCard
+                        scopeKey={`reports:${rangeFrom}:${rangeTo}`}
+                        request={{ scope: "reports", from: rangeFrom, to: rangeTo }}
+                        fallback={[]}
+                        title="AI analysis"
+                        description="What stands out in this period"
+                    />
+                )}
 
                 {!hasTransactions ? (
                     <div className="rounded-xl border bg-card">

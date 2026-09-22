@@ -1,182 +1,99 @@
-import { AddTransactionDialog } from "@/components/transactions/add-transaction-dialog";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+
+import { TransactionsSummary } from "@/components/transactions/transactions-summary";
 import { TransactionsTable } from "@/components/transactions/transactions-table";
-import { prisma } from "@/lib/prisma";
+import { TransactionsToolbar } from "@/components/transactions/transactions-toolbar";
+import { getUserId } from "@/lib/auth";
+import { toDateInput } from "@/lib/dates";
+import { colorForName } from "@/lib/colors";
+import {
+    DEFAULT_PAGE_SIZE,
+    PAGE_SIZE_OPTIONS,
+    getTransactions,
+    type SortDirection,
+    type TransactionSortField,
+} from "@/lib/transactions/get-transactions";
 
-import { auth } from "@clerk/nextjs/server";
-import { TransactionType } from "@/generated/prisma/client";
+export const metadata: Metadata = { title: "Transactions" };
 
-const ITEMS_PER_PAGE = 5;
-
-type TransactionsPageProps = {
-    searchParams: Promise<{
-        search?: string;
-        type?: string;
-        category?: string;
-        page?: string;
-    }>;
+type PageProps = {
+    searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default async function TransactionsPage({
-    searchParams,
-}: TransactionsPageProps) {
-    const { userId } = await auth();
+const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
 
-    if (!userId) {
-        return null;
-    }
+export default async function TransactionsPage({ searchParams }: PageProps) {
+    const userId = await getUserId();
 
-    const [categories, preference] =
-        await Promise.all([
-            prisma.category.findMany({
-                where: {
-                    clerkUserId: userId,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                },
-                orderBy: {
-                    name: "asc",
-                },
-            }),
-
-            prisma.userPreference.findUnique({
-                where: {
-                    clerkUserId: userId,
-                },
-                select: {
-                    currency: true,
-                },
-            }),
-        ]);
-
-    const currency =
-        preference?.currency ?? "INR";
+    if (!userId) redirect("/sign-in");
 
     const params = await searchParams;
 
-    const search = params.search?.trim() ?? "";
-    const type = params.type ?? "all";
-    const category = params.category ?? "all";
+    const sortParam = first(params.sort);
+    const sort: TransactionSortField =
+        sortParam === "amount" || sortParam === "description" ? sortParam : "date";
+    const dir: SortDirection = first(params.dir) === "asc" ? "asc" : "desc";
 
-    const parsedPage = Number(params.page);
+    const requestedSize = Number(first(params.pageSize));
+    const pageSize = (PAGE_SIZE_OPTIONS as readonly number[]).includes(requestedSize)
+        ? requestedSize
+        : DEFAULT_PAGE_SIZE;
 
-    const currentPage =
-        Number.isInteger(parsedPage) &&
-            parsedPage > 0
-            ? parsedPage
-            : 1;
-
-    const where = {
-        clerkUserId: userId,
-
-        ...(search
-            ? {
-                OR: [
-                    {
-                        description: {
-                            contains: search,
-                            mode: "insensitive" as const,
-                        },
-                    },
-                    {
-                        category: {
-                            name: {
-                                contains: search,
-                                mode: "insensitive" as const,
-                            },
-                        },
-                    },
-                ],
-            }
-            : {}),
-
-        ...(type !== "all"
-            ? {
-                type: type as TransactionType,
-            }
-            : {}),
-
-        ...(category !== "all"
-            ? {
-                category: {
-                    name: category,
-                },
-            }
-            : {}),
+    const filters = {
+        search: first(params.search),
+        type: first(params.type),
+        category: first(params.category),
+        from: first(params.from),
+        to: first(params.to),
     };
 
-    const totalCount =
-        await prisma.transaction.count({
-            where,
-        });
+    const result = await getTransactions({
+        clerkUserId: userId,
+        ...filters,
+        page: Number(first(params.page)) || 1,
+        pageSize,
+        sort,
+        dir,
+    });
 
-    const totalPages = Math.max(
-        1,
-        Math.ceil(
-            totalCount / ITEMS_PER_PAGE,
-        ),
-    );
-
-    const safePage = Math.min(
-        currentPage,
-        totalPages,
-    );
-
-    const transactions =
-        await prisma.transaction.findMany({
-            where,
-            include: {
-                category: true,
-            },
-            orderBy: {
-                date: "desc",
-            },
-            skip:
-                (safePage - 1) *
-                ITEMS_PER_PAGE,
-            take: ITEMS_PER_PAGE,
-        });
-
-    const serializedTransactions =
-        transactions.map((transaction) => ({
-            ...transaction,
-            amount: Number(transaction.amount),
-        }));
+    const filtered = Object.values(filters).some((value) => value && value !== "all");
 
     return (
-        <div className="p-4 md:p-6">
-            <div className="mx-auto max-w-7xl space-y-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">
-                            Transactions
-                        </h1>
-
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Track and manage your income
-                            and expenses.
-                        </p>
-                    </div>
-
-                    <AddTransactionDialog
-                        categories={categories}
-                    />
-                </div>
-
-                <TransactionsTable
-                    transactions={
-                        serializedTransactions
-                    }
-                    totalCount={totalCount}
-                    totalPages={totalPages}
-                    currentPage={safePage}
-                    search={search}
-                    type={type}
-                    category={category}
-                    currency={currency}
-                />
+        <div className="mx-auto w-full max-w-7xl space-y-5 p-4 sm:p-6">
+            <div>
+                <h2 className="text-2xl font-semibold tracking-tight">Transactions</h2>
+                <p className="text-sm text-muted-foreground">Search, filter, edit and export everything you&apos;ve logged.</p>
             </div>
+
+            <TransactionsSummary
+                count={result.totalCount}
+                income={result.totals.income}
+                expenses={result.totals.expenses}
+                filtered={filtered}
+            />
+
+            <TransactionsToolbar />
+
+            <TransactionsTable
+                rows={result.transactions.map((transaction) => ({
+                    id: transaction.id,
+                    description: transaction.description,
+                    amount: transaction.amount,
+                    type: transaction.type,
+                    date: toDateInput(transaction.date),
+                    notes: transaction.notes,
+                    category: transaction.category.name,
+                    categoryColor: transaction.category.color ?? colorForName(transaction.category.name),
+                }))}
+                totalCount={result.totalCount}
+                currentPage={result.currentPage}
+                totalPages={result.totalPages}
+                pageSize={result.pageSize}
+                sort={sort}
+                dir={dir}
+                filtered={filtered}
+            />
         </div>
     );
 }
