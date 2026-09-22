@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
@@ -14,9 +14,9 @@ export async function PUT(
     context: RouteContext,
 ) {
     try {
-        const user = await currentUser();
+        const { userId } = await auth();
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 },
@@ -67,7 +67,7 @@ export async function PUT(
             await prisma.category.findFirst({
                 where: {
                     id,
-                    clerkUserId: user.id,
+                    clerkUserId: userId,
                 },
                 select: {
                     id: true,
@@ -86,7 +86,7 @@ export async function PUT(
         const existingCategory =
             await prisma.category.findFirst({
                 where: {
-                    clerkUserId: user.id,
+                    clerkUserId: userId,
                     name,
                     NOT: {
                         id,
@@ -148,9 +148,9 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> },
 ) {
     try {
-        const user = await currentUser();
+        const { userId } = await auth();
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 },
@@ -172,7 +172,7 @@ export async function DELETE(
             await prisma.category.findFirst({
                 where: {
                     id,
-                    clerkUserId: user.id,
+                    clerkUserId: userId,
                 },
             });
 
@@ -189,7 +189,7 @@ export async function DELETE(
             await prisma.transaction.count({
                 where: {
                     categoryId: id,
-                    clerkUserId: user.id,
+                    clerkUserId: userId,
                 },
             });
 
@@ -197,7 +197,7 @@ export async function DELETE(
             await prisma.budget.count({
                 where: {
                     categoryId: id,
-                    clerkUserId: user.id,
+                    clerkUserId: userId,
                 },
             });
 

@@ -1,165 +1,89 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
+import { getUserId, unauthorized } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+const idBody = z.object({ id: z.string().min(1).max(100) });
+
 export async function GET() {
+    const userId = await getUserId();
+
+    if (!userId) return unauthorized();
+
     try {
-        const user = await currentUser();
+        const [notifications, unreadCount] = await Promise.all([
+            prisma.notification.findMany({
+                where: { clerkUserId: userId },
+                orderBy: { createdAt: "desc" },
+                take: 30,
+            }),
+            prisma.notification.count({ where: { clerkUserId: userId, read: false } }),
+        ]);
 
-        if (!user) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 },
-            );
-        }
-
-        const notifications =
-            await prisma.notification.findMany({
-                where: {
-                    clerkUserId: user.id,
-                },
-                orderBy: {
-                    createdAt: "desc",
-                },
-                take: 20,
-            });
-
-        const unreadCount =
-            await prisma.notification.count({
-                where: {
-                    clerkUserId: user.id,
-                    read: false,
-                },
-            });
-
-        return NextResponse.json({
-            notifications,
-            unreadCount,
-        });
+        return NextResponse.json({ notifications, unreadCount });
     } catch (error) {
-        console.error(
-            "Failed to fetch notifications:",
-            error,
-        );
+        console.error("Failed to fetch notifications:", error);
 
-        return NextResponse.json(
-            {
-                error:
-                    "Unable to fetch notifications.",
-            },
-            { status: 500 },
-        );
+        return NextResponse.json({ error: "Unable to fetch notifications." }, { status: 500 });
     }
 }
 
 export async function PATCH(request: Request) {
-    try {
-        const user = await currentUser();
+    const userId = await getUserId();
 
-        if (!user) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 },
-            );
-        }
+    if (!userId) return unauthorized();
 
-        const body = await request.json();
-        const id = String(body.id ?? "");
+    const body = idBody.safeParse(await request.json().catch(() => null));
 
-        if (!id) {
-            return NextResponse.json(
-                {
-                    error:
-                        "Notification ID is required.",
-                },
-                { status: 400 },
-            );
-        }
-
-        const notification =
-            await prisma.notification.findFirst({
-                where: {
-                    id,
-                    clerkUserId: user.id,
-                },
-            });
-
-        if (!notification) {
-            return NextResponse.json(
-                {
-                    error:
-                        "Notification not found.",
-                },
-                { status: 404 },
-            );
-        }
-
-        const updatedNotification =
-            await prisma.notification.update({
-                where: {
-                    id: notification.id,
-                },
-                data: {
-                    read: true,
-                },
-            });
-
-        return NextResponse.json({
-            notification: updatedNotification,
-        });
-    } catch (error) {
-        console.error(
-            "Failed to mark notification as read:",
-            error,
-        );
-
-        return NextResponse.json(
-            {
-                error:
-                    "Unable to update notification.",
-            },
-            { status: 500 },
-        );
+    if (!body.success) {
+        return NextResponse.json({ error: "Notification ID is required." }, { status: 400 });
     }
+
+    // updateMany with the owner in the filter = ownership check + update in one query
+    const result = await prisma.notification.updateMany({
+        where: { id: body.data.id, clerkUserId: userId },
+        data: { read: true },
+    });
+
+    if (result.count === 0) {
+        return NextResponse.json({ error: "Notification not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
 }
 
 export async function PUT() {
-    try {
-        const user = await currentUser();
+    const userId = await getUserId();
 
-        if (!user) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 },
-            );
-        }
+    if (!userId) return unauthorized();
 
-        await prisma.notification.updateMany({
-            where: {
-                clerkUserId: user.id,
-                read: false,
-            },
-            data: {
-                read: true,
-            },
-        });
+    await prisma.notification.updateMany({
+        where: { clerkUserId: userId, read: false },
+        data: { read: true },
+    });
 
-        return NextResponse.json({
-            success: true,
-        });
-    } catch (error) {
-        console.error(
-            "Failed to mark notifications as read:",
-            error,
-        );
+    return NextResponse.json({ success: true });
+}
 
-        return NextResponse.json(
-            {
-                error:
-                    "Unable to update notifications.",
-            },
-            { status: 500 },
-        );
+export async function DELETE(request: Request) {
+    const userId = await getUserId();
+
+    if (!userId) return unauthorized();
+
+    const body = idBody.safeParse(await request.json().catch(() => null));
+
+    if (!body.success) {
+        return NextResponse.json({ error: "Notification ID is required." }, { status: 400 });
     }
+
+    const result = await prisma.notification.deleteMany({
+        where: { id: body.data.id, clerkUserId: userId },
+    });
+
+    if (result.count === 0) {
+        return NextResponse.json({ error: "Notification not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
 }

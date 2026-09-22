@@ -1,130 +1,77 @@
+"use client";
+
+import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import {
-    ArrowDownRight,
-    ArrowUpRight,
-} from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatShortDate, parseDateInput } from "@/lib/dates";
+import { cn } from "@/lib/utils";
+import { useMoney } from "@/stores/app-store";
+import { useUIStore } from "@/stores/ui-store";
+import type { RecentTransaction } from "@/types/finance";
 
-import { formatCurrency } from "@/lib/format-currency";
+export function RecentTransactions({ transactions }: { transactions: RecentTransaction[] }) {
+    const money = useMoney();
+    const openDialog = useUIStore((state) => state.openTransactionDialog);
 
-type RecentTransaction = {
-    id: string;
-    description: string;
-    category: string;
-    type: "income" | "expense";
-    amount: number;
-    date: Date;
-};
-
-type RecentTransactionsProps = {
-    transactions: RecentTransaction[];
-};
-
-export function RecentTransactions({
-    transactions,
-}: RecentTransactionsProps) {
     return (
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>
-                    Recent transactions
-                </CardTitle>
-
-                <Link
-                    href="/transactions"
-                    className="text-sm font-medium text-primary hover:underline"
-                >
-                    View all
-                </Link>
+        <Card className="h-full">
+            <CardHeader>
+                <CardTitle>Recent transactions</CardTitle>
+                <CardDescription>Your latest activity</CardDescription>
+                <CardAction>
+                    <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/transactions" />}>
+                        View all
+                    </Button>
+                </CardAction>
             </CardHeader>
-
             <CardContent>
-                {transactions.length > 0 ? (
-                    <div className="space-y-4">
-                        {transactions.map(
-                            (transaction) => {
-                                const isIncome =
-                                    transaction.type ===
-                                    "income";
-
-                                return (
-                                    <div
-                                        key={
-                                            transaction.id
-                                        }
-                                        className="flex items-center gap-3"
-                                    >
-                                        <div
-                                            className={`flex size-9 shrink-0 items-center justify-center rounded-full ${isIncome
-                                                ? "bg-emerald-500/10 text-emerald-600"
-                                                : "bg-muted text-muted-foreground"
-                                                }`}
-                                        >
-                                            {isIncome ? (
-                                                <ArrowUpRight className="size-4" />
-                                            ) : (
-                                                <ArrowDownRight className="size-4" />
-                                            )}
-                                        </div>
-
-                                        <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm font-medium">
-                                                {
-                                                    transaction.description
-                                                }
-                                            </p>
-
-                                            <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                                                <Badge variant="secondary">
-                                                    {
-                                                        transaction.category
-                                                    }
-                                                </Badge>
-
-                                                <span className="text-xs text-muted-foreground">
-                                                    {transaction.date.toLocaleDateString(
-                                                        "en-IN",
-                                                        {
-                                                            day: "2-digit",
-                                                            month: "short",
-                                                            year: "numeric",
-                                                        },
-                                                    )}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <span
-                                            className={`shrink-0 text-sm font-semibold tabular-nums ${isIncome
-                                                ? "text-emerald-600"
-                                                : "text-foreground"
-                                                }`}
-                                        >
-                                            {isIncome
-                                                ? "+"
-                                                : "-"}
-                                            {formatCurrency(
-                                                transaction.amount,
-                                            )}
-                                        </span>
-                                    </div>
-                                );
-                            },
-                        )}
-                    </div>
+                {transactions.length === 0 ? (
+                    <p className="py-6 text-center text-sm text-muted-foreground">No transactions yet.</p>
                 ) : (
-                    <div className="flex min-h-32 items-center justify-center text-center">
-                        <p className="text-sm text-muted-foreground">
-                            No transactions yet.
-                        </p>
-                    </div>
+                    <ul className="divide-y">
+                        {transactions.map((txn) => (
+                            <li key={txn.id}>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        openDialog({
+                                            editingId: txn.id,
+                                            prefill: {
+                                                description: txn.description,
+                                                amount: String(txn.amount),
+                                                type: txn.type,
+                                                category: txn.category,
+                                                date: txn.date,
+                                            },
+                                        })
+                                    }
+                                    className="flex w-full items-center gap-3 rounded-lg py-3 text-left text-sm transition-colors first:pt-0 last:pb-0 hover:bg-muted/50"
+                                >
+                                    <span
+                                        className={cn(
+                                            "flex size-9 shrink-0 items-center justify-center rounded-full",
+                                            txn.type === "income" ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600",
+                                        )}
+                                    >
+                                        {txn.type === "income" ? <ArrowDownLeft className="size-4" /> : <ArrowUpRight className="size-4" />}
+                                    </span>
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block truncate font-medium">{txn.description}</span>
+                                        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                            <span className="size-1.5 rounded-full" style={{ background: txn.categoryColor }} />
+                                            {txn.category} · {formatShortDate(parseDateInput(txn.date))}
+                                        </span>
+                                    </span>
+                                    <span className={cn("shrink-0 font-semibold", txn.type === "income" && "text-emerald-600 dark:text-emerald-400")}>
+                                        {txn.type === "income" ? "+" : "−"}
+                                        {money(txn.amount)}
+                                    </span>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 )}
             </CardContent>
         </Card>

@@ -1,157 +1,63 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { unstable_noStore as noStore } from "next/cache";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 import { AddBudgetDialog } from "@/components/budgets/add-budget-dialog";
+import { AiBudgetSuggestions } from "@/components/budgets/ai-budget-suggestions";
 import { BudgetOverview } from "@/components/budgets/budget-overview";
-
+import { getUserId } from "@/lib/auth";
+import { getBudgetRows } from "@/lib/data/budgets";
+import { getUserPreferences } from "@/lib/data/preferences";
 import { prisma } from "@/lib/prisma";
 
+export const metadata: Metadata = { title: "Budgets" };
+
 export default async function BudgetsPage() {
-    noStore();
+    const userId = await getUserId();
 
-    const user = await currentUser();
+    if (!userId) redirect("/sign-in");
 
-    if (!user) {
-        return null;
-    }
-
-    const [budgets, categories, preference] =
-        await Promise.all([
-            prisma.budget.findMany({
-                where: {
-                    clerkUserId: user.id,
-                },
-                include: {
-                    category: true,
-                },
-                orderBy: [
-                    {
-                        year: "desc",
-                    },
-                    {
-                        month: "desc",
-                    },
-                    {
-                        category: {
-                            name: "asc",
-                        },
-                    },
-                ],
-            }),
-
-            prisma.category.findMany({
-                where: {
-                    clerkUserId: user.id,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                },
-                orderBy: {
-                    name: "asc",
-                },
-            }),
-
-            prisma.userPreference.findUnique({
-                where: {
-                    clerkUserId: user.id,
-                },
-                select: {
-                    currency: true,
-                },
-            }),
-        ]);
-
-    const currency =
-        preference?.currency ?? "INR";
-
-    const budgetData = await Promise.all(
-        budgets.map(async (budget) => {
-            const startDate = new Date(
-                budget.year,
-                budget.month - 1,
-                1,
-            );
-
-            const endDate = new Date(
-                budget.year,
-                budget.month,
-                1,
-            );
-
-            const expenseResult =
-                await prisma.transaction.aggregate({
-                    where: {
-                        clerkUserId: user.id,
-                        categoryId: budget.categoryId,
-                        type: "expense",
-                        date: {
-                            gte: startDate,
-                            lt: endDate,
-                        },
-                    },
-                    _sum: {
-                        amount: true,
-                    },
-                });
-
-            const spent = Number(
-                expenseResult._sum.amount ?? 0,
-            );
-
-            const amount = Number(budget.amount);
-
-            const remaining = Math.max(
-                amount - spent,
-                0,
-            );
-
-            const percentage =
-                amount > 0
-                    ? Math.min(
-                        (spent / amount) * 100,
-                        100,
-                    )
-                    : 0;
-
-            return {
-                id: budget.id,
-                category: budget.category.name,
-                categoryId: budget.categoryId,
-                amount,
-                spent,
-                remaining,
-                percentage,
-                month: budget.month,
-                year: budget.year,
-            };
+    const [rows, categories, preferences] = await Promise.all([
+        getBudgetRows(userId),
+        prisma.category.findMany({
+            where: { clerkUserId: userId },
+            select: { id: true, name: true },
+            orderBy: { name: "asc" },
         }),
-    );
+        getUserPreferences(userId),
+    ]);
 
     return (
         <div className="p-4 md:p-6">
             <div className="mx-auto max-w-7xl space-y-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">
-                            Budgets
-                        </h1>
-
+                        <h1 className="text-2xl font-semibold tracking-tight">Budgets</h1>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Set spending limits and keep track of
-                            your expenses.
+                            Set spending limits and keep track of your expenses.
                         </p>
                     </div>
 
-                    <AddBudgetDialog
-                        categories={categories}
-                    />
+                    <div className="flex flex-wrap gap-2">
+                        <AiBudgetSuggestions />
+                        <AddBudgetDialog categories={categories} />
+                    </div>
                 </div>
 
                 <BudgetOverview
-                    budgets={budgetData}
+                    budgets={rows.map((row) => ({
+                        id: row.id,
+                        category: row.category,
+                        categoryId: row.categoryId,
+                        amount: row.amount,
+                        spent: row.spent,
+                        remaining: row.remaining,
+                        // The bar is capped at 100%; `spent` still shows the true overspend.
+                        percentage: Math.min(row.percentage, 100),
+                        month: row.month,
+                        year: row.year,
+                    }))}
                     categories={categories}
-                    currency={currency}
+                    currency={preferences.currency}
                 />
             </div>
         </div>

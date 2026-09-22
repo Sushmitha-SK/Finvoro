@@ -1,101 +1,114 @@
+import type { Prisma } from "@/generated/prisma/client";
+import { isValidDateInput, parseDateInput } from "@/lib/dates";
 import { prisma } from "@/lib/prisma";
-import type { TransactionType } from "@/generated/prisma/client";
 
-const DEFAULT_PAGE_SIZE = 5;
+export const DEFAULT_PAGE_SIZE = 10;
+export const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
 
-type GetTransactionsParams = {
-    clerkUserId: string;
+export type TransactionSortField = "date" | "amount" | "description";
+export type SortDirection = "asc" | "desc";
+
+export type TransactionFilters = {
     search?: string;
     type?: string;
     category?: string;
-    page?: number;
-    pageSize?: number;
+    from?: string;
+    to?: string;
 };
 
-export async function getTransactions({
-    clerkUserId,
-    search = "",
-    type = "all",
-    category = "all",
-    page = 1,
-    pageSize = DEFAULT_PAGE_SIZE,
-}: GetTransactionsParams) {
-    const currentPage = Math.max(1, page);
-    const skip = (currentPage - 1) * pageSize;
-    const searchTerm = search.trim();
+export function buildTransactionWhere(
+    clerkUserId: string,
+    filters: TransactionFilters = {},
+): Prisma.TransactionWhereInput {
+    const search = filters.search?.trim();
+    const dateFilter: Prisma.DateTimeFilter = {};
 
-    const where = {
+    if (isValidDateInput(filters.from)) {
+        dateFilter.gte = parseDateInput(filters.from);
+    }
+
+    if (isValidDateInput(filters.to)) {
+        const end = parseDateInput(filters.to);
+
+        end.setDate(end.getDate() + 1);
+        dateFilter.lt = end;
+    }
+
+    return {
         clerkUserId,
 
-        ...(searchTerm
+        ...(search
             ? {
                 OR: [
-                    {
-                        description: {
-                            contains: searchTerm,
-                            mode: "insensitive" as const,
-                        },
-                    },
-                    {
-                        category: {
-                            name: {
-                                contains: searchTerm,
-                                mode: "insensitive" as const,
-                            },
-                        },
-                    },
+                    { description: { contains: search, mode: "insensitive" } },
+                    { notes: { contains: search, mode: "insensitive" } },
+                    { category: { name: { contains: search, mode: "insensitive" } } },
                 ],
             }
             : {}),
 
-        ...(type !== "all"
-            ? {
-                type: type as TransactionType,
-            }
+        ...(filters.type === "income" || filters.type === "expense"
+            ? { type: filters.type }
             : {}),
 
-        ...(category !== "all"
-            ? {
-                category: {
-                    name: category,
-                },
-            }
+        ...(filters.category && filters.category !== "all"
+            ? { category: { name: filters.category } }
             : {}),
+
+        ...(Object.keys(dateFilter).length > 0 ? { date: dateFilter } : {}),
     };
+}
 
-    const [transactions, totalCount] = await Promise.all([
-        prisma.transaction.findMany({
-            where,
-            include: {
-                category: true,
-            },
-            orderBy: [
-                {
-                    date: "desc",
-                },
-                {
-                    createdAt: "desc",
-                },
-            ],
-            skip,
-            take: pageSize,
-        }),
+type GetTransactionsParams = TransactionFilters & {
+    clerkUserId: string;
+    page?: number;
+    pageSize?: number;
+    sort?: TransactionSortField;
+    dir?: SortDirection;
+};
 
-        prisma.transaction.count({
+export async function getTransactions({
+    clerkUserId,
+    page = 1,
+    pageSize = DEFAULT_PAGE_SIZE,
+    sort = "date",
+    dir = "desc",
+    ...filters
+}: GetTransactionsParams) {
+    const where = buildTransactionWhere(clerkUserId, filters);
+
+    const [totalCount, totals] = await Promise.all([
+        prisma.transaction.count({ where }),
+        prisma.transaction.groupBy({
+            by: ["type"],
             where,
+            _sum: { amount: true },
         }),
     ]);
 
-    const totalPages = Math.max(
-        1,
-        Math.ceil(totalCount / pageSize),
-    );
+    const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+    const currentPage = Math.min(Math.max(1, page), totalPages);
+
+    const transactions = await prisma.transaction.findMany({
+        where,
+        include: { category: true },
+        orderBy: [{ [sort]: dir }, { createdAt: "desc" }],
+        skip: (currentPage - 1) * pageSize,
+        take: pageSize,
+    });
 
     return {
-        transactions,
+        transactions: transactions.map((transaction) => ({
+            ...transaction,
+            amount: Number(transaction.amount),
+        })),
         totalCount,
         totalPages,
         currentPage,
         pageSize,
+        totals: {
+            income: Number(totals.find((t) => t.type === "income")?._sum.amount ?? 0),
+            expenses: Number(totals.find((t) => t.type === "expense")?._sum.amount ?? 0),
+        },
     };
 }

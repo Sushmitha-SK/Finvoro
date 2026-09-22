@@ -51,6 +51,7 @@ model Transaction {
   @@index([categoryId])
   @@index([date])
   @@index([clerkUserId, date])
+  @@index([clerkUserId, type, date])
 }
 
 model Budget {
@@ -93,6 +94,26 @@ model UserPreference {
   clerkUserId String @unique
 
   currency String @default("INR")
+
+  // Lets a user opt out of sending financial summaries to Gemini.
+  aiEnabled Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clerkUserId])
+}
+
+model Goal {
+  id          String @id @default(cuid())
+  clerkUserId String
+
+  name          String
+  targetAmount  Decimal   @db.Decimal(12, 2)
+  currentAmount Decimal   @default(0) @db.Decimal(12, 2)
+  targetDate    DateTime?
+
+  color String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

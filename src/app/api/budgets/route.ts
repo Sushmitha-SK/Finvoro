@@ -1,13 +1,13 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
     try {
-        const user = await currentUser();
+        const { userId } = await auth();
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 },
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
             await prisma.category.findFirst({
                 where: {
                     id: categoryId,
-                    clerkUserId: user.id,
+                    clerkUserId: userId,
                 },
             });
 
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
             await prisma.budget.findUnique({
                 where: {
                     clerkUserId_categoryId_month_year: {
-                        clerkUserId: user.id,
+                        clerkUserId: userId,
                         categoryId,
                         month,
                         year,
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 
         const budget = await prisma.budget.create({
             data: {
-                clerkUserId: user.id,
+                clerkUserId: userId,
                 categoryId,
                 amount,
                 month,
@@ -124,9 +124,9 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
     try {
-        const user = await currentUser();
+        const { userId } = await auth();
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 },
@@ -164,7 +164,7 @@ export async function PUT(request: Request) {
         const category = await prisma.category.findFirst({
             where: {
                 id: categoryId,
-                clerkUserId: user.id,
+                clerkUserId: userId,
             },
         });
 
@@ -186,7 +186,7 @@ export async function PUT(request: Request) {
 
         if (
             !existingBudget ||
-            existingBudget.clerkUserId !== user.id
+            existingBudget.clerkUserId !== userId
         ) {
             return NextResponse.json(
                 {
@@ -200,7 +200,7 @@ export async function PUT(request: Request) {
             await prisma.budget.findUnique({
                 where: {
                     clerkUserId_categoryId_month_year: {
-                        clerkUserId: user.id,
+                        clerkUserId: userId,
                         categoryId,
                         month,
                         year,
@@ -262,9 +262,9 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
     try {
-        const user = await currentUser();
+        const { userId } = await auth();
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 },
@@ -294,7 +294,7 @@ export async function DELETE(request: Request) {
 
         if (
             !budget ||
-            budget.clerkUserId !== user.id
+            budget.clerkUserId !== userId
         ) {
             return NextResponse.json(
                 {

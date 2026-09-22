@@ -1,116 +1,60 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
+import { getUserId, unauthorized } from "@/lib/auth";
+import { isSupportedCurrency } from "@/lib/currencies";
+import { getUserPreferences } from "@/lib/data/preferences";
 import { prisma } from "@/lib/prisma";
 
-const supportedCurrencies = [
-    "INR",
-    "USD",
-    "EUR",
-    "GBP",
-    "AED",
-];
+const patchSchema = z
+    .object({
+        currency: z
+            .string()
+            .transform((value) => value.toUpperCase())
+            .refine(isSupportedCurrency, "Unsupported currency.")
+            .optional(),
+        aiEnabled: z.boolean().optional(),
+    })
+    .refine((value) => value.currency !== undefined || value.aiEnabled !== undefined, {
+        message: "Nothing to update.",
+    });
 
 export async function GET() {
-    try {
-        const user = await currentUser();
+    const userId = await getUserId();
 
-        if (!user) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 },
-            );
-        }
+    if (!userId) return unauthorized();
 
-        const preference =
-            await prisma.userPreference.findUnique({
-                where: {
-                    clerkUserId: user.id,
-                },
-            });
-
-        return NextResponse.json({
-            currency:
-                preference?.currency ?? "INR",
-        });
-    } catch (error) {
-        console.error(
-            "Failed to fetch preferences:",
-            error,
-        );
-
-        return NextResponse.json(
-            {
-                error:
-                    "Unable to fetch preferences.",
-            },
-            { status: 500 },
-        );
-    }
+    return NextResponse.json(await getUserPreferences(userId));
 }
 
-export async function PATCH(
-    request: Request,
-) {
+export async function PATCH(request: Request) {
+    const userId = await getUserId();
+
+    if (!userId) return unauthorized();
+
+    const body = patchSchema.safeParse(await request.json().catch(() => null));
+
+    if (!body.success) {
+        return NextResponse.json(
+            { error: body.error.issues[0]?.message ?? "Invalid request." },
+            { status: 400 },
+        );
+    }
+
     try {
-        const user = await currentUser();
-
-        if (!user) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 },
-            );
-        }
-
-        const body = await request.json();
-        const currency = String(
-            body.currency ?? "",
-        ).toUpperCase();
-
-        if (
-            !supportedCurrencies.includes(
-                currency,
-            )
-        ) {
-            return NextResponse.json(
-                {
-                    error:
-                        "Unsupported currency.",
-                },
-                { status: 400 },
-            );
-        }
-
-        const preference =
-            await prisma.userPreference.upsert({
-                where: {
-                    clerkUserId: user.id,
-                },
-                create: {
-                    clerkUserId: user.id,
-                    currency,
-                },
-                update: {
-                    currency,
-                },
-            });
+        const preference = await prisma.userPreference.upsert({
+            where: { clerkUserId: userId },
+            create: { clerkUserId: userId, ...body.data },
+            update: body.data,
+        });
 
         return NextResponse.json({
-            currency:
-                preference.currency,
+            currency: preference.currency,
+            aiEnabled: preference.aiEnabled,
         });
     } catch (error) {
-        console.error(
-            "Failed to update preferences:",
-            error,
-        );
+        console.error("Failed to update preferences:", error);
 
-        return NextResponse.json(
-            {
-                error:
-                    "Unable to update preferences.",
-            },
-            { status: 500 },
-        );
+        return NextResponse.json({ error: "Unable to update preferences." }, { status: 500 });
     }
 }

@@ -1,30 +1,50 @@
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { AppSidebar } from "@/components/layout/app-sidebar";
+import { CommandPalette } from "@/components/command/command-palette";
+import { CopilotSheet } from "@/components/copilot/copilot-sheet";
 import { AppHeader } from "@/components/layout/app-header";
-import {
-    SidebarInset,
-    SidebarProvider,
-} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/app-sidebar";
+import { AppEffects } from "@/components/providers/app-effects";
+import { TransactionDialog } from "@/components/transactions/transaction-dialog";
+import { Toaster } from "@/components/ui/sonner";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { getCategoryOptions } from "@/lib/data/categories";
+import { getUserPreferences } from "@/lib/data/preferences";
+import { AppStoreProvider } from "@/stores/app-store";
 
-type DashboardLayoutProps = {
-    children: ReactNode;
-};
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
+    const { userId } = await auth();
 
-export default function DashboardLayout({
-    children,
-}: DashboardLayoutProps) {
+    if (!userId) {
+        redirect("/sign-in");
+    }
+
+    const [preferences, categories] = await Promise.all([
+        getUserPreferences(userId),
+        getCategoryOptions(userId),
+    ]);
+
     return (
-        <SidebarProvider>
-            <AppSidebar />
+        <AppStoreProvider
+            init={{ currency: preferences.currency, aiEnabled: preferences.aiEnabled, categories }}
+        >
+            <SidebarProvider>
+                <AppSidebar />
 
-            <SidebarInset>
-                <AppHeader />
+                <SidebarInset>
+                    <AppHeader />
 
-                <main className="flex-1">
-                    {children}
-                </main>
-            </SidebarInset>
-        </SidebarProvider>
+                    <main className="flex-1">{children}</main>
+                </SidebarInset>
+            </SidebarProvider>
+
+            <AppEffects userId={userId} />
+            <TransactionDialog />
+            <CommandPalette />
+            <CopilotSheet />
+            <Toaster />
+        </AppStoreProvider>
     );
 }
