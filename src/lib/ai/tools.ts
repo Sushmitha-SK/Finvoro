@@ -305,7 +305,6 @@ export async function executeTool(
     rawArgs: Record<string, unknown> | undefined,
     ctx: ToolContext,
 ): Promise<ToolResult> {
-    // userId comes from the authenticated session, never from model output.
     try {
         switch (name) {
             case "search_transactions":

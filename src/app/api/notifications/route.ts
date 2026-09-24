@@ -40,7 +40,6 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ error: "Notification ID is required." }, { status: 400 });
     }
 
-    // updateMany with the owner in the filter = ownership check + update in one query
     const result = await prisma.notification.updateMany({
         where: { id: body.data.id, clerkUserId: userId },
         data: { read: true },

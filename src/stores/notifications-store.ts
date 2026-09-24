@@ -41,7 +41,6 @@ export const useNotificationsStore = create<NotificationsState>()((set, get) => 
                 unreadCount: number;
             };
 
-            // After the first load, surface anything new as a toast.
             if (knownIds) {
                 for (const item of data.notifications) {
                     if (!knownIds.has(item.id) && !item.read) {
@@ -57,7 +56,6 @@ export const useNotificationsStore = create<NotificationsState>()((set, get) => 
         }
     },
 
-    // Optimistic updates: change the UI immediately, roll back if the server says no.
     markRead: async (id) => {
         const previous = get();
         const target = previous.items.find((item) => item.id === id);

@@ -121,9 +121,7 @@ describe("runChat", () => {
 
         const second = calls[1].contents;
 
-        // model turn echoed back with its thought signature intact
         expect(second[second.length - 2]).toEqual({ role: "model", parts: modelTurn });
-        // function response carries the call id and our output
         expect(second[second.length - 1].parts[0].functionResponse).toEqual({
             name: "spending_summary",
             id: "call-1",

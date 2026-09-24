@@ -118,18 +118,14 @@ function getDateRange(
     };
 }
 
-function parseDate(
-    value: string | undefined,
-) {
+function parseDate(value: string | undefined) {
     if (!value) {
         return null;
     }
 
     const date = new Date(`${value}T00:00:00`);
 
-    return Number.isNaN(date.getTime())
-        ? null
-        : date;
+    return Number.isNaN(date.getTime()) ? null : date;
 }
 
 function formatReportDate(date: Date) {
@@ -229,34 +225,6 @@ export default async function ReportsPage({
                     currency={currency}
                 />
 
-                <SmartInsights
-                    totalIncome={
-                        reportsData.totalIncome
-                    }
-                    totalExpenses={
-                        reportsData.totalExpenses
-                    }
-                    savingsRate={
-                        reportsData.savingsRate
-                    }
-                    incomeChange={
-                        reportsData.comparison.incomeChange
-                    }
-                    expenseChange={
-                        reportsData.comparison.expenseChange
-                    }
-                    savingsRateChange={
-                        reportsData.comparison.savingsRateChange
-                    }
-                    previousIncome={
-                        reportsData.comparison.previousIncome
-                    }
-                    previousExpenses={
-                        reportsData.comparison.previousExpenses
-                    }
-                    currency={currency}
-                />
-
                 {aiEnabled && hasTransactions && (
                     <InsightsCard
                         scopeKey={`reports:${rangeFrom}:${rangeTo}`}
@@ -298,48 +266,86 @@ export default async function ReportsPage({
                         </div>
                     </div>
                 ) : (
-                    <>
-                        <FinancialTrend
-                            data={
-                                reportsData.financialTrend
-                            }
-                            currency={currency}
-                        />
+                    <div className="space-y-6">
+                        {/* Row 1: Smart Insights & Financial Trend side-by-side */}
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            <SmartInsights
+                                totalIncome={
+                                    reportsData.totalIncome
+                                }
+                                totalExpenses={
+                                    reportsData.totalExpenses
+                                }
+                                savingsRate={
+                                    reportsData.savingsRate
+                                }
+                                incomeChange={
+                                    reportsData.comparison.incomeChange
+                                }
+                                expenseChange={
+                                    reportsData.comparison.expenseChange
+                                }
+                                savingsRateChange={
+                                    reportsData.comparison.savingsRateChange
+                                }
+                                previousIncome={
+                                    reportsData.comparison.previousIncome
+                                }
+                                previousExpenses={
+                                    reportsData.comparison.previousExpenses
+                                }
+                                currency={currency}
+                            />
 
-                        <TransactionInsights
-                            transactionCount={
-                                reportsData.insights.transactionCount
-                            }
-                            averageTransaction={
-                                reportsData.insights.averageTransaction
-                            }
-                            averageExpense={
-                                reportsData.insights.averageExpense
-                            }
-                            largestIncome={
-                                reportsData.insights.largestIncome
-                            }
-                            largestExpense={
-                                reportsData.insights.largestExpense
-                            }
-                            topSpendingCategory={
-                                reportsData.insights.topSpendingCategory
-                            }
-                            highestSpendingDay={
-                                reportsData.insights.highestSpendingDay
-                            }
-                            currency={currency}
-                        />
+                            <FinancialTrend
+                                data={
+                                    reportsData.financialTrend
+                                }
+                                currency={currency}
+                            />
+                        </div>
 
-                        <SpendingByCategory
-                            categories={
-                                reportsData.spendingByCategory
-                            }
-                            currency={currency}
-                        />
-                    </>
+                        {/* Row 2: Transaction Insights in its own separate full-width row */}
+                        <div>
+                            <TransactionInsights
+                                transactionCount={
+                                    reportsData.insights.transactionCount
+                                }
+                                averageTransaction={
+                                    reportsData.insights.averageTransaction
+                                }
+                                averageExpense={
+                                    reportsData.insights.averageExpense
+                                }
+                                largestIncome={
+                                    reportsData.insights.largestIncome
+                                }
+                                largestExpense={
+                                    reportsData.insights.largestExpense
+                                }
+                                topSpendingCategory={
+                                    reportsData.insights.topSpendingCategory
+                                }
+                                highestSpendingDay={
+                                    reportsData.insights.highestSpendingDay
+                                }
+                                currency={currency}
+                            />
+                        </div>
+
+                        {/* Row 3: Spending By Category */}
+                        <div>
+                            <SpendingByCategory
+                                categories={
+                                    reportsData.spendingByCategory
+                                }
+                                currency={currency}
+                            />
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
     );
 }
+

@@ -60,7 +60,6 @@ export async function generateJson<S extends z.ZodType>({
                 continue;
             }
 
-            // Malformed JSON / schema mismatch is worth exactly one retry.
             if (error instanceof SyntaxError || (error as { name?: string })?.name === "ZodError") {
                 lastError = error;
                 continue;

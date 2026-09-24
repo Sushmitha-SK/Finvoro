@@ -136,7 +136,6 @@ describe("computeForecast", () => {
     it("blends with last month early in the month instead of exploding", () => {
         const early = computeForecast({ ...base, expensesSoFar: 22000, daysElapsed: 1 });
 
-        // Naive pace would be 660,000. The blend must stay in a sane range.
         expect(early.projectedExpenses).toBeLessThan(100000);
     });
 

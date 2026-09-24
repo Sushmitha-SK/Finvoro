@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Pencil } from "lucide-react";
 
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -66,23 +67,56 @@ export function EditBudgetDialog({
                     </Button>
                 }
             >
-
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-lg">
-                <DialogHeader>
-                    <DialogTitle>
-                        Edit budget
-                    </DialogTitle>
+            <DialogContent
+                className="
+                    overflow-hidden
+                    border-border/60
+                    bg-background/95
+                    p-0
+                    shadow-2xl
+                    backdrop-blur-xl
+                    sm:max-w-lg
+                "
+            >
+                {/* Header */}
+                <DialogHeader className="border-b bg-muted/20 px-6 py-5">
+                    <div className="flex items-start gap-3">
+                        <div
+                            className="
+                                mt-0.5
+                                flex size-10 shrink-0 items-center justify-center
+                                rounded-xl
+                                bg-primary/10
+                                text-primary
+                            "
+                        >
+                            <Pencil className="size-5" />
+                        </div>
+
+                        <div className="min-w-0">
+                            <DialogTitle className="text-lg font-semibold tracking-tight">
+                                Edit budget
+                            </DialogTitle>
+
+                            <DialogDescription className="mt-1 text-sm leading-relaxed">
+                                Update the monthly spending limit and details for this budget.
+                            </DialogDescription>
+                        </div>
+                    </div>
                 </DialogHeader>
 
-                <AddBudgetForm
-                    categories={categories}
-                    budgetId={budget.id}
-                    initialValues={initialValues}
-                    onSuccess={handleSuccess}
-                    onCancel={() => setOpen(false)}
-                />
+                {/* Form Body */}
+                <div className="max-h-[calc(100vh-10rem)] overflow-y-auto px-6 py-5">
+                    <AddBudgetForm
+                        categories={categories}
+                        budgetId={budget.id}
+                        initialValues={initialValues}
+                        onSuccess={handleSuccess}
+                        onCancel={() => setOpen(false)}
+                    />
+                </div>
             </DialogContent>
         </Dialog>
     );

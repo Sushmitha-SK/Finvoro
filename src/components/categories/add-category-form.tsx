@@ -1,14 +1,13 @@
 "use client";
 
-import {
-    useForm,
-    useWatch,
-} from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 import {
     categorySchema,
@@ -86,7 +85,6 @@ export function AddCategoryForm({
         name: "color",
     });
 
-
     const onSubmit = async (
         data: CategoryFormValues,
     ) => {
@@ -115,9 +113,10 @@ export function AddCategoryForm({
                     type: "server",
                     message:
                         result.error ??
-                        `Unable to ${isEditMode
-                            ? "update"
-                            : "create"
+                        `Unable to ${
+                            isEditMode
+                                ? "update"
+                                : "create"
                         } category.`,
                 });
 
@@ -127,9 +126,10 @@ export function AddCategoryForm({
             onSuccess();
         } catch (error) {
             console.error(
-                `Failed to ${isEditMode
-                    ? "update"
-                    : "create"
+                `Failed to ${
+                    isEditMode
+                        ? "update"
+                        : "create"
                 } category:`,
                 error,
             );
@@ -145,34 +145,40 @@ export function AddCategoryForm({
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-5"
+            className="space-y-4"
+            noValidate
         >
-            <div className="space-y-2">
-                <Label htmlFor="name">
+            {/* Category Name */}
+            <div className="space-y-1.5">
+                <Label htmlFor="category-name">
                     Category name
                 </Label>
 
                 <Input
-                    id="name"
+                    id="category-name"
                     placeholder="e.g. Groceries"
+                    aria-invalid={!!errors.name}
                     {...register("name")}
                 />
 
                 {errors.name && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-xs text-destructive">
                         {errors.name.message}
                     </p>
                 )}
             </div>
 
-            <div className="space-y-2">
+            {/* Icon Selector */}
+            <div className="space-y-1.5">
                 <Label>Icon</Label>
 
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-5 gap-2" role="radiogroup" aria-label="Category icon">
                     {icons.map((icon) => (
                         <button
                             key={icon}
                             type="button"
+                            role="radio"
+                            aria-checked={selectedIcon === icon}
                             onClick={() =>
                                 setValue(
                                     "icon",
@@ -182,10 +188,12 @@ export function AddCategoryForm({
                                     },
                                 )
                             }
-                            className={`flex size-10 items-center justify-center rounded-lg border text-lg transition-colors ${selectedIcon === icon
-                                ? "border-primary bg-primary/10"
-                                : "border-border hover:bg-muted"
-                                }`}
+                            className={cn(
+                                "flex size-10 items-center justify-center rounded-xl border text-lg transition",
+                                selectedIcon === icon
+                                    ? "border-foreground bg-primary/10 ring-2 ring-foreground"
+                                    : "border-border/60 hover:bg-muted hover:scale-105"
+                            )}
                             aria-label={`Select ${icon} icon`}
                         >
                             {icon}
@@ -194,40 +202,46 @@ export function AddCategoryForm({
                 </div>
             </div>
 
-            <div className="space-y-2">
-                <Label>Color</Label>
+            {/* Color Selector */}
+            <div className="space-y-1.5">
+                <Label>Colour</Label>
 
-                <div className="flex flex-wrap gap-2">
-                    {colors.map((color) => (
+                <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Category colour">
+                    {colors.map((colorOption) => (
                         <button
-                            key={color}
+                            key={colorOption}
                             type="button"
+                            role="radio"
+                            aria-checked={selectedColor === colorOption}
                             onClick={() =>
                                 setValue(
                                     "color",
-                                    color,
+                                    colorOption,
                                     {
                                         shouldDirty: true,
                                     },
                                 )
                             }
-                            className={`flex size-8 items-center justify-center rounded-full border-2 ${selectedColor === color
-                                ? "border-foreground"
-                                : "border-transparent"
-                                }`}
+                            className={cn(
+                                "size-7 rounded-full ring-offset-2 ring-offset-popover transition",
+                                selectedColor === colorOption
+                                    ? "ring-2 ring-foreground"
+                                    : "hover:scale-110"
+                            )}
                             style={{
-                                backgroundColor: color,
+                                background: colorOption,
                             }}
-                            aria-label={`Select color ${color}`}
+                            aria-label={`Select colour ${colorOption}`}
                         />
                     ))}
                 </div>
             </div>
 
-            <div className="flex justify-end gap-2 border-t pt-4">
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-2 pt-1">
                 <Button
                     type="button"
-                    variant="outline"
+                    variant="ghost"
                     onClick={onCancel}
                 >
                     Cancel
@@ -237,13 +251,10 @@ export function AddCategoryForm({
                     type="submit"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting
-                        ? isEditMode
-                            ? "Saving..."
-                            : "Adding..."
-                        : isEditMode
-                            ? "Save changes"
-                            : "Add category"}
+                    {isSubmitting && (
+                        <Loader2 className="size-4 animate-spin" />
+                    )}
+                    {isEditMode ? "Save changes" : "Add category"}
                 </Button>
             </div>
         </form>

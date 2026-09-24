@@ -14,20 +14,20 @@ import { Sparkline } from "./sparkline";
 type Delta = { text: string; tone: "good" | "bad" | "neutral" };
 
 function DeltaChip({ delta }: { delta: Delta | null }) {
-    if (!delta) return <span className="text-xs text-muted-foreground">No prior data</span>;
+    if (!delta) return <span className="text-xs text-muted-foreground/70">No prior data</span>;
 
     const Icon = delta.tone === "neutral" ? Minus : delta.tone === "good" ? ArrowUpRight : ArrowDownRight;
 
     return (
         <span
             className={cn(
-                "inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-xs font-medium",
-                delta.tone === "good" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-                delta.tone === "bad" && "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+                "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-semibold tracking-tight transition-colors",
+                delta.tone === "good" && "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400",
+                delta.tone === "bad" && "bg-rose-500/10 text-rose-600 dark:bg-rose-500/15 dark:text-rose-400",
                 delta.tone === "neutral" && "bg-muted text-muted-foreground",
             )}
         >
-            <Icon className="size-3" />
+            <Icon className="size-3 stroke-[2.5]" />
             {delta.text}
         </span>
     );
@@ -49,20 +49,27 @@ function Kpi({
     color: string;
 }) {
     return (
-        <Card className="overflow-hidden">
-            <CardContent className="flex items-start justify-between gap-2 p-4">
-                <div className="min-w-0 space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="flex size-6 items-center justify-center rounded-md bg-muted [&_svg]:size-3.5">{icon}</span>
+        <Card className="group relative overflow-hidden border-border/60 bg-gradient-to-b from-card/50 to-card transition-all hover:border-border hover:shadow-sm">
+            <CardContent className="flex flex-col justify-between gap-4 p-5">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        <span className="flex size-7 items-center justify-center rounded-lg bg-muted/80 text-foreground/80 shadow-xs transition-transform group-hover:scale-105 [&_svg]:size-4">{icon}</span>
                         {title}
                     </div>
-                    <p className="truncate text-2xl font-semibold tracking-tight">{value}</p>
-                    <div className="flex items-center gap-1.5">
-                        <DeltaChip delta={delta} />
-                        <span className="text-[11px] text-muted-foreground">vs same days last month</span>
+                </div>
+                
+                <div className="flex items-end justify-between gap-4">
+                    <div className="space-y-1.5 min-w-0">
+                        <p className="truncate text-2xl font-bold tracking-tight text-foreground">{value}</p>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            <DeltaChip delta={delta} />
+                            <span className="text-[11px] text-muted-foreground/80 font-normal">vs last month</span>
+                        </div>
+                    </div>
+                    <div className="pb-1">
+                        <Sparkline values={series} color={color} className="h-10 w-28 shrink-0 opacity-85 transition-opacity group-hover:opacity-100" />
                     </div>
                 </div>
-                <Sparkline values={series} color={color} className="mt-1 h-10 w-24 shrink-0" />
             </CardContent>
         </Card>
     );
@@ -97,7 +104,6 @@ export function KpiCards({ data }: { data: DashboardData }) {
             }
             : null;
 
-    // Running balance at the end of each of the last 6 months.
     const netByMonth = data.cashflow.map((point) => point.net);
     const startBalance = data.balance - netByMonth.reduce((a, b) => a + b, 0);
     const balanceSeries = netByMonth.reduce<number[]>(
@@ -114,7 +120,7 @@ export function KpiCards({ data }: { data: DashboardData }) {
                 delta={
                     data.month.net === 0
                         ? null
-                        : { text: `${data.month.net > 0 ? "+" : "−"}${hide ? "••••" : money(Math.abs(data.month.net), { compact: true })} this month`, tone: data.month.net > 0 ? "good" : "bad" }
+                        : { text: `${data.month.net > 0 ? "+" : "−"}${hide ? "••••" : money(Math.abs(data.month.net), { compact: true })}`, tone: data.month.net > 0 ? "good" : "bad" }
                 }
                 series={balanceSeries}
                 color="#0ea5e9"

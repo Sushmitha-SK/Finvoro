@@ -51,7 +51,6 @@ export default async function BudgetsPage() {
                         amount: row.amount,
                         spent: row.spent,
                         remaining: row.remaining,
-                        // The bar is capped at 100%; `spent` still shows the true overspend.
                         percentage: Math.min(row.percentage, 100),
                         month: row.month,
                         year: row.year,

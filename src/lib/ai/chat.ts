@@ -89,7 +89,6 @@ export async function* runChat(options: {
                     }
                 }
             } catch (error) {
-                // Older model families reject thinkingConfig - retry the round once without it.
                 if (useThinking && !emitted && isThinkingUnsupported(error)) {
                     useThinking = false;
                     round -= 1;
@@ -111,7 +110,6 @@ export async function* runChat(options: {
                 break;
             }
 
-            // Echo the model turn back verbatim - this preserves thought signatures.
             contents.push({ role: "model", parts });
 
             const responses: Part[] = [];

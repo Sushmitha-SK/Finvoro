@@ -1,5 +1,6 @@
 import { ArrowRight, CircleDollarSign } from "lucide-react";
 import Link from "next/link";
+import { Show } from "@clerk/nextjs";
 
 export function FinalCTA() {
     return (
@@ -19,20 +20,32 @@ export function FinalCTA() {
                 </p>
 
                 <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-                    <Link
-                        href="/sign-up"
-                        className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
-                    >
-                        Get started for free
-                        <ArrowRight className="size-4" />
-                    </Link>
+                    <Show when="signed-out">
+                        <Link
+                            href="/sign-up"
+                            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
+                        >
+                            Get started for free
+                            <ArrowRight className="size-4" />
+                        </Link>
 
-                    <Link
-                        href="/sign-in"
-                        className="inline-flex h-11 items-center justify-center rounded-lg border bg-background px-6 text-sm font-medium transition-colors hover:bg-muted"
-                    >
-                        Sign in
-                    </Link>
+                        <Link
+                            href="/sign-in"
+                            className="inline-flex h-11 items-center justify-center rounded-lg border bg-background px-6 text-sm font-medium transition-colors hover:bg-muted"
+                        >
+                            Sign in
+                        </Link>
+                    </Show>
+
+                    <Show when="signed-in">
+                        <Link
+                            href="/dashboard"
+                            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
+                        >
+                            Go to Dashboard
+                            <ArrowRight className="size-4" />
+                        </Link>
+                    </Show>
                 </div>
 
                 <p className="mt-4 text-xs text-muted-foreground">
@@ -42,4 +55,3 @@ export function FinalCTA() {
         </section>
     );
 }
-

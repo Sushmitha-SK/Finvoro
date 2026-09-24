@@ -31,7 +31,6 @@ export function checkRateLimit(userId: string, bucket: Bucket, now = Date.now())
     recent.push(now);
     hits.set(key, recent);
 
-    // Opportunistic cleanup so the map can't grow without bound.
     if (hits.size > 5000) {
         for (const [k, times] of hits) {
             if (times.every((t) => now - t >= bucket.windowMs)) hits.delete(k);

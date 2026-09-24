@@ -94,12 +94,12 @@ export function NotificationsList() {
                 </Button>
             </div>
 
-            <Card className="overflow-hidden p-0">
+            <Card className="overflow-hidden p-0 shadow-xs border-border/60">
                 {status === "loading" || (status === "idle" && items.length === 0) ? (
-                    <CardContent className="space-y-4 p-4">
+                    <CardContent className="space-y-4 p-5">
                         {Array.from({ length: 3 }).map((_, index) => (
-                            <div key={index} className="flex gap-3">
-                                <Skeleton className="size-9 rounded-full" />
+                            <div key={index} className="flex gap-4 items-center">
+                                <Skeleton className="size-10 rounded-xl" />
                                 <div className="flex-1 space-y-2">
                                     <Skeleton className="h-4 w-1/3" />
                                     <Skeleton className="h-3 w-2/3" />
@@ -108,20 +108,29 @@ export function NotificationsList() {
                         ))}
                     </CardContent>
                 ) : status === "error" ? (
-                    <CardContent className="py-12 text-center text-sm text-muted-foreground">
-                        Couldn&apos;t load notifications.{" "}
-                        <button type="button" className="text-primary hover:underline" onClick={() => void fetchNotifications()}>
+                    <CardContent className="py-16 text-center text-sm text-muted-foreground">
+                        <p className="font-medium text-foreground mb-1">Couldn&apos;t load notifications</p>
+                        <p className="text-xs mb-4">Please check your network connection and try again.</p>
+                        <Button variant="outline" size="sm" onClick={() => void fetchNotifications()}>
                             Retry
-                        </button>
+                        </Button>
                     </CardContent>
                 ) : visible.length === 0 ? (
-                    <CardContent className="flex flex-col items-center gap-2 py-16 text-center">
-                        <BellOff className="size-8 text-muted-foreground" />
-                        <p className="font-medium">{filter === "unread" ? "No unread notifications" : "You're all caught up"}</p>
-                        <p className="max-w-sm text-sm text-muted-foreground">Budget alerts will appear here when you approach or exceed a limit.</p>
+                    <CardContent className="flex flex-col items-center justify-center gap-3 py-20 text-center">
+                        <div className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                            <BellOff className="size-5" />
+                        </div>
+                        <div className="space-y-1">
+                            <p className="font-medium text-foreground">
+                                {filter === "unread" ? "No unread notifications" : "You're all caught up!"}
+                            </p>
+                            <p className="max-w-xs text-xs text-muted-foreground mx-auto">
+                                Budget alerts will appear here when you approach or exceed your limits.
+                            </p>
+                        </div>
                     </CardContent>
                 ) : (
-                    <ul className="divide-y">
+                    <ul className="divide-y divide-border/60 group">
                         {visible.map((item) => (
                             <Row key={item.id} item={item} />
                         ))}

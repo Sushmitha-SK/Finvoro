@@ -3,8 +3,6 @@ import {
     ArrowUpRight,
     Lightbulb,
     Minus,
-    TrendingDown,
-    TrendingUp,
 } from "lucide-react";
 
 import {
@@ -62,24 +60,20 @@ function ChangeIndicator({
     }
 
     const isPositive = value > 0;
-
-    const isGood = positiveIsGood
-        ? isPositive
-        : !isPositive;
+    const isGood = positiveIsGood ? isPositive : !isPositive;
 
     return (
         <span
-            className={`inline - items - center gap - 1 text - xs ${isGood
-                ? "text-emerald-600"
-                : "text-destructive"
-                } `}
+            className={`inline-flex items-center gap-1 text-xs font-medium ${isGood
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-destructive"
+                }`}
         >
             {isPositive ? (
                 <ArrowUpRight className="size-3" />
             ) : (
                 <ArrowDownRight className="size-3" />
             )}
-
             {formatPercentage(value)} vs previous period
         </span>
     );
@@ -97,11 +91,8 @@ function getInsights({
 }: SmartInsightsProps) {
     const insights: string[] = [];
 
-    const hasCurrentActivity =
-        totalIncome > 0 || totalExpenses > 0;
-
-    const hasPreviousActivity =
-        previousIncome > 0 || previousExpenses > 0;
+    const hasCurrentActivity = totalIncome > 0 || totalExpenses > 0;
+    const hasPreviousActivity = previousIncome > 0 || previousExpenses > 0;
 
     if (!hasCurrentActivity && !hasPreviousActivity) {
         return [
@@ -121,45 +112,31 @@ function getInsights({
         );
     }
 
-    if (
-        totalExpenses > 0 &&
-        previousExpenses > 0
-    ) {
+    if (totalExpenses > 0 && previousExpenses > 0) {
         if (expenseChange > 5) {
             insights.push(
                 `Expenses increased by ${formatPercentage(
                     expenseChange,
-                )
-                }. Review your largest spending categories to see where the increase came from.`,
+                )}. Review your largest spending categories to see where the increase came from.`,
             );
         } else if (expenseChange < -5) {
             insights.push(
                 `Expenses decreased by ${formatPercentage(
                     expenseChange,
-                )
-                }. You're spending less than in the previous period.`,
+                )}. You're spending less than in the previous period.`,
             );
         }
-    } else if (
-        totalExpenses > 0 &&
-        previousExpenses === 0
-    ) {
+    } else if (totalExpenses > 0 && previousExpenses === 0) {
         insights.push(
             "You recorded expenses this period after having no expenses in the previous period.",
         );
-    } else if (
-        totalExpenses === 0 &&
-        previousExpenses > 0
-    ) {
+    } else if (totalExpenses === 0 && previousExpenses > 0) {
         insights.push(
             "You recorded no expenses this period, which is lower than the previous period.",
         );
     }
 
-    if (
-        totalIncome > 0 &&
-        previousIncome > 0
-    ) {
+    if (totalIncome > 0 && previousIncome > 0) {
         if (incomeChange > 5) {
             insights.push(
                 `Income increased by ${formatPercentage(
@@ -173,35 +150,24 @@ function getInsights({
                 )} compared with the previous period.`,
             );
         }
-    } else if (
-        totalIncome > 0 &&
-        previousIncome === 0
-    ) {
+    } else if (totalIncome > 0 && previousIncome === 0) {
         insights.push(
             "You recorded income this period after having no income in the previous period.",
         );
-    } else if (
-        totalIncome === 0 &&
-        previousIncome > 0
-    ) {
+    } else if (totalIncome === 0 && previousIncome > 0) {
         insights.push(
             "No income was recorded this period, compared with income in the previous period.",
         );
     }
 
-    if (
-        hasCurrentActivity &&
-        hasPreviousActivity
-    ) {
+    if (hasCurrentActivity && hasPreviousActivity) {
         if (savingsRateChange > 2) {
             insights.push(
                 `Your savings rate improved by ${Math.round(
                     savingsRateChange,
                 )} percentage points compared with the previous period.`,
             );
-        } else if (
-            savingsRateChange < -2
-        ) {
+        } else if (savingsRateChange < -2) {
             insights.push(
                 `Your savings rate decreased by ${Math.abs(
                     Math.round(savingsRateChange),
@@ -218,17 +184,11 @@ function getInsights({
         insights.push(
             "You're maintaining a healthy savings rate. Small improvements could help you save even more.",
         );
-    } else if (
-        savingsRate > 0 &&
-        savingsRate < 20
-    ) {
+    } else if (savingsRate > 0 && savingsRate < 20) {
         insights.push(
             "Your savings rate is relatively low. Reviewing your largest expense categories could help improve it.",
         );
-    } else if (
-        totalIncome > 0 &&
-        savingsRate <= 0
-    ) {
+    } else if (totalIncome > 0 && savingsRate <= 0) {
         insights.push(
             "Your expenses are matching or exceeding your income. Consider reviewing your largest spending categories.",
         );
@@ -252,7 +212,7 @@ export function SmartInsights({
     savingsRateChange,
     previousIncome,
     previousExpenses,
-    currency
+    currency,
 }: SmartInsightsProps) {
     const insights = getInsights({
         totalIncome,
@@ -263,130 +223,118 @@ export function SmartInsights({
         savingsRateChange,
         previousIncome,
         previousExpenses,
-        currency
+        currency,
     });
 
-    const incomeHasPreviousData =
-        previousIncome > 0;
+    const incomeHasPreviousData = previousIncome > 0;
+    const expensesHavePreviousData = previousExpenses > 0;
+    const savingsHasPreviousData = previousIncome > 0 || previousExpenses > 0;
 
-    const expensesHavePreviousData =
-        previousExpenses > 0;
-
-    const savingsHasPreviousData =
-        previousIncome > 0 ||
-        previousExpenses > 0;
+    const normalizedSavings = Math.min(Math.max(Math.round(savingsRate), 0), 100);
+    const circumference = 2 * Math.PI * 38; 
+    const strokeDashoffset = circumference - (normalizedSavings / 100) * circumference;
 
     return (
-        <Card>
-            <CardHeader>
-                <div className="flex items-center gap-2">
-                    <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
+        <Card className="border-border/60 shadow-xs">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <div className="flex items-center gap-3">
+                    <div className="flex size-9 items-center justify-center rounded-xl bg-primary/10">
                         <Lightbulb className="size-4 text-primary" />
                     </div>
-
-                    <div>
-                        <CardTitle className="text-base">
-                            Smart insights
-                        </CardTitle>
-
-                        <p className="text-sm text-muted-foreground">
-                            How your finances compare with the previous period.
-                        </p>
-                    </div>
+                    <CardTitle className="text-base font-semibold tracking-tight">
+                        AI Financial Health Score
+                    </CardTitle>
                 </div>
             </CardHeader>
 
             <CardContent>
-                <div className="space-y-4">
-                    <div className="grid gap-4 sm:grid-cols-3">
-                        <div className="rounded-lg border p-3">
-                            <div className="flex items-center gap-2">
-                                <TrendingUp className="size-4 text-muted-foreground" />
-
-                                <span className="text-sm font-medium">
-                                    Income
-                                </span>
-                            </div>
-
-                            <p className="mt-2 font-semibold">
-                                {formatCurrency(totalIncome, currency)}
-                            </p>
-
-                            <div className="mt-1">
-                                <ChangeIndicator
-                                    value={incomeChange}
-                                    hasPreviousValue={
-                                        incomeHasPreviousData
-                                    }
+                <div className="grid gap-6 lg:grid-cols-12 items-center py-2">
+                    {/* Left: Circular Score Graphic */}
+                    <div className="lg:col-span-4 flex flex-col items-center justify-center p-4 bg-muted/20 rounded-2xl border border-border/40">
+                        <div className="relative flex items-center justify-center size-36">
+                            <svg className="size-full -rotate-90" viewBox="0 0 96 96">
+                                {/* Background track */}
+                                <circle
+                                    cx="48"
+                                    cy="48"
+                                    r="38"
+                                    className="text-muted/40"
+                                    strokeWidth="8"
+                                    stroke="currentColor"
+                                    fill="transparent"
                                 />
-                            </div>
-                        </div>
-
-                        <div className="rounded-lg border p-3">
-                            <div className="flex items-center gap-2">
-                                <TrendingDown className="size-4 text-muted-foreground" />
-
-                                <span className="text-sm font-medium">
-                                    Expenses
-                                </span>
-                            </div>
-
-                            <p className="mt-2 font-semibold">
-                                {formatCurrency(totalExpenses, currency)}
-                            </p>
-
-                            <div className="mt-1">
-                                <ChangeIndicator
-                                    value={expenseChange}
-                                    positiveIsGood={false}
-                                    hasPreviousValue={
-                                        expensesHavePreviousData
-                                    }
+                                {/* Progress track */}
+                                <circle
+                                    cx="48"
+                                    cy="48"
+                                    r="38"
+                                    className="text-primary transition-all duration-500 ease-in-out"
+                                    strokeWidth="8"
+                                    strokeDasharray={circumference}
+                                    strokeDashoffset={strokeDashoffset}
+                                    strokeLinecap="round"
+                                    stroke="currentColor"
+                                    fill="transparent"
                                 />
-                            </div>
-                        </div>
-
-                        <div className="rounded-lg border p-3">
-                            <div className="flex items-center gap-2">
-                                <Lightbulb className="size-4 text-muted-foreground" />
-
-                                <span className="text-sm font-medium">
-                                    Savings rate
+                            </svg>
+                            <div className="absolute flex flex-col items-center text-center">
+                                <span className="text-2xl font-bold tracking-tight tabular-nums">
+                                    {Math.round(savingsRate)}%
                                 </span>
-                            </div>
-
-                            <p className="mt-2 font-semibold">
-                                {Math.round(savingsRate)}%
-                            </p>
-
-                            <div className="mt-1">
-                                <ChangeIndicator
-                                    value={savingsRateChange}
-                                    hasPreviousValue={
-                                        savingsHasPreviousData
-                                    }
-                                />
+                                <span className="text-xs text-muted-foreground font-medium">
+                                    Saved
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        {insights.map(
-                            (insight, index) => (
+                    {/* Right: Dynamic Message & Insight Bullet Points */}
+                    <div className="lg:col-span-8 flex flex-col justify-center space-y-4">
+                        <div className="space-y-1">
+                            <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                                {savingsRate >= 20
+                                    ? "You're maintaining a healthy and consistent financial pace"
+                                    : "Review your spending habits to boost your savings score"}
+                            </h3>
+                            <p className="text-xs text-muted-foreground">
+                                Based on your current income and tracked expense activity.
+                            </p>
+                        </div>
+
+                        {/* Bulleted Insights List matching style */}
+                        <div className="space-y-2.5 pt-1">
+                            {insights.map((insight, index) => (
                                 <div
                                     key={`${insight}-${index}`}
-                                    className="flex gap-3 rounded-lg bg-muted/50 p-3 text-sm"
+                                    className="flex items-start gap-2.5 text-sm text-muted-foreground"
                                 >
-                                    <Lightbulb className="mt-0.5 size-4 shrink-0 text-primary" />
-
-                                    <p>{insight}</p>
+                                    <span className="size-2 rounded-full bg-primary mt-1.5 shrink-0" />
+                                    <p className="leading-snug text-foreground/90">{insight}</p>
                                 </div>
-                            ),
-                        )}
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Optional footer metric metrics grid if you still want quick visibility of changes */}
+                <div className="grid grid-cols-3 gap-3 pt-6 mt-6 border-t border-border/40">
+                    <div className="space-y-1">
+                        <span className="text-xs text-muted-foreground font-medium">Income</span>
+                        <p className="text-sm font-bold">{formatCurrency(totalIncome, currency)}</p>
+                        <ChangeIndicator value={incomeChange} hasPreviousValue={incomeHasPreviousData} />
+                    </div>
+                    <div className="space-y-1">
+                        <span className="text-xs text-muted-foreground font-medium">Expenses</span>
+                        <p className="text-sm font-bold">{formatCurrency(totalExpenses, currency)}</p>
+                        <ChangeIndicator value={expenseChange} positiveIsGood={false} hasPreviousValue={expensesHavePreviousData} />
+                    </div>
+                    <div className="space-y-1">
+                        <span className="text-xs text-muted-foreground font-medium">Savings Rate</span>
+                        <p className="text-sm font-bold">{Math.round(savingsRate)}%</p>
+                        <ChangeIndicator value={savingsRateChange} hasPreviousValue={savingsHasPreviousData} />
                     </div>
                 </div>
             </CardContent>
         </Card>
     );
 }
-

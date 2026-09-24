@@ -56,7 +56,6 @@ describe("copilot store", () => {
             line({ type: "draft", draft }) +
             line({ type: "done" });
 
-        // Cut in the middle of JSON lines *and* in the middle of a multi-byte character.
         const bytes = new TextEncoder().encode(payload);
         const chunks = [0, 17, 41, 90, 133, bytes.length].slice(0, -1).map((start, i, all) => {
             const end = [17, 41, 90, 133, bytes.length][i];
@@ -66,7 +65,6 @@ describe("copilot store", () => {
             return new TextDecoder("utf-8", { fatal: false }).decode(bytes.slice(start, end), { stream: true });
         });
 
-        // Chunk as raw bytes to be safe about the split character.
         const encoder = new TextEncoder();
         const raw = new Response(
             new ReadableStream({
@@ -245,7 +243,6 @@ describe("notifications store", () => {
 
         const pending = useNotificationsStore.getState().markRead("a");
 
-        // Updated immediately, before the request resolves
         expect(useNotificationsStore.getState().unreadCount).toBe(1);
         expect(useNotificationsStore.getState().items[0].read).toBe(true);
 

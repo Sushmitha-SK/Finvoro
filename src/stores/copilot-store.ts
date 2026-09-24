@@ -157,7 +157,6 @@ export const useCopilotStore = create<CopilotState>()(
                                 try {
                                     apply(assistantId, JSON.parse(line) as ChatEvent);
                                 } catch {
-                                    // ignore a malformed line rather than killing the stream
                                 }
                             }
                         }

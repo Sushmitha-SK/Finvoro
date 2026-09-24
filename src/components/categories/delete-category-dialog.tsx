@@ -9,7 +9,6 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -86,7 +85,7 @@ export function DeleteCategoryDialog({
                 render={
                     <Button
                         variant="ghost"
-                        size="icon-sm"
+                        size="icon-xs"
                         className="text-destructive hover:text-destructive"
                         aria-label={`Delete ${categoryName}`}
                     >
@@ -95,56 +94,79 @@ export function DeleteCategoryDialog({
                 }
             />
 
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>
-                        Delete category?
-                    </DialogTitle>
+            <DialogContent
+                className="
+                    overflow-hidden
+                    border-border/60
+                    bg-background/95
+                    p-0
+                    shadow-2xl
+                    backdrop-blur-xl
+                    sm:max-w-lg
+                "
+            >
+                {/* Header */}
+                <DialogHeader className="border-b bg-muted/20 px-6 py-5">
+                    <div className="flex items-start gap-3">
+                        <div
+                            className="
+                                mt-0.5
+                                flex size-10 shrink-0 items-center justify-center
+                                rounded-xl
+                                bg-destructive/10
+                                text-destructive
+                            "
+                        >
+                            <Trash2 className="size-5" />
+                        </div>
 
-                    <DialogDescription>
-                        Are you sure you want to delete{" "}
-                        <span className="font-medium text-foreground">
-                            {categoryName}
-                        </span>
-                        ? This action cannot be undone.
-                    </DialogDescription>
+                        <div className="min-w-0">
+                            <DialogTitle className="text-lg font-semibold tracking-tight">
+                                Delete category?
+                            </DialogTitle>
+
+                            <DialogDescription className="mt-1 text-sm leading-relaxed">
+                                Are you sure you want to delete{" "}
+                                <span className="font-medium text-foreground">
+                                    {categoryName}
+                                </span>
+                                ? This action cannot be undone.
+                            </DialogDescription>
+                        </div>
+                    </div>
                 </DialogHeader>
 
-                {error && (
-                    <p className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-                        {error}
-                    </p>
-                )}
+                {/* Body Content */}
+                <div className="px-6 py-5 space-y-4">
+                    {error && (
+                        <p className="rounded-lg bg-destructive/10 p-3 text-xs text-destructive">
+                            {error}
+                        </p>
+                    )}
 
-                <DialogFooter>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        disabled={isDeleting}
-                        onClick={() => setOpen(false)}
-                    >
-                        Cancel
-                    </Button>
+                    <div className="flex justify-end gap-2 pt-1">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            disabled={isDeleting}
+                            onClick={() => setOpen(false)}
+                        >
+                            Cancel
+                        </Button>
 
-                    <Button
-                        type="button"
-                        variant="destructive"
-                        disabled={isDeleting}
-                        onClick={handleDelete}
-                    >
-                        {isDeleting ? (
-                            <>
-                                <Loader2 className="animate-spin" />
-                                Deleting...
-                            </>
-                        ) : (
-                            <>
-                                <Trash2 />
-                                Delete category
-                            </>
-                        )}
-                    </Button>
-                </DialogFooter>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            disabled={isDeleting}
+                            onClick={handleDelete}
+                        >
+                            {isDeleting && (
+                                <Loader2 className="size-4 animate-spin" />
+                            )}
+                            {isDeleting ? "Deleting..." : "Delete category"}
+                        </Button>
+                    </div>
+                </div>
             </DialogContent>
         </Dialog>
     );

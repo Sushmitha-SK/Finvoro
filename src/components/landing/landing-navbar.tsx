@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Show } from "@clerk/nextjs";
 
 import { FinvoroLogo } from "@/components/layout/finvoro-logo";
 
@@ -35,23 +36,34 @@ export function LandingNavbar() {
                 </nav>
 
                 <div className="flex items-center gap-2 sm:gap-3">
-                    <Link
-                        href="/sign-in"
-                        className="hidden px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
-                    >
-                        Sign in
-                    </Link>
+                    <Show when="signed-out">
+                        <Link
+                            href="/sign-in"
+                            className="hidden px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+                        >
+                            Sign in
+                        </Link>
 
-                    <Link
-                        href="/sign-up"
-                        className="group inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:opacity-90"
-                    >
-                        Get started
-                        <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                    </Link>
+                        <Link
+                            href="/sign-up"
+                            className="group inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:opacity-90"
+                        >
+                            Get started
+                            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                        </Link>
+                    </Show>
+
+                    <Show when="signed-in">
+                        <Link
+                            href="/dashboard"
+                            className="group inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:opacity-90"
+                        >
+                            Go to Dashboard
+                            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                        </Link>
+                    </Show>
                 </div>
             </div>
         </header>
     );
 }
-

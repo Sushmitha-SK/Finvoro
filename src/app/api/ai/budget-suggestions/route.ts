@@ -113,7 +113,6 @@ For each candidate category return a recommended monthly limit. Essentials (rent
 
                 if (!candidate || !(suggestion.amount > 0)) return null;
 
-                // Keep the model honest: never more than 1.5x or less than 0.5x of history.
                 const bounded = Math.min(
                     Math.max(suggestion.amount, candidate.monthlyAverage * 0.5),
                     candidate.monthlyAverage * 1.5,

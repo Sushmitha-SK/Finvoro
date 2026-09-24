@@ -46,7 +46,6 @@ function createAppStore(init: AppStoreInit) {
                 name: "finvoro:app",
                 storage: createJSONStorage(() => localStorage),
                 partialize: (state) => ({ hideAmounts: state.hideAmounts }),
-                // Read localStorage after mount so server and client markup match.
                 skipHydration: true,
             },
         ),
@@ -64,7 +63,6 @@ export function AppStoreProvider({
 }) {
     const [store] = useState(() => createAppStore(init));
 
-    // The server re-renders the layout after mutations; keep the store in step.
     useEffect(() => {
         store.setState({
             currency: init.currency,

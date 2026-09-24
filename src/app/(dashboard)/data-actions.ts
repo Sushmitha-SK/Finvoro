@@ -28,7 +28,6 @@ export async function clearAllData(confirmation: string): Promise<ActionResult> 
 
     if (!userId) return { ok: false, error: "You need to sign in again." };
 
-    // Server-side check as well - never rely on the dialog alone for a destructive action.
     if (confirmation !== "DELETE") {
         return { ok: false, error: "Type DELETE to confirm." };
     }
