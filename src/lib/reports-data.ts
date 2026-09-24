@@ -71,9 +71,6 @@ function getFinancialTrend(
         1,
     );
 
-    // `to` is exclusive, so the last covered instant is `to - 1ms`. The loop
-    // must include that instant's month (the old code stopped one month early
-    // for any range ending mid-month, silently dropping those transactions).
     const lastInstant = new Date(to.getTime() - 1);
 
     const end = new Date(

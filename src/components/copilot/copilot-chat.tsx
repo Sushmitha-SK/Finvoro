@@ -23,25 +23,25 @@ function AssistantMessage({ message, streaming }: { message: CopilotMessage; str
     const waiting = streaming && !message.content && message.tools.every((tool) => tool.status !== "running");
 
     return (
-        <div className="flex gap-2.5">
-            <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Sparkles className="size-3.5" />
+        <div className="flex gap-3 animate-in fade-in-50 duration-200">
+            <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-xs">
+                <Sparkles className="size-4" />
             </div>
 
-            <div className="min-w-0 flex-1 text-sm">
+            <div className="min-w-0 flex-1 space-y-2 text-sm">
                 {message.tools.length > 0 && (
-                    <div className="mb-2 flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1.5">
                         {message.tools.map((tool, index) => (
                             <span
                                 key={`${tool.name}-${index}`}
-                                className="inline-flex items-center gap-1 rounded-full border bg-muted/60 px-2 py-0.5 text-[11px] text-muted-foreground"
+                                className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-muted/50 px-2.5 py-1 text-[11px] font-medium text-muted-foreground shadow-2xs"
                             >
                                 {tool.status === "running" ? (
-                                    <Loader2 className="size-3 animate-spin" />
+                                    <Loader2 className="size-3 animate-spin text-primary" />
                                 ) : tool.status === "done" ? (
-                                    <Check className="size-3 text-emerald-600" />
+                                    <Check className="size-3 text-emerald-500" />
                                 ) : (
-                                    <TriangleAlert className="size-3 text-amber-600" />
+                                    <TriangleAlert className="size-3 text-amber-500" />
                                 )}
                                 {tool.label}
                             </span>
@@ -50,17 +50,17 @@ function AssistantMessage({ message, streaming }: { message: CopilotMessage; str
                 )}
 
                 {message.content && (
-                    <div className="rounded-2xl rounded-tl-sm bg-muted px-3.5 py-2.5">
+                    <div className="rounded-2xl rounded-tl-sm bg-muted/70 border border-border/40 px-4 py-3 shadow-2xs leading-relaxed">
                         <Markdown>{message.content}</Markdown>
                     </div>
                 )}
 
                 {waiting && (
-                    <div className="inline-flex gap-1 rounded-2xl bg-muted px-3.5 py-3" aria-label="Thinking">
+                    <div className="inline-flex gap-1.5 rounded-2xl rounded-tl-sm bg-muted/70 border border-border/40 px-4 py-3.5" aria-label="Thinking">
                         {[0, 150, 300].map((delay) => (
                             <span
                                 key={delay}
-                                className="size-1.5 animate-bounce rounded-full bg-muted-foreground/60"
+                                className="size-2 animate-bounce rounded-full bg-primary/60"
                                 style={{ animationDelay: `${delay}ms` }}
                             />
                         ))}
@@ -72,8 +72,8 @@ function AssistantMessage({ message, streaming }: { message: CopilotMessage; str
                 ))}
 
                 {message.error && (
-                    <div className="mt-2 flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-xs text-destructive">
-                        <TriangleAlert className="mt-0.5 size-3.5 shrink-0" />
+                    <div className="flex items-start gap-2.5 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-xs text-destructive">
+                        <TriangleAlert className="mt-0.5 size-4 shrink-0" />
                         <span>{message.error.message}</span>
                     </div>
                 )}
@@ -96,12 +96,9 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const streaming = status === "streaming";
 
-    // A prompt queued elsewhere in the app (command palette, insight cards) runs here.
     useEffect(() => {
         if (!pendingPrompt) return;
-
         const prompt = useUIStore.getState().consumePendingPrompt();
-
         if (prompt) void send(prompt);
     }, [pendingPrompt, send]);
 
@@ -111,7 +108,6 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
 
     function submit() {
         const text = input.trim();
-
         if (!text || streaming) return;
 
         setInput("");
@@ -123,26 +119,27 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
     const canRetry = !streaming && last?.role === "assistant" && !!last.error;
 
     return (
-        <div className={cn("flex min-h-0 flex-1 flex-col", variant === "page" && "mx-auto w-full max-w-3xl")}>
-            <div className="flex-1 space-y-5 overflow-y-auto px-4 py-4" aria-live="polite">
+        <div className={cn("flex min-h-0 flex-1 flex-col bg-background relative", variant === "page" && "mx-auto w-full max-w-3xl")}>
+            {/* Message Stream with Thin Scrollbar */}
+            <div className="flex-1 space-y-6 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/40 scrollbar-track-transparent" aria-live="polite">
                 {messages.length === 0 ? (
-                    <div className="flex h-full min-h-64 flex-col items-center justify-center gap-5 text-center">
-                        <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                            <Sparkles className="size-6" />
+                    <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-6 text-center px-4">
+                        <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-inner border border-primary/10">
+                            <Sparkles className="size-7" />
                         </div>
-                        <div>
-                            <p className="text-base font-semibold">Ask anything about your money</p>
-                            <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                                I can look up transactions, compare months, check budgets and even add entries for you.
+                        <div className="space-y-1.5">
+                            <p className="text-lg font-semibold tracking-tight">Ask anything about your money</p>
+                            <p className="max-w-sm text-sm text-muted-foreground leading-relaxed">
+                                I can look up transactions, compare budgets, analyze spending, and add entries for you instantly.
                             </p>
                         </div>
-                        <div className="flex flex-wrap justify-center gap-2">
+                        <div className="flex flex-wrap justify-center gap-2 max-w-md pt-2">
                             {SUGGESTIONS.map((suggestion) => (
                                 <button
                                     key={suggestion}
                                     type="button"
                                     onClick={() => void send(suggestion)}
-                                    className="rounded-full border bg-background px-3 py-1.5 text-xs transition-colors hover:border-primary/40 hover:bg-primary/5"
+                                    className="rounded-xl border border-border/60 bg-muted/30 px-3.5 py-2 text-xs font-medium transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary shadow-2xs"
                                 >
                                     {suggestion}
                                 </button>
@@ -152,8 +149,8 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
                 ) : (
                     messages.map((message, index) =>
                         message.role === "user" ? (
-                            <div key={message.id} className="flex justify-end">
-                                <p className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-tr-sm bg-primary px-3.5 py-2 text-sm text-primary-foreground">
+                            <div key={message.id} className="flex justify-end animate-in fade-in-50 duration-200">
+                                <p className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-tr-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground shadow-xs leading-relaxed">
                                     {message.content}
                                 </p>
                             </div>
@@ -169,33 +166,34 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
                 <div ref={endRef} />
             </div>
 
-            <div className="border-t bg-background p-3">
+            {/* Input Toolbar Area */}
+            <div className="p-4 bg-gradient-to-t from-background via-background/90 to-transparent">
                 {(messages.length > 0 || canRetry) && (
-                    <div className="mb-2 flex items-center justify-between">
+                    <div className="mb-3 flex items-center justify-between px-1">
                         {canRetry ? (
-                            <Button variant="ghost" size="sm" className="h-7 gap-1 px-2 text-xs" onClick={() => void retry()}>
+                            <Button variant="ghost" size="sm" className="h-7 gap-1.5 px-2.5 text-xs text-muted-foreground hover:text-foreground" onClick={() => void retry()}>
                                 <RotateCcw className="size-3" /> Try again
                             </Button>
                         ) : (
                             <span />
                         )}
                         {messages.length > 0 && (
-                            <Button variant="ghost" size="sm" className="h-7 gap-1 px-2 text-xs text-muted-foreground" onClick={clear}>
+                            <Button variant="ghost" size="sm" className="h-7 gap-1.5 px-2.5 text-xs text-muted-foreground hover:text-destructive transition-colors" onClick={clear}>
                                 <Trash2 className="size-3" /> New chat
                             </Button>
                         )}
                     </div>
                 )}
 
-                <div className="flex items-end gap-2 rounded-2xl border bg-background p-1.5 focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40">
+                <div className="relative flex items-end gap-2 rounded-2xl border border-border/80 bg-muted/40 p-2 shadow-sm backdrop-blur-md focus-within:border-primary/60 focus-within:ring-4 focus-within:ring-primary/10 transition-all">
                     <textarea
                         ref={textareaRef}
                         value={input}
                         rows={1}
                         maxLength={4000}
-                        placeholder="Ask about spending, budgets, goals…"
+                        placeholder="Ask about spending, budgets, goals..."
                         aria-label="Message the Copilot"
-                        className="max-h-32 min-h-9 flex-1 resize-none bg-transparent px-2.5 py-2 text-sm outline-none placeholder:text-muted-foreground"
+                        className="max-h-32 min-h-9 flex-1 resize-none bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground/70"
                         onChange={(event) => {
                             setInput(event.target.value);
                             event.target.style.height = "auto";
@@ -210,18 +208,18 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
                     />
 
                     {streaming ? (
-                        <Button size="icon" variant="secondary" className="size-9 shrink-0 rounded-xl" onClick={stop} aria-label="Stop generating">
+                        <Button size="icon" variant="secondary" className="size-9 shrink-0 rounded-xl shadow-2xs hover:bg-secondary/80" onClick={stop} aria-label="Stop generating">
                             <Square className="size-3.5 fill-current" />
                         </Button>
                     ) : (
-                        <Button size="icon" className="size-9 shrink-0 rounded-xl" onClick={submit} disabled={!input.trim()} aria-label="Send message">
+                        <Button size="icon" className="size-9 shrink-0 rounded-xl shadow-xs transition-transform active:scale-95" onClick={submit} disabled={!input.trim()} aria-label="Send message">
                             <ArrowUp className="size-4" />
                         </Button>
                     )}
                 </div>
 
-                <p className="mt-2 text-center text-[11px] text-muted-foreground">
-                    Powered by Gemini. AI can make mistakes — verify important numbers.
+                <p className="mt-2 text-center text-[11px] text-muted-foreground/60">
+                    Powered by Gemini. AI can make mistakes — verify important financial entries.
                 </p>
             </div>
         </div>

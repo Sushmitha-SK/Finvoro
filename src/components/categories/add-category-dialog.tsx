@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, Tag } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -26,10 +26,7 @@ export function AddCategoryDialog() {
     };
 
     return (
-        <Dialog
-            open={open}
-            onOpenChange={setOpen}
-        >
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger
                 render={
                     <Button>
@@ -39,22 +36,51 @@ export function AddCategoryDialog() {
                 }
             />
 
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>
-                        Add category
-                    </DialogTitle>
+            <DialogContent
+                className="
+                    overflow-hidden
+                    border-border/60
+                    bg-background/95
+                    p-0
+                    shadow-2xl
+                    backdrop-blur-xl
+                    sm:max-w-lg
+                "
+            >
+                {/* Header */}
+                <DialogHeader className="border-b bg-muted/20 px-6 py-5">
+                    <div className="flex items-start gap-3">
+                        <div
+                            className="
+                                mt-0.5
+                                flex size-10 shrink-0 items-center justify-center
+                                rounded-xl
+                                bg-primary/10
+                                text-primary
+                            "
+                        >
+                            <Tag className="size-5" />
+                        </div>
 
-                    <DialogDescription>
-                        Create a category to organize your
-                        transactions.
-                    </DialogDescription>
+                        <div className="min-w-0">
+                            <DialogTitle className="text-lg font-semibold tracking-tight">
+                                Add category
+                            </DialogTitle>
+
+                            <DialogDescription className="mt-1 text-sm leading-relaxed">
+                                Create a category to organize your transactions.
+                            </DialogDescription>
+                        </div>
+                    </div>
                 </DialogHeader>
 
-                <AddCategoryForm
-                    onSuccess={handleSuccess}
-                    onCancel={() => setOpen(false)}
-                />
+                {/* Form Body */}
+                <div className="max-h-[calc(100vh-10rem)] overflow-y-auto px-6 py-5">
+                    <AddCategoryForm
+                        onSuccess={handleSuccess}
+                        onCancel={() => setOpen(false)}
+                    />
+                </div>
             </DialogContent>
         </Dialog>
     );

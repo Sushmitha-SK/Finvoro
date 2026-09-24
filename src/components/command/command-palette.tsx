@@ -82,10 +82,8 @@ function PaletteBody() {
     const term = query.trim();
     const active = term.length >= 2;
     const results = active && found.term === term ? found.results : [];
-    // Still waiting until the response for the *current* term has arrived.
     const searching = active && found.term !== term;
 
-    // Debounced server search across the user's transactions.
     useEffect(() => {
         if (!active) return;
 
@@ -100,7 +98,6 @@ function PaletteBody() {
 
                 setFound({ term, results: data.results ?? [] });
             } catch {
-                // aborted or offline - leave the spinner logic to the next keystroke
             }
         }, 250);
 
@@ -153,7 +150,6 @@ function PaletteBody() {
                 prefill: { ...parsed, amount: String(parsed.amount) },
             });
         } catch {
-            // toast already shown
         }
     }
 

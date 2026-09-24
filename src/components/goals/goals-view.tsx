@@ -18,6 +18,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import { formatShortDate } from "@/lib/dates";
 import { useMoney } from "@/stores/app-store";
 import type { GoalSummary } from "@/types/finance";
@@ -92,84 +100,105 @@ export function GoalsView({ goals }: { goals: GoalSummary[] }) {
                     </CardContent>
                 </Card>
             ) : (
-                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                    {goals.map((goal) => {
-                        const done = goal.percentage >= 100;
-                        const color = goal.color ?? "#10b981";
+                <div className="rounded-md border bg-card overflow-hidden">
+                    <Table>
+                        <TableHeader>
+                            <TableRow className="bg-muted/50 hover:bg-muted/50">
+                                <TableHead>Goal</TableHead>
+                                <TableHead>Progress</TableHead>
+                                <TableHead>Amounts</TableHead>
+                                <TableHead>Status / Target</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {goals.map((goal) => {
+                                const done = goal.percentage >= 100;
+                                const color = goal.color ?? "#10b981";
 
-                        return (
-                            <Card key={goal.id}>
-                                <CardContent className="space-y-4 p-5">
-                                    <div className="flex items-start justify-between gap-2">
-                                        <div className="min-w-0">
-                                            <p className="flex items-center gap-2 truncate font-semibold">
+                                return (
+                                    <TableRow key={goal.id}>
+                                        <TableCell className="font-medium">
+                                            <div className="flex items-center gap-2.5">
                                                 <span className="size-2.5 shrink-0 rounded-full" style={{ background: color }} />
-                                                {goal.name}
-                                            </p>
-                                            {goal.targetDate && (
-                                                <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
-                                                    <CalendarClock className="size-3" /> by {formatShortDate(goal.targetDate)}
-                                                </p>
-                                            )}
-                                        </div>
+                                                <div>
+                                                    <p className="font-semibold text-foreground">{goal.name}</p>
+                                                    {goal.targetDate && (
+                                                        <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                                                            <CalendarClock className="size-3" /> by {formatShortDate(goal.targetDate)}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </TableCell>
 
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="size-8" aria-label={`Actions for ${goal.name}`} />}>
-                                                <MoreHorizontal className="size-4" />
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuItem
-                                                    onClick={() => {
-                                                        setEditing(goal);
-                                                        setFormOpen(true);
-                                                    }}
+                                        <TableCell className="w-[200px]">
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-xs text-muted-foreground">
+                                                    <span>{Math.round(goal.percentage)}%</span>
+                                                </div>
+                                                <div
+                                                    className="h-2 overflow-hidden rounded-full bg-muted"
+                                                    role="progressbar"
+                                                    aria-valuenow={Math.round(goal.percentage)}
+                                                    aria-valuemin={0}
+                                                    aria-valuemax={100}
+                                                    aria-label={`${goal.name} progress`}
                                                 >
-                                                    <Pencil className="size-4" /> Edit
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem variant="destructive" onClick={() => setDeleting(goal)}>
-                                                    <Trash2 className="size-4" /> Delete
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </div>
+                                                    <div className="h-full rounded-full transition-[width] duration-700" style={{ width: `${goal.percentage}%`, background: color }} />
+                                                </div>
+                                            </div>
+                                        </TableCell>
 
-                                    <div>
-                                        <div className="flex items-baseline justify-between">
-                                            <span className="text-2xl font-semibold tracking-tight">{money(goal.currentAmount)}</span>
-                                            <span className="text-sm text-muted-foreground">of {money(goal.targetAmount)}</span>
-                                        </div>
-                                        <div
-                                            className="mt-2 h-2.5 overflow-hidden rounded-full bg-muted"
-                                            role="progressbar"
-                                            aria-valuenow={Math.round(goal.percentage)}
-                                            aria-valuemin={0}
-                                            aria-valuemax={100}
-                                            aria-label={`${goal.name} progress`}
-                                        >
-                                            <div className="h-full rounded-full transition-[width] duration-700" style={{ width: `${goal.percentage}%`, background: color }} />
-                                        </div>
-                                        <p className="mt-2 text-xs text-muted-foreground">
+                                        <TableCell>
+                                            <div className="font-medium">{money(goal.currentAmount)}</div>
+                                            <div className="text-xs text-muted-foreground">of {money(goal.targetAmount)}</div>
+                                        </TableCell>
+
+                                        <TableCell className="text-sm">
                                             {done ? (
                                                 <span className="inline-flex items-center gap-1 font-medium text-emerald-600 dark:text-emerald-400">
                                                     <PartyPopper className="size-3.5" /> Goal reached!
                                                 </span>
                                             ) : goal.monthlyNeeded !== null ? (
-                                                <>
-                                                    Save <strong className="text-foreground">{money(goal.monthlyNeeded)}</strong> a month to get there
-                                                </>
+                                                <span>
+                                                    Save <strong className="text-foreground">{money(goal.monthlyNeeded)}</strong>/mo
+                                                </span>
                                             ) : (
                                                 `${Math.round(goal.percentage)}% complete`
                                             )}
-                                        </p>
-                                    </div>
+                                        </TableCell>
 
-                                    <Button variant="outline" className="w-full" onClick={() => setContributing(goal)}>
-                                        Add or withdraw
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
+                                        <TableCell className="text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Button variant="outline" size="sm" onClick={() => setContributing(goal)}>
+                                                    Contribute
+                                                </Button>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="size-8" aria-label={`Actions for ${goal.name}`} />}>
+                                                        <MoreHorizontal className="size-4" />
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                setEditing(goal);
+                                                                setFormOpen(true);
+                                                            }}
+                                                        >
+                                                            <Pencil className="size-4" /> Edit
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem variant="destructive" onClick={() => setDeleting(goal)}>
+                                                            <Trash2 className="size-4" /> Delete
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
                 </div>
             )}
 

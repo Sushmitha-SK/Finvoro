@@ -247,8 +247,7 @@ export function detectSubscriptions(
                 ? (Math.max(...amounts) - Math.min(...amounts)) / medianAmount
                 : 1;
 
-        // Two hits must match exactly, otherwise a lunch spot twice a month
-        // would look like a subscription.
+     
         const tolerance = sorted.length >= 3 ? 0.2 : 0.01;
 
         if (spread > tolerance) continue;
@@ -268,9 +267,6 @@ export function detectSubscriptions(
 
         const last = sorted[sorted.length - 1];
         const daysSinceLast = (now.getTime() - last.date.getTime()) / DAY_MS;
-
-        // Drop anything whose next charge is more than one cycle overdue - most
-        // likely cancelled.
         if (daysSinceLast > medianDays * 2) continue;
 
         const next = new Date(last.date);
@@ -326,10 +322,6 @@ export function computeForecast(input: {
     } = input;
 
     const pace = daysElapsed > 0 ? (expensesSoFar / daysElapsed) * totalDays : 0;
-
-    // Early in the month a single big payment (rent on day 1) makes a linear
-    // pace wildly wrong. Trust last month's total for the first few days, then
-    // fade to the live pace by day 15.
     const weight = clamp((daysElapsed - 3) / 12, 0, 1);
     const baseline = Math.max(previousExpenses, expensesSoFar);
     const projectedExpenses =

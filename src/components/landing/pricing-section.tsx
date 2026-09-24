@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import Link from "next/link";
+import { Show } from "@clerk/nextjs";
 
 const plans = [
     {
@@ -75,8 +76,8 @@ export function PricingSection() {
                         <div
                             key={plan.name}
                             className={`relative flex h-full flex-col rounded-2xl border bg-card p-6 sm:p-7 ${plan.featured
-                                    ? "border-foreground shadow-lg"
-                                    : "shadow-sm"
+                                ? "border-foreground shadow-lg"
+                                : "shadow-sm"
                                 }`}
                         >
                             {plan.featured && (
@@ -124,15 +125,29 @@ export function PricingSection() {
                                 </ul>
                             </div>
 
-                            <Link
-                                href="/sign-up"
-                                className={`mt-8 inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium transition-colors ${plan.featured
+                            <Show when="signed-out">
+                                <Link
+                                    href="/sign-up"
+                                    className={`mt-8 inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium transition-colors ${plan.featured
                                         ? "bg-foreground text-background hover:bg-foreground/90"
                                         : "border bg-background hover:bg-muted"
-                                    }`}
-                            >
-                                {plan.cta}
-                            </Link>
+                                        }`}
+                                >
+                                    {plan.cta}
+                                </Link>
+                            </Show>
+
+                            <Show when="signed-in">
+                                <Link
+                                    href="/dashboard"
+                                    className={`mt-8 inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium transition-colors ${plan.featured
+                                        ? "bg-foreground text-background hover:bg-foreground/90"
+                                        : "border bg-background hover:bg-muted"
+                                        }`}
+                                >
+                                    Go to Dashboard
+                                </Link>
+                            </Show>
                         </div>
                     ))}
                 </div>
@@ -140,4 +155,3 @@ export function PricingSection() {
         </section>
     );
 }
-

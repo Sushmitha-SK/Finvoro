@@ -15,7 +15,6 @@ export type ActionResult<T = undefined> =
     | { ok: false; error: string };
 
 function refresh() {
-    // The layout carries the category list, so refresh everything.
     revalidatePath("/", "layout");
 }
 
@@ -89,7 +88,6 @@ export async function updateTransaction(id: string, input: unknown): Promise<Act
         const categoryRecord = await findOrCreateCategory(userId, category);
         const transactionDate = parseDateInput(date);
 
-        // Ownership is part of the filter, so another user's id simply matches nothing.
         const result = await prisma.transaction.updateMany({
             where: { id, clerkUserId: userId },
             data: {

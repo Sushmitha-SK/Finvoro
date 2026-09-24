@@ -17,7 +17,6 @@ function mulberry32(seed: number) {
     };
 }
 
-// Sample amounts are written in INR and scaled for other currencies.
 const CURRENCY_SCALE: Record<string, number> = {
     INR: 1,
     USD: 0.012,
@@ -180,7 +179,6 @@ export async function seedSampleData(
 }
 
 export async function clearAllUserData(clerkUserId: string) {
-    // Order matters: transactions/budgets reference categories (onDelete: Restrict).
     await prisma.$transaction([
         prisma.transaction.deleteMany({ where: { clerkUserId } }),
         prisma.budget.deleteMany({ where: { clerkUserId } }),

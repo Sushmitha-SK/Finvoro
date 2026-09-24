@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CircleDollarSign } from "lucide-react";
+import { Show } from "@clerk/nextjs";
 
 const productLinks = [
     { label: "Features", href: "#features" },
@@ -89,18 +90,41 @@ export function LandingFooter() {
                             Account
                         </h3>
 
-                        <ul className="mt-4 space-y-3">
-                            {accountLinks.map((link) => (
-                                <li key={link.label}>
+                        <Show when="signed-out">
+                            <ul className="mt-4 space-y-3">
+                                {accountLinks.map((link) => (
+                                    <li key={link.label}>
+                                        <Link
+                                            href={link.href}
+                                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </Show>
+
+                        <Show when="signed-in">
+                            <ul className="mt-4 space-y-3">
+                                <li>
                                     <Link
-                                        href={link.href}
+                                        href="/dashboard"
                                         className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                                     >
-                                        {link.label}
+                                        Dashboard
                                     </Link>
                                 </li>
-                            ))}
-                        </ul>
+                                <li>
+                                    <Link
+                                        href="/settings"
+                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                    >
+                                        Settings
+                                    </Link>
+                                </li>
+                            </ul>
+                        </Show>
                     </div>
                 </div>
 
@@ -129,4 +153,3 @@ export function LandingFooter() {
         </footer>
     );
 }
-

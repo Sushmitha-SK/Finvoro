@@ -18,13 +18,11 @@ function greetingNow() {
 
 export function DashboardHeader({ monthLabel }: { monthLabel: string }) {
     const firstName = useUser().user?.firstName;
-    // Depends on the visitor's local clock: the server snapshot is neutral, the client one is real.
     const greeting = useSyncExternalStore(subscribeNever, greetingNow, () => "Welcome back");
     const aiEnabled = useAppStore((state) => state.aiEnabled);
     const openDialog = useUIStore((state) => state.openTransactionDialog);
     const askCopilot = useUIStore((state) => state.askCopilot);
 
-    // Depends on the visitor's local clock, so it's set after mount.
     return (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>

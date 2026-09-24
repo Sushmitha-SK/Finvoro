@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, Target } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -115,12 +115,48 @@ function GoalForm({ goal, onDone }: { goal?: GoalSummary | null; onDone: () => v
 export function GoalFormDialog({ open, onOpenChange, goal }: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>{goal ? "Edit goal" : "New savings goal"}</DialogTitle>
-                    <DialogDescription>Track progress toward something that matters.</DialogDescription>
+            <DialogContent
+                className="
+                    overflow-hidden
+                    border-border/60
+                    bg-background/95
+                    p-0
+                    shadow-2xl
+                    backdrop-blur-xl
+                    sm:max-w-lg
+                "
+            >
+                {/* Header */}
+                <DialogHeader className="border-b bg-muted/20 px-6 py-5">
+                    <div className="flex items-start gap-3">
+                        <div
+                            className="
+                                mt-0.5
+                                flex size-10 shrink-0 items-center justify-center
+                                rounded-xl
+                                bg-primary/10
+                                text-primary
+                            "
+                        >
+                            <Target className="size-5" />
+                        </div>
+
+                        <div className="min-w-0">
+                            <DialogTitle className="text-lg font-semibold tracking-tight">
+                                {goal ? "Edit goal" : "New savings goal"}
+                            </DialogTitle>
+
+                            <DialogDescription className="mt-1 text-sm leading-relaxed">
+                                Track progress toward something that matters.
+                            </DialogDescription>
+                        </div>
+                    </div>
                 </DialogHeader>
-                <GoalForm goal={goal} onDone={() => onOpenChange(false)} />
+
+                {/* Form Body */}
+                <div className="max-h-[calc(100vh-10rem)] overflow-y-auto px-6 py-5">
+                    <GoalForm goal={goal} onDone={() => onOpenChange(false)} />
+                </div>
             </DialogContent>
         </Dialog>
     );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Pencil } from "lucide-react";
+import { Pencil, Tag } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,7 @@ export function EditCategoryDialog({
                 render={
                     <Button
                         variant="ghost"
-                        size="icon-sm"
+                        size="icon-xs"
                         aria-label={`Edit ${category.name}`}
                     >
                         <Pencil />
@@ -55,23 +55,52 @@ export function EditCategoryDialog({
                 }
             />
 
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>
-                        Edit category
-                    </DialogTitle>
+            <DialogContent
+                className="
+                    overflow-hidden
+                    border-border/60
+                    bg-background/95
+                    p-0
+                    shadow-2xl
+                    backdrop-blur-xl
+                    sm:max-w-lg
+                "
+            >
+                {/* Header */}
+                <DialogHeader className="border-b bg-muted/20 px-6 py-5">
+                    <div className="flex items-start gap-3">
+                        <div
+                            className="
+                                mt-0.5
+                                flex size-10 shrink-0 items-center justify-center
+                                rounded-xl
+                                bg-primary/10
+                                text-primary
+                            "
+                        >
+                            <Tag className="size-5" />
+                        </div>
 
-                    <DialogDescription>
-                        Update the name, icon, or color of this
-                        category.
-                    </DialogDescription>
+                        <div className="min-w-0">
+                            <DialogTitle className="text-lg font-semibold tracking-tight">
+                                Edit category
+                            </DialogTitle>
+
+                            <DialogDescription className="mt-1 text-sm leading-relaxed">
+                                Update the name, icon, or color of this category.
+                            </DialogDescription>
+                        </div>
+                    </div>
                 </DialogHeader>
 
-                <AddCategoryForm
-                    category={category}
-                    onSuccess={handleSuccess}
-                    onCancel={() => setOpen(false)}
-                />
+                {/* Form Body */}
+                <div className="max-h-[calc(100vh-10rem)] overflow-y-auto px-6 py-5">
+                    <AddCategoryForm
+                        category={category}
+                        onSuccess={handleSuccess}
+                        onCancel={() => setOpen(false)}
+                    />
+                </div>
             </DialogContent>
         </Dialog>
     );

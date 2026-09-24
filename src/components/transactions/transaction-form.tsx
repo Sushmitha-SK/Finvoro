@@ -188,11 +188,10 @@ export function TransactionForm({ editingId, prefill, source, onDone }: Props) {
                 body: JSON.stringify({ description }),
             });
 
-            if (!response.ok) return; // silent: this is a nicety, not something to nag about
+            if (!response.ok) return; 
 
             const data = (await response.json()) as { category: string; isNewCategory: boolean };
 
-            // The user may have chosen one while we were waiting.
             if (getValues("category")) return;
 
             if (data.isNewCategory) setExtraCategories((existing) => [...existing, data.category]);
@@ -200,7 +199,6 @@ export function TransactionForm({ editingId, prefill, source, onDone }: Props) {
             setValue("category", data.category, { shouldValidate: true });
             setAiFilled(true);
         } catch {
-            // ignore
         } finally {
             setBusy(null);
         }
@@ -393,3 +391,5 @@ export function TransactionForm({ editingId, prefill, source, onDone }: Props) {
         </form>
     );
 }
+
+

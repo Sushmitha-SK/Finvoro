@@ -4,6 +4,7 @@ import {
     Check,
     Sparkles,
 } from "lucide-react";
+import { Show } from "@clerk/nextjs";
 
 import { DashboardPreview } from "./dashboard-preview";
 
@@ -17,7 +18,7 @@ export function HeroSection() {
     return (
         <section className="relative overflow-hidden border-b">
             <div className="absolute inset-0 -z-10">
-                <div className="absolute left-1/2 top-0 size-[600px] -translate-x-1/2 rounded-full bg-primary/5 blur-3xl" />
+                <div className="absolute left-1/2 top-0 size-150 -translate-x-1/2 rounded-full bg-primary/5 blur-3xl" />
             </div>
 
             <div className="mx-auto max-w-7xl px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pb-24">
@@ -42,13 +43,25 @@ export function HeroSection() {
                     </p>
 
                     <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                        <Link
-                            href="/sign-up"
-                            className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/10 transition-all hover:opacity-90"
-                        >
-                            Get started free
-                            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                        </Link>
+                        <Show when="signed-out">
+                            <Link
+                                href="/sign-up"
+                                className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/10 transition-all hover:opacity-90"
+                            >
+                                Get started free
+                                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                            </Link>
+                        </Show>
+
+                        <Show when="signed-in">
+                            <Link
+                                href="/dashboard"
+                                className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/10 transition-all hover:opacity-90"
+                            >
+                                Go to Dashboard
+                                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                            </Link>
+                        </Show>
 
                         <Link
                             href="#features"
@@ -80,4 +93,3 @@ export function HeroSection() {
         </section>
     );
 }
-

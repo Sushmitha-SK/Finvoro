@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Wallet } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,26 +42,56 @@ export function AddBudgetDialog({
             onOpenChange={setOpen}
         >
             <DialogTrigger render={<Button />}>
-                <Plus />
+                <Plus className="size-4" />
                 Add budget
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-lg">
-                <DialogHeader>
-                    <DialogTitle>
-                        Add budget
-                    </DialogTitle>
+            <DialogContent
+                className="
+                    overflow-hidden
+                    border-border/60
+                    bg-background/95
+                    p-0
+                    shadow-2xl
+                    backdrop-blur-xl
+                    sm:max-w-lg
+                "
+            >
+                {/* Header */}
+                <DialogHeader className="border-b bg-muted/20 px-6 py-5">
+                    <div className="flex items-start gap-3">
+                        <div
+                            className="
+                                mt-0.5
+                                flex size-10 shrink-0 items-center justify-center
+                                rounded-xl
+                                bg-primary/10
+                                text-primary
+                            "
+                        >
+                            <Wallet className="size-5" />
+                        </div>
 
-                    <DialogDescription>
-                        Set a monthly spending limit for a category.
-                    </DialogDescription>
+                        <div className="min-w-0">
+                            <DialogTitle className="text-lg font-semibold tracking-tight">
+                                Add budget
+                            </DialogTitle>
+
+                            <DialogDescription className="mt-1 text-sm leading-relaxed">
+                                Set a monthly spending limit for a category.
+                            </DialogDescription>
+                        </div>
+                    </div>
                 </DialogHeader>
 
-                <AddBudgetForm
-                    categories={categories}
-                    onSuccess={handleSuccess}
-                    onCancel={() => setOpen(false)}
-                />
+                {/* Form Body */}
+                <div className="max-h-[calc(100vh-10rem)] overflow-y-auto px-6 py-5">
+                    <AddBudgetForm
+                        categories={categories}
+                        onSuccess={handleSuccess}
+                        onCancel={() => setOpen(false)}
+                    />
+                </div>
             </DialogContent>
         </Dialog>
     );
