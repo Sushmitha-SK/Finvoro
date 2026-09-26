@@ -1,67 +1,25 @@
 import { Check } from "lucide-react";
 import Link from "next/link";
 import { Show } from "@clerk/nextjs";
+import { plans } from "@/config/landing-content";
 
-const plans = [
-    {
-        name: "Free",
-        description: "Everything you need to get started.",
-        price: "₹0",
-        period: "forever",
-        features: [
-            "Track transactions",
-            "Create categories",
-            "Basic budgets",
-            "Monthly overview",
-        ],
-        cta: "Get started",
-        featured: false,
-    },
-    {
-        name: "Pro",
-        description: "More insight and control over your finances.",
-        price: "₹299",
-        period: "per month",
-        features: [
-            "Everything in Free",
-            "Advanced reports",
-            "Smart financial insights",
-            "Detailed spending analysis",
-            "Priority features",
-        ],
-        cta: "Start with Pro",
-        featured: true,
-    },
-    {
-        name: "Premium",
-        description: "For users who want the complete experience.",
-        price: "₹599",
-        period: "per month",
-        features: [
-            "Everything in Pro",
-            "Advanced financial analytics",
-            "Extended insights",
-            "Unlimited financial history",
-            "Premium support",
-        ],
-        cta: "Choose Premium",
-        featured: false,
-    },
-];
 
 export function PricingSection() {
     return (
         <section
             id="pricing"
-            className="border-b bg-background"
-        >
-            <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
-                <div className="mx-auto max-w-2xl text-center">
-                    <p className="text-sm font-medium text-muted-foreground">
-                        Simple pricing
-                    </p>
+            className="relative overflow-hidden border-b bg-background py-20 sm:py-24 lg:py-28">
+            <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-30 dark:opacity-20 pointer-events-none">
+                <div className="h-100 w-150 rounded-full bg-primary/20 blur-[120px]" />
+            </div>
 
-                    <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-2xl text-center">
+                    <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+                        Simple Pricing
+                    </span>
+
+                    <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
                         Choose the plan that fits you.
                     </h2>
 
@@ -71,55 +29,57 @@ export function PricingSection() {
                     </p>
                 </div>
 
-                <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-3">
+                <div className="mt-16 grid items-center gap-8 lg:grid-cols-3">
                     {plans.map((plan) => (
                         <div
                             key={plan.name}
-                            className={`relative flex h-full flex-col rounded-2xl border bg-card p-6 sm:p-7 ${plan.featured
-                                ? "border-foreground shadow-lg"
-                                : "shadow-sm"
+                            className={`relative flex h-full flex-col transition-all duration-300 ${plan.featured
+                                    ? "bg-linear-to-b from-primary/[0.14] via-card to-card border-2 border-primary shadow-2xl shadow-primary/15 scale-[1.03] rounded-3xl p-8 sm:p-10 z-10"
+                                    : "border bg-card shadow-sm hover:shadow-md rounded-3xl p-8"
                                 }`}
                         >
                             {plan.featured && (
-                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-foreground px-3 py-1 text-[11px] font-medium text-background">
-                                    Recommended
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground shadow-sm">
+                                    Most Popular
                                 </div>
                             )}
 
                             <div>
-                                <h3 className="text-base font-semibold">
+                                <h3 className="text-lg font-bold">
                                     {plan.name}
                                 </h3>
 
-                                <p className="mt-2 min-h-12 text-sm leading-6 text-muted-foreground">
+                                <p className={`mt-2 text-sm leading-6 text-muted-foreground ${plan.featured ? "min-h-16" : "min-h-12"}`}>
                                     {plan.description}
                                 </p>
                             </div>
 
-                            <div className="mt-6 flex items-end gap-1">
-                                <span className="text-3xl font-semibold tracking-tight">
+                            <div className="mt-6 flex items-baseline gap-1">
+                                <span className="text-4xl font-extrabold tracking-tight">
                                     {plan.price}
                                 </span>
-
-                                <span className="mb-1 text-xs text-muted-foreground">
+                                <span className="text-sm font-medium text-muted-foreground">
                                     / {plan.period}
                                 </span>
                             </div>
 
-                            <div className="mt-7 flex-1">
-                                <p className="text-xs font-medium">
-                                    Includes:
+                            <div className="mt-8 flex-1 border-t border-border/60 pt-6">
+                                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                    What&apos;s included
                                 </p>
 
-                                <ul className="mt-4 space-y-3">
+                                <ul className="mt-4 space-y-3.5">
                                     {plan.features.map((feature) => (
                                         <li
                                             key={feature}
-                                            className="flex items-start gap-2.5 text-sm text-muted-foreground"
+                                            className="flex items-start gap-3 text-sm text-muted-foreground"
                                         >
-                                            <Check className="mt-0.5 size-4 shrink-0 text-foreground" />
-
-                                            <span>{feature}</span>
+                                            <div className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                                <Check className="size-3.5 stroke-[2.5]" />
+                                            </div>
+                                            <span className="font-medium text-foreground/90">
+                                                {feature}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
@@ -128,9 +88,9 @@ export function PricingSection() {
                             <Show when="signed-out">
                                 <Link
                                     href="/sign-up"
-                                    className={`mt-8 inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium transition-colors ${plan.featured
-                                        ? "bg-foreground text-background hover:bg-foreground/90"
-                                        : "border bg-background hover:bg-muted"
+                                    className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-xl px-4 text-sm font-semibold transition-all shadow-sm ${plan.featured
+                                            ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary/25"
+                                            : "border border-border bg-background hover:bg-secondary text-foreground"
                                         }`}
                                 >
                                     {plan.cta}
@@ -140,9 +100,9 @@ export function PricingSection() {
                             <Show when="signed-in">
                                 <Link
                                     href="/dashboard"
-                                    className={`mt-8 inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium transition-colors ${plan.featured
-                                        ? "bg-foreground text-background hover:bg-foreground/90"
-                                        : "border bg-background hover:bg-muted"
+                                    className={`mt-8 inline-flex h-11 w-full items-center justify-center rounded-xl px-4 text-sm font-semibold transition-all shadow-sm ${plan.featured
+                                            ? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary/25"
+                                            : "border border-border bg-background hover:bg-secondary text-foreground"
                                         }`}
                                 >
                                     Go to Dashboard

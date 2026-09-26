@@ -1,155 +1,198 @@
+'use client'
+
 import Link from "next/link";
-import { CircleDollarSign } from "lucide-react";
+import { ArrowUp, CircleDollarSign, Mail } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { Button } from "../ui/button";
 import { Show } from "@clerk/nextjs";
+import { accountLinks, legalLinks, productLinks, resourceLinks, socialLinks } from "@/config/landing-content";
 
-const productLinks = [
-    { label: "Features", href: "#features" },
-    { label: "Insights", href: "#insights" },
-    { label: "Pricing", href: "#pricing" },
-];
+const navLinkClass =
+    "inline-block rounded-sm text-sm text-foreground/70 transition-colors duration-200 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
-const resourceLinks = [
-    { label: "How it works", href: "#how-it-works" },
-    { label: "FAQ", href: "#faq" },
-];
+const containerVariants: Variants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.1,
+        },
+    },
+};
 
-const accountLinks = [
-    { label: "Sign in", href: "/sign-in" },
-    { label: "Get started", href: "/sign-up" },
-];
+const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: "easeOut" },
+    },
+};
 
 export function LandingFooter() {
-    return (
-        <footer className="border-t bg-background">
-            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-                <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(3,1fr)]">
-                    {/* Brand */}
-                    <div className="max-w-sm">
-                        <Link
-                            href="/"
-                            className="inline-flex items-center gap-2"
-                        >
-                            <span className="flex size-8 items-center justify-center rounded-lg bg-foreground text-background">
-                                <CircleDollarSign className="size-5" />
-                            </span>
+    const currentYear = new Date().getFullYear();
 
-                            <span className="text-lg font-semibold tracking-tight">
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    return (
+        <footer
+            id="footer"
+            className="relative overflow-hidden border-t bg-background"
+            aria-labelledby="footer-heading"
+        >
+            <h2 id="footer-heading" className="sr-only">
+                Site Footer
+            </h2>
+
+            <div className="container relative z-10 w-full px-4 pt-16 pb-10 md:px-16 lg:px-24 xl:px-32">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                    className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)]"
+                >
+                    {/* Brand column */}
+                    <motion.div variants={itemVariants} className="max-w-sm">
+                        <Link href="/" className="inline-flex items-center gap-2.5">
+                            <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                                <CircleDollarSign className="size-4.5" />
+                            </span>
+                            <span className="text-lg font-semibold tracking-tight text-foreground">
                                 Finvoro
                             </span>
                         </Link>
 
-                        <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                            A simpler way to track, plan, and understand
-                            your personal finances.
+                        <p className="mt-4 max-w-[30ch] text-sm leading-relaxed text-muted-foreground">
+                            A simpler way to track, plan, and understand your personal finances.
                         </p>
-                    </div>
 
-                    {/* Product */}
-                    <div>
-                        <h3 className="text-sm font-semibold">
-                            Product
-                        </h3>
-
-                        <ul className="mt-4 space-y-3">
-                            {productLinks.map((link) => (
-                                <li key={link.label}>
+                        <ul className="mt-6 flex items-center gap-2" aria-label="Social media">
+                            {socialLinks.map(({ label, href, icon: Icon }) => (
+                                <li key={label}>
                                     <Link
-                                        href={link.href}
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                                        href={href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={label}
+                                        className="flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-200 hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                                     >
-                                        {link.label}
+                                        <Icon className="size-4" />
                                     </Link>
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </motion.div>
 
-                    {/* Resources */}
-                    <div>
-                        <h3 className="text-sm font-semibold">
-                            Resources
-                        </h3>
-
-                        <ul className="mt-4 space-y-3">
-                            {resourceLinks.map((link) => (
-                                <li key={link.label}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Account */}
-                    <div>
-                        <h3 className="text-sm font-semibold">
-                            Account
-                        </h3>
-
-                        <Show when="signed-out">
-                            <ul className="mt-4 space-y-3">
-                                {accountLinks.map((link) => (
-                                    <li key={link.label}>
-                                        <Link
-                                            href={link.href}
-                                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                        >
-                                            {link.label}
+                    <motion.nav
+                        aria-label="Footer Navigation"
+                        variants={itemVariants}
+                        className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:gap-12"
+                    >
+                        <div>
+                            <h3 className="mb-4 text-sm font-medium text-foreground">
+                                Product
+                            </h3>
+                            <ul className="space-y-3">
+                                {productLinks.map((item) => (
+                                    <li key={item.label}>
+                                        <Link href={item.href} className={navLinkClass}>
+                                            {item.label}
                                         </Link>
                                     </li>
                                 ))}
                             </ul>
-                        </Show>
+                        </div>
 
-                        <Show when="signed-in">
-                            <ul className="mt-4 space-y-3">
-                                <li>
-                                    <Link
-                                        href="/dashboard"
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                        Dashboard
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        href="/settings"
-                                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                                    >
-                                        Settings
-                                    </Link>
-                                </li>
+                        <div>
+                            <h3 className="mb-4 text-sm font-medium text-foreground">
+                                Resources
+                            </h3>
+                            <ul className="space-y-3">
+                                {resourceLinks.map((item) => (
+                                    <li key={item.label}>
+                                        <Link href={item.href} className={navLinkClass}>
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
-                        </Show>
-                    </div>
-                </div>
+                        </div>
 
-                <div className="mt-10 flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-xs text-muted-foreground">
-                        © {new Date().getFullYear()} Finvoro. All rights reserved.
-                    </p>
+                        <div className="col-span-2 sm:col-span-1">
+                            <h3 className="mb-4 text-sm font-medium text-foreground">
+                                Account
+                            </h3>
+                            <Show when="signed-out">
+                                <ul className="space-y-3">
+                                    {accountLinks.map((item) => (
+                                        <li key={item.label}>
+                                            <Link href={item.href} className={navLinkClass}>
+                                                {item.label}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </Show>
+                            <Show when="signed-in">
+                                <ul className="space-y-3">
+                                    <li>
+                                        <Link href="/dashboard" className={navLinkClass}>
+                                            Dashboard
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/settings" className={navLinkClass}>
+                                            Settings
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </Show>
+                        </div>
+                    </motion.nav>
+                </motion.div>
 
-                    <div className="flex flex-wrap gap-x-5 gap-y-2">
-                        <Link
-                            href="#"
-                            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                {/* Bottom bar */}
+                <motion.div
+                    variants={itemVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                    className="mt-14 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between"
+                >
+                    <p className="tabular-nums">&copy; {currentYear} Finvoro. All rights reserved.</p>
+
+                    <div className="flex flex-wrap items-center gap-6">
+                        <nav aria-label="Legal">
+                            <ul className="flex gap-6">
+                                {legalLinks.map((item) => (
+                                    <li key={item.label}>
+                                        <Link
+                                            href={item.href}
+                                            className="rounded-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            onClick={scrollToTop}
+                            className="h-auto cursor-pointer gap-1.5 p-0 text-muted-foreground hover:bg-transparent hover:text-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                         >
-                            Privacy
-                        </Link>
-
-                        <Link
-                            href="#"
-                            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                            Terms
-                        </Link>
+                            <span className="text-xs">Back to top</span>
+                            <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
+                        </Button>
                     </div>
-                </div>
+                </motion.div>
             </div>
+
+          
         </footer>
     );
 }
