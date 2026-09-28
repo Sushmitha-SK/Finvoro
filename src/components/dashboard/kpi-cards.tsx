@@ -51,7 +51,6 @@ function Kpi({
     return (
         <Card className="group relative overflow-hidden surface-card">
             <CardContent className="flex flex-col justify-between gap-4 p-5">
-                {/* Header: Title on left, Icon moved to top right */}
                 <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         {title}

@@ -78,7 +78,6 @@ export function TransactionsToolbar() {
                     </kbd>
                 </div>
 
-                {/* Vercel-style Segmented Control */}
                 <div className="flex items-center gap-x-2">
                     <div className="inline-flex h-9 items-center justify-center rounded-lg bg-muted/60 p-1 border border-border/40" role="radiogroup" aria-label="Transaction type">
                         {TYPES.map((option) => (
@@ -177,3 +176,5 @@ export function TransactionsToolbar() {
         </div>
     );
 }
+
+

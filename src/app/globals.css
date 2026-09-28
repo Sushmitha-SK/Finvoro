@@ -68,6 +68,9 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-input-border: var(--input-border);
+  --color-input-border-hover: var(--input-border-hover);
 }
 
 :root {
@@ -132,6 +135,8 @@
 
   --sidebar-border: #E2E8F0;
   --sidebar-ring: rgba(15, 118, 110, 0.5);
+
+
 }
 
 .dark {
@@ -194,6 +199,8 @@
 
   --sidebar-border: rgba(148, 163, 184, 0.16);
   --sidebar-ring: rgba(45, 212, 191, 0.5);
+
+
 }
 
 @layer base {
@@ -225,6 +232,10 @@
 }
 
 @layer utilities {
+  .surface-card {
+    @apply border-border/5 bg-linear-to-b from-card/50 to-card transition-all hover:border-border hover:shadow-xs 
+  }
+
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }

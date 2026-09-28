@@ -192,16 +192,17 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
             )}
 
             {/* Main Table Card */}
-            <Card className={cn("overflow-hidden p-0 shadow-sm transition-opacity duration-200", pending && "opacity-60")}>
+            <Card className={cn("overflow-hidden p-0 surface-card", pending && "opacity-60")}>
                 <Table>
                     <TableHeader className="bg-muted/60 border-b">
                         <TableRow className="hover:bg-transparent">
                             <TableHead className="w-12 pl-4 h-11">
                                 <input
                                     type="checkbox"
-                                    aria-label="Select all on this page"
-                                    className="size-4 rounded accent-primary cursor-pointer"
+                                    aria-label="Select all transactions on this page"
+                                    className="size-4 rounded accent-primary cursor-pointer disabled:opacity-50"
                                     checked={allSelected}
+                                    disabled={rows.length === 0}
                                     ref={(element) => {
                                         if (element) element.indeterminate = someSelected;
                                     }}
@@ -209,89 +210,115 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
                                 />
                             </TableHead>
                             <SortHeader field="description" label="Description" sort={sort} dir={dir} onSort={onSort} />
-                            <TableHead className="hidden h-11 text-xs font-semibold uppercase tracking-wider md:table-cell text-muted-foreground">Category</TableHead>
+                            <TableHead className="hidden h-11 text-xs font-semibold uppercase tracking-wider md:table-cell text-muted-foreground">
+                                Category
+                            </TableHead>
                             <SortHeader field="date" label="Date" sort={sort} dir={dir} onSort={onSort} className="hidden sm:table-cell" />
                             <SortHeader field="amount" label="Amount" sort={sort} dir={dir} onSort={onSort} className="text-right" />
-                            <TableHead className="w-12 pr-4 h-11" />
+                            <TableHead className="w-12 pr-4 h-11" aria-label="Actions" />
                         </TableRow>
                     </TableHeader>
 
                     <TableBody>
-                        {rows.map((row) => (
-                            <TableRow 
-                                key={row.id} 
-                                data-state={selected[row.id] ? "selected" : undefined}
-                                className="group transition-colors hover:bg-muted/40"
-                            >
-                                <TableCell className="pl-4">
-                                    <input
-                                        type="checkbox"
-                                        aria-label={`Select ${row.description}`}
-                                        className="size-4 rounded accent-primary cursor-pointer"
-                                        checked={!!selected[row.id]}
-                                        onChange={() => toggle(row.id)}
-                                    />
-                                </TableCell>
-                                <TableCell className="max-w-[16rem]">
-                                    <p className="truncate font-medium text-foreground">{row.description}</p>
-                                    <p className="truncate text-xs text-muted-foreground md:hidden">{row.category}</p>
-                                    {row.notes && <p className="hidden truncate text-xs text-muted-foreground/80 md:block">{row.notes}</p>}
-                                </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-xs font-medium shadow-2xs">
-                                        <span className="size-2 rounded-full shrink-0" style={{ background: row.categoryColor }} />
-                                        {row.category}
-                                    </span>
-                                </TableCell>
-                                <TableCell className="hidden whitespace-nowrap text-muted-foreground sm:table-cell text-xs font-medium">
-                                    {formatShortDate(parseDateInput(row.date))}
-                                </TableCell>
-                                <TableCell
-                                    className={cn(
-                                        "whitespace-nowrap text-right font-semibold",
-                                        row.type === "income" ? "text-emerald-600 dark:text-emerald-400" : "text-foreground"
-                                    )}
-                                >
-                                    {row.type === "income" ? "+" : "−"}
-                                    {money(row.amount, { fractionDigits: 2 })}
-                                </TableCell>
-                                <TableCell className="pr-3 text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger
-                                            render={<Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-foreground" aria-label={`Actions for ${row.description}`} />}
-                                        >
-                                            <MoreHorizontal className="size-4" />
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end" className="w-36">
-                                            <DropdownMenuItem
-                                                className="gap-2 cursor-pointer"
-                                                onClick={() =>
-                                                    openDialog({
-                                                        editingId: row.id,
-                                                        prefill: {
-                                                            description: row.description,
-                                                            amount: String(row.amount),
-                                                            type: row.type,
-                                                            category: row.category,
-                                                            date: row.date,
-                                                            notes: row.notes ?? "",
-                                                        },
-                                                    })
-                                                }
-                                            >
-                                                <Pencil className="size-3.5 text-muted-foreground" /> Edit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                className="gap-2 text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
-                                                onClick={() => setDeleteIds([row.id])}
-                                            >
-                                                <Trash2 className="size-3.5" /> Delete
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
+                        {rows.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={6} className="h-32 text-center text-sm text-muted-foreground">
+                                    No results found. Try adjusting your filters.
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        ) : (
+                            rows.map((row) => {
+                                const isSelected = !!selected[row.id];
+                                const isIncome = row.type === "income";
+
+                                return (
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={isSelected ? "selected" : undefined}
+                                        className="group transition-colors hover:bg-muted/40 data-[state=selected]:bg-muted/50"
+                                    >
+                                        <TableCell className="pl-4">
+                                            <input
+                                                type="checkbox"
+                                                aria-label={`Select transaction: ${row.description}`}
+                                                className="size-4 rounded accent-primary cursor-pointer"
+                                                checked={isSelected}
+                                                onChange={() => toggle(row.id)}
+                                            />
+                                        </TableCell>
+                                        <TableCell className="max-w-[16rem]">
+                                            <p className="truncate font-medium text-foreground">{row.description}</p>
+                                            <p className="truncate text-xs text-muted-foreground md:hidden">{row.category}</p>
+                                            {row.notes && (
+                                                <p className="hidden truncate text-xs text-muted-foreground/80 md:block">
+                                                    {row.notes}
+                                                </p>
+                                            )}
+                                        </TableCell>
+                                        <TableCell className="hidden md:table-cell">
+                                            <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-xs font-medium shadow-2xs">
+                                                <span className="size-2 rounded-full shrink-0" style={{ background: row.categoryColor }} />
+                                                {row.category}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="hidden whitespace-nowrap text-muted-foreground sm:table-cell text-xs font-medium">
+                                            {formatShortDate(parseDateInput(row.date))}
+                                        </TableCell>
+                                        <TableCell
+                                            className={cn(
+                                                "whitespace-nowrap text-right font-semibold",
+                                                isIncome ? "text-emerald-600 dark:text-emerald-400" : "text-foreground"
+                                            )}
+                                        >
+                                            {isIncome ? "+" : "−"}
+                                            {money(row.amount, { fractionDigits: 2 })}
+                                        </TableCell>
+                                        <TableCell className="pr-3 text-right">
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger
+                                                    render={
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="size-8 text-muted-foreground hover:text-foreground opacity-80 group-hover:opacity-100 transition-opacity"
+                                                            aria-label={`Actions for ${row.description}`}
+                                                        />
+                                                    }
+                                                >
+                                                    <MoreHorizontal className="size-4" />
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="w-36">
+                                                    <DropdownMenuItem
+                                                        className="gap-2 cursor-pointer"
+                                                        onClick={() =>
+                                                            openDialog({
+                                                                editingId: row.id,
+                                                                prefill: {
+                                                                    description: row.description,
+                                                                    amount: String(row.amount),
+                                                                    type: row.type,
+                                                                    category: row.category,
+                                                                    date: row.date,
+                                                                    notes: row.notes ?? "",
+                                                                },
+                                                            })
+                                                        }
+                                                    >
+                                                        <Pencil className="size-3.5 text-muted-foreground" /> Edit
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        className="gap-2 text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
+                                                        onClick={() => setDeleteIds([row.id])}
+                                                    >
+                                                        <Trash2 className="size-3.5" /> Delete
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })
+                        )}
                     </TableBody>
                 </Table>
             </Card>
@@ -317,11 +344,11 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                    <Button 
-                        variant="outline" 
-                        size="sm" 
-                        disabled={currentPage <= 1} 
-                        onClick={() => update({ page: currentPage - 1 === 1 ? null : String(currentPage - 1) })} 
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage <= 1}
+                        onClick={() => update({ page: currentPage - 1 === 1 ? null : String(currentPage - 1) })}
                         className="h-8 gap-1 text-xs shadow-2xs"
                     >
                         <ChevronLeft className="size-3.5" /> Prev
@@ -329,11 +356,11 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
                     <span className="px-2 text-xs font-medium text-foreground">
                         Page {currentPage} of {totalPages}
                     </span>
-                    <Button 
-                        variant="outline" 
-                        size="sm" 
-                        disabled={currentPage >= totalPages} 
-                        onClick={() => update({ page: String(currentPage + 1) })} 
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage >= totalPages}
+                        onClick={() => update({ page: String(currentPage + 1) })}
                         className="h-8 gap-1 text-xs shadow-2xs"
                     >
                         Next <ChevronRight className="size-3.5" />
@@ -370,3 +397,4 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
         </div>
     );
 }
+

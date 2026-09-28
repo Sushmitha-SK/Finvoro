@@ -112,7 +112,7 @@ export function AiBudgetSuggestions() {
 
     return (
         <>
-            <Button variant="outline" className="gap-1.5" onClick={openDialog}>
+            <Button variant="outline" className="gap-1.5 shadow-xs shadow-primary/5 h-10" onClick={openDialog}>
                 <Sparkles className="size-4 text-primary" /> Suggest with AI
             </Button>
 

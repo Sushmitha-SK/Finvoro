@@ -62,9 +62,13 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
     return (
         <div className="mx-auto w-full max-w-7xl space-y-5 p-4 sm:p-6">
             <div>
-                <h2 className="text-2xl font-semibold tracking-tight">Transactions</h2>
-                <p className="text-sm text-muted-foreground">Search, filter, edit and export everything you&apos;ve logged.</p>
+                <h2 className="font-heading text-2xl font-semibold tracking-tight">
+                    Transactions
+                </h2>
+                <p className="font-sans py-2 text-sm text-muted-foreground">Search, filter, edit and export everything you&apos;ve logged.</p>
             </div>
+
+
 
             <TransactionsSummary
                 count={result.totalCount}

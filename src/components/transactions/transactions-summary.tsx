@@ -58,19 +58,19 @@ export function TransactionsSummary({
                     <Card
                         key={item.label}
                         size="sm"
-                        className="group relative overflow-hidden transition-all duration-200 hover:border-primary/40 hover:shadow-sm"
+                        className="group relative overflow-hidden surface-card"
                     >
                         <CardContent className="p-4">
                             <div className="flex items-center justify-between">
-                                <p className="text-xs font-medium text-muted-foreground">
+                                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     {item.label}
-                                </p>
-                                <div className={cn("flex h-7 w-7 items-center justify-center rounded-md transition-transform duration-200 group-hover:scale-110", item.iconBg)}>
+                                </span>
+                                <div className={cn("flex h-7 w-7 items-center justify-center rounded-md transition-transform duration-200 ", item.iconBg)}>
                                     <Icon className="h-3.5 w-3.5" />
                                 </div>
                             </div>
                             <div className="mt-2">
-                                <p className={cn("text-xl font-bold tracking-tight", item.tone)}>
+                                <p className={cn("truncate text-2xl font-bold tracking-tight ", item.tone)}>
                                     {item.value}
                                 </p>
                             </div>
