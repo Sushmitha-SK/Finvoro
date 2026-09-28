@@ -37,27 +37,21 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
     const color = toneFor(progress);
 
     return (
-        <Card className="group relative h-full overflow-hidden border-border/60 bg-card/95 shadow-sm transition-all duration-300 hover:border-border">
-            {/* Ambient glow */}
-
-
-            <CardHeader className="relative pb-3">
+        <Card className="group relative h-full overflow-hidden surface-card"> 
+            <CardHeader className="space-y-1.5 p-6 pb-2">
                 <div className="flex items-start justify-between gap-4">
                     <div>
-                        <CardTitle className="text-base font-semibold tracking-tight">
-                            Financial health
-                        </CardTitle>
-                        <CardDescription className="mt-1">
+
+                        <CardTitle className="text-lg font-semibold tracking-tight">Financial health</CardTitle>
+                        <CardDescription className="text-xs text-muted-foreground/80">
                             Based on this month so far
                         </CardDescription>
                     </div>
-
                     <div
                         className={cn(
                             "flex size-9 items-center justify-center rounded-xl",
                             bgToneFor(progress),
-                        )}
-                    >
+                        )}>
                         <TrendingUp
                             className="size-4"
                             style={{ color }}
@@ -65,6 +59,7 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
                         />
                     </div>
                 </div>
+
             </CardHeader>
 
             <CardContent className="relative space-y-6">
@@ -79,7 +74,6 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
                             viewBox="0 0 128 128"
                             className="size-full -rotate-90"
                         >
-                            {/* Track */}
                             <circle
                                 cx="64"
                                 cy="64"
@@ -90,7 +84,6 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
                                 className="text-muted/60"
                             />
 
-                            {/* Progress */}
                             <circle
                                 cx="64"
                                 cy="64"
@@ -136,10 +129,8 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
                     </div>
                 </div>
 
-                {/* Divider */}
                 <div className="h-px bg-border/60" />
 
-                {/* Factors */}
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -193,7 +184,6 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
                                             }}
                                         />
 
-                                        {/* Subtle shine */}
                                         <div
                                             className="absolute inset-y-0 left-0 rounded-full opacity-30"
                                             style={{
@@ -212,3 +202,5 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
         </Card>
     );
 }
+
+

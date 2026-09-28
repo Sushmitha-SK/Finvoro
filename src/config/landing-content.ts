@@ -1,4 +1,4 @@
-import { Receipt, PiggyBank, BarChart3, Bell, type LucideIcon, ArrowUpRight, ArrowDownLeft, TrendingDown, Lightbulb, TrendingUp, Mail } from "lucide-react";
+import {  type LucideIcon, ArrowUpRight, ArrowDownLeft, TrendingDown, Lightbulb, TrendingUp, Mail } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 //Navbar

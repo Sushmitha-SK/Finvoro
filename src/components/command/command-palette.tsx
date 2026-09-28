@@ -49,11 +49,10 @@ export function CommandPalette() {
     const setOpen = useUIStore((state) => state.setCommandOpen);
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={setOpen} >
             <DialogContent
                 showCloseButton={false}
-                className="top-[20%] max-w-[calc(100%-2rem)] translate-y-0 gap-0 overflow-hidden p-0 sm:max-w-xl"
-            >
+                className="top-[20%] max-w-[calc(100%-2rem)] translate-y-0 gap-0 overflow-hidden p-0 sm:max-w-xl">
                 <DialogTitle className="sr-only">Command palette</DialogTitle>
                 <DialogDescription className="sr-only">
                     Search transactions, jump to a page, or ask the AI Copilot.

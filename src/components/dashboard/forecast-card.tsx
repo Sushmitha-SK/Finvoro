@@ -14,7 +14,7 @@ export function ForecastCard({ data }: { data: DashboardData }) {
     const pace = forecast.paceVsLastMonth;
 
     return (
-        <Card className="h-full border-border/60 bg-linear-to-b from-card/50 to-card shadow-xs transition-all hover:border-border">
+        <Card className="h-full surface-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-4">
                 <div className="space-y-1.5">
                     <CardTitle className="text-lg font-semibold tracking-tight">Month-end forecast</CardTitle>

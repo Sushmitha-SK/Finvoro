@@ -18,9 +18,9 @@ export function SubscriptionsCard({ items, monthlyTotal, onViewAll }: Subscripti
     const hasMore = items.length > 6;
 
     return (
-        <Card className="h-full flex flex-col justify-between shadow-sm transition-all hover:shadow-md">
+        <Card className="h-full flex flex-col justify-between surface-card">
             <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2.5 text-base font-semibold">
+                <CardTitle className="flex items-center gap-2.5 text-lg font-semibold tracking-tight">
                     <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                         <Repeat className="size-4" />
                     </div>
@@ -29,10 +29,13 @@ export function SubscriptionsCard({ items, monthlyTotal, onViewAll }: Subscripti
                 <CardDescription>
                     {items.length > 0 ? (
                         <>
-                            <span className="font-semibold text-foreground">{money(monthlyTotal)}</span> per month, automatically detected
+                            <span className="text-xs text-muted-foreground/80">{money(monthlyTotal)}</span> per month, automatically detected
                         </>
                     ) : (
-                        "Detected from your history"
+                        <>
+                            <span className="text-xs text-muted-foreground/80">Detected from your history</span>
+                        </>
+
                     )}
                 </CardDescription>
             </CardHeader>
@@ -43,7 +46,7 @@ export function SubscriptionsCard({ items, monthlyTotal, onViewAll }: Subscripti
                             <Repeat className="size-5" />
                         </div>
                         <p className="text-sm font-medium text-foreground">No recurring payments yet</p>
-                        <p className="mt-1 text-xs text-muted-foreground max-w-[240px]">
+                        <p className="mt-1 text-xs text-muted-foreground max-w-60">
                             Charges that repeat at a steady interval will automatically show up here.
                         </p>
                     </div>

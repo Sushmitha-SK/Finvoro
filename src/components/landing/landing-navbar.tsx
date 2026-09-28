@@ -20,7 +20,6 @@ export function LandingNavbar() {
         };
 
         window.addEventListener("scroll", handleScroll);
-        // Check initial scroll state on mount
         handleScroll();
 
         return () => window.removeEventListener("scroll", handleScroll);

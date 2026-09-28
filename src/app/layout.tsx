@@ -1,15 +1,8 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Geist_Mono, Manrope, Nunito_Sans } from "next/font/google";
+import {  Geist_Mono, Manrope, } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
-import { LenisProvider } from "@/components/providers/lenis-provider";
-
-const fontSans = Plus_Jakarta_Sans({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -21,10 +14,6 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-const nunitoSans = Nunito_Sans({
-  variable: "--font-nunitoSans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -40,9 +29,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${fontSans.variable} ${geistMono.variable} ${manrope.variable} ${nunitoSans.variable} h-full antialiased`}
+      className={` ${geistMono.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-svh flex flex-col">
         <ClerkProvider>
           <ThemeProvider
             attribute="class"
@@ -50,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             enableSystem
             disableTransitionOnChange
           >
-            <LenisProvider>{children}</LenisProvider>
+            {children}
           </ThemeProvider>
         </ClerkProvider>
       </body>

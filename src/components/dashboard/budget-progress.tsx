@@ -18,10 +18,10 @@ export function BudgetProgressCard({ budgets }: { budgets: BudgetProgress[] }) {
     const money = useMoney();
 
     return (
-        <Card className="h-full transition-all duration-200  flex flex-col justify-between border-border/60 hover:border-border">
+        <Card className="h-full flex flex-col justify-between surface-card">
             <CardHeader className="pb-2">
-                <CardTitle className="text-base font-semibold">Budgets</CardTitle>
-                <CardDescription>Progress this month</CardDescription>
+                <CardTitle className="text-lg font-semibold tracking-tight">Budgets</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground/80">Progress this month</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 flex-1 flex flex-col justify-between">
                 {budgets.length === 0 ? (

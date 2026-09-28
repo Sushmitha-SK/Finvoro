@@ -9,23 +9,27 @@ import { PricingSection } from "@/components/landing/pricing-section";
 import { ProductShowcase } from "@/components/landing/product-showcase";
 import { SmartInsightsSection } from "@/components/landing/smart-insights-section";
 import { ValueStrip } from "@/components/landing/value-strip";
+import { LenisProvider } from "@/components/providers/lenis-provider";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      <LandingNavbar />
-      <main>
-        <HeroSection />
-        <ValueStrip />
-        <FeaturesSection />
-        <ProductShowcase />
-        <HowItWorks />
-        <SmartInsightsSection />
-        <PricingSection />
-        <FAQSection />
-        <FinalCTA />
-      </main>
-      <LandingFooter />
-    </div>
+    <LenisProvider>
+      <div className="min-h-screen bg-background">
+        <LandingNavbar />
+        <main>
+          <HeroSection />
+          <ValueStrip />
+          <FeaturesSection />
+          <ProductShowcase />
+          <HowItWorks />
+          <SmartInsightsSection />
+          <PricingSection />
+          <FAQSection />
+          <FinalCTA />
+        </main>
+        <LandingFooter />
+      </div>
+    </LenisProvider>
+
   );
 }

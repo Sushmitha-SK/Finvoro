@@ -16,7 +16,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
     const hide = useAppStore((state) => state.hideAmounts);
 
     return (
-        <Card className="h-full border-border/60 bg-linear-to-b from-card/50 to-card shadow-xs transition-all hover:border-border">
+        <Card className="h-full surface-card">
             <CardHeader className="space-y-1.5 p-6 pb-2">
                 <CardTitle className="text-lg font-semibold tracking-tight">Cash flow</CardTitle>
                 <CardDescription className="text-xs text-muted-foreground/80">
@@ -48,23 +48,23 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                                 tickFormatter={(value: number) => formatCurrency(value, currency, { compact: true })}
                             />
                             <Tooltip content={(props) => <MoneyTooltip {...props} />} />
-                            <Area 
-                                type="monotone" 
-                                dataKey="income" 
-                                name="Income" 
-                                stroke="#10b981" 
-                                strokeWidth={2.5} 
-                                fillOpacity={1} 
-                                fill="url(#fillIncome)" 
+                            <Area
+                                type="monotone"
+                                dataKey="income"
+                                name="Income"
+                                stroke="#10b981"
+                                strokeWidth={2.5}
+                                fillOpacity={1}
+                                fill="url(#fillIncome)"
                             />
-                            <Area 
-                                type="monotone" 
-                                dataKey="expenses" 
-                                name="Expenses" 
-                                stroke="#f43f5e" 
-                                strokeWidth={2.5} 
-                                fillOpacity={1} 
-                                fill="url(#fillExpenses)" 
+                            <Area
+                                type="monotone"
+                                dataKey="expenses"
+                                name="Expenses"
+                                stroke="#f43f5e"
+                                strokeWidth={2.5}
+                                fillOpacity={1}
+                                fill="url(#fillExpenses)"
                             />
                         </AreaChart>
                     </ResponsiveContainer>
