@@ -20,8 +20,6 @@ export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
     const userId = await getUserId();
-
-    console.log("USER ID", userId)
     if (!userId) redirect("/sign-in");
 
 

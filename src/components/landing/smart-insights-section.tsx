@@ -42,21 +42,24 @@ function InsightCard({
     total: number;
 }) {
     const ref = useRef<HTMLDivElement>(null);
+    const stickyTop = 112 + index * 24;
+
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start end", "start start"],
+        offset: ["start end", `start ${stickyTop}px`],
     });
-
     const targetScale = 1 - (total - 1 - index) * 0.04;
     const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
     const Icon = insight.icon;
     const styles = typeStyles[insight.type];
 
+
+
     return (
         <div
             ref={ref}
             className="min-h-85 sticky top-28 flex items-start"
-            style={{ top: `${112 + index * 24}px` }}
+            style={{ top: stickyTop }}
         >
             <motion.div
                 style={{ scale }}

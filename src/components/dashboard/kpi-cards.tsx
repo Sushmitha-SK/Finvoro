@@ -49,15 +49,19 @@ function Kpi({
     color: string;
 }) {
     return (
-        <Card className="group relative overflow-hidden border-border/60 bg-gradient-to-b from-card/50 to-card transition-all hover:border-border hover:shadow-sm">
+        <Card className="group relative overflow-hidden surface-card">
             <CardContent className="flex flex-col justify-between gap-4 p-5">
+                {/* Header: Title on left, Icon moved to top right */}
                 <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        <span className="flex size-7 items-center justify-center rounded-lg bg-muted/80 text-foreground/80 shadow-xs transition-transform group-hover:scale-105 [&_svg]:size-4">{icon}</span>
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         {title}
-                    </div>
+                    </span>
+                    <span className="flex size-8 items-center justify-center rounded-lg bg-muted/60 text-foreground/80 shadow-2xs transition-transform group-hover:scale-105 [&_svg]:size-4">
+                        {icon}
+                    </span>
                 </div>
-                
+
+                {/* Main Content & Sparkline */}
                 <div className="flex items-end justify-between gap-4">
                     <div className="space-y-1.5 min-w-0">
                         <p className="truncate text-2xl font-bold tracking-tight text-foreground">{value}</p>

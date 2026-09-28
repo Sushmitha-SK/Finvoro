@@ -32,19 +32,17 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         >
             <SidebarProvider>
                 <AppSidebar />
-
-                <SidebarInset>
+                <SidebarInset className="min-w-0 flex-1">
                     <AppHeader />
-
                     <main className="flex-1">{children}</main>
                 </SidebarInset>
             </SidebarProvider>
-
             <AppEffects userId={userId} />
             <TransactionDialog />
             <CommandPalette />
             <CopilotSheet />
             <Toaster />
         </AppStoreProvider>
+
     );
 }

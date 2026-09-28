@@ -16,10 +16,10 @@ export function RecentTransactions({ transactions }: { transactions: RecentTrans
     const openDialog = useUIStore((state) => state.openTransactionDialog);
 
     return (
-        <Card className="h-full flex flex-col justify-between shadow-sm transition-all hover:shadow-md">
+        <Card className="h-full flex flex-col justify-between surface-card">
             <CardHeader className="pb-3">
-                <CardTitle className="text-base font-semibold">Recent transactions</CardTitle>
-                <CardDescription>Your latest financial activity</CardDescription>
+                <CardTitle className="text-lg font-semibold tracking-tight">Recent transactions</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground/80">Your latest financial activity</CardDescription>
                 <CardAction>
                     <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/transactions" />}>
                         View all

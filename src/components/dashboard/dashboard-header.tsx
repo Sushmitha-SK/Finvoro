@@ -26,21 +26,35 @@ export function DashboardHeader({ monthLabel }: { monthLabel: string }) {
     return (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <h2 className="text-2xl font-semibold tracking-tight">
+                <h2 className="font-heading text-2xl font-semibold tracking-tight">
                     {greeting}
                     {firstName ? `, ${firstName}` : ""}
                 </h2>
-                <p className="text-sm text-muted-foreground">Here&apos;s your financial picture for {monthLabel}.</p>
+                <p className="font-sans py-2 text-sm text-muted-foreground">Here&apos;s your financial picture for {monthLabel}.</p>
             </div>
 
-            <div className="flex gap-2">
+       
+            <div className="flex items-center gap-2">
                 {aiEnabled && (
-                    <Button variant="outline" className="gap-1.5" onClick={() => askCopilot("Give me a quick summary of how I'm doing this month and one thing to focus on.")}>
-                        <Sparkles className="size-4 text-primary" /> Ask Copilot
+                    <Button
+                        variant="outline"
+                        className="gap-1.5 border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 hover:text-primary h-10"
+                        onClick={() =>
+                            askCopilot(
+                                "Give me a quick summary of how I'm doing this month and one thing to focus on."
+                            )
+                        }
+                    >
+                        <Sparkles className="size-4" />
+                        Ask Copilot
                     </Button>
                 )}
-                <Button className="gap-1.5" onClick={() => openDialog()}>
-                    <Plus className="size-4" /> Add transaction
+                <Button
+                    className="gap-1.5 shadow-xs shadow-primary/5 h-10"
+                    onClick={() => openDialog()}
+                >
+                    <Plus className="size-4" />
+                    Add transaction
                 </Button>
             </div>
         </div>

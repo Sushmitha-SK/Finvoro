@@ -30,10 +30,10 @@ export function SpendingDonut({ categories, total }: { categories: SpendingCateg
         : top;
 
     return (
-        <Card className="h-full transition-all duration-200 hover:border-border border-border/60 bg-linear-to-b from-card/50 to-card shadow-xs">
+        <Card className="h-full surface-card">
             <CardHeader className="pb-2">
-                <CardTitle className="text-base font-semibold">Spending by category</CardTitle>
-                <CardDescription>This month's breakdown</CardDescription>
+                <CardTitle className="text-lg font-semibold tracking-tight">Spending by category</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground/80">This month's breakdown</CardDescription>
             </CardHeader>
             <CardContent>
                 {categories.length === 0 ? (

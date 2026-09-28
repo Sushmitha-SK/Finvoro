@@ -65,14 +65,14 @@ export function InsightsCard({
     const insights: Insight[] = showAi ? entry.insights : fallback;
 
     return (
-        <Card className="h-full border-border/60 bg-linear-to-b from-card/50 to-card shadow-xs transition-all hover:border-border">
+        <Card className="h-full surface-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-4">
                 <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
                         <CardTitle className="text-lg font-semibold tracking-tight">{title}</CardTitle>
                         <span
                             className={cn(
-                                "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold tracking-tight",
+                                "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold tracking-tight ",
                                 usingAi ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground",
                             )}
                         >
@@ -80,7 +80,7 @@ export function InsightsCard({
                             {usingAi ? "Gemini" : "Rule-based"}
                         </span>
                     </div>
-                    <CardDescription className="text-xs text-muted-foreground/80">
+                    <CardDescription className="text-xs text-muted-foreground/80 ">
                         {usingAi && entry?.headline ? entry.headline : description}
                     </CardDescription>
                 </div>
@@ -119,8 +119,8 @@ export function InsightsCard({
                         const style = KIND_STYLE[insight.kind];
 
                         return (
-                            <div 
-                                key={insight.id} 
+                            <div
+                                key={insight.id}
                                 className="group relative flex items-start gap-3.5 rounded-xl border border-border/60 bg-muted/30 p-4 transition-all hover:bg-muted/60 hover:border-border"
                             >
                                 <span className={cn("flex size-9 shrink-0 items-center justify-center rounded-lg shadow-xs", style.tone)}>

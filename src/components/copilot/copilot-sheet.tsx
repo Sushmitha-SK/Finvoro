@@ -19,7 +19,7 @@ export function CopilotSheet() {
     if (!aiEnabled) return null;
 
     return (
-        <Sheet open={open && pathname !== "/copilot"} onOpenChange={setOpen}>
+        <Sheet open={open && pathname !== "/copilot"} onOpenChange={setOpen} >
             <SheetContent side="right" className="w-full gap-0 p-0 data-[side=right]:sm:max-w-md">
                 <SheetHeader className="border-b p-4">
                     <SheetTitle className="flex items-center gap-2">

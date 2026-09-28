@@ -15,8 +15,8 @@
   --font-heading: var(--font-sans); */
 
   --font-sans: var(--font-manrope);
-  --font-mono: var(--font-nunitoSans);
-  --font-heading: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-manrope);
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -208,6 +208,19 @@
 
   html {
     @apply font-sans;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
   }
 }
 

@@ -10,10 +10,10 @@ export function GoalsCard({ goals }: { goals: GoalSummary[] }) {
     const money = useMoney();
 
     return (
-        <Card className="h-full">
+        <Card className="h-full surface-card">
             <CardHeader>
-                <CardTitle>Savings goals</CardTitle>
-                <CardDescription>What you&apos;re working toward</CardDescription>
+                <CardTitle className="text-lg font-semibold tracking-tight">Savings goals</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground/80">What you&apos;re working toward</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 {goals.length === 0 ? (
