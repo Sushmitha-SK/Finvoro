@@ -30,7 +30,7 @@ export function AppHeader() {
     const toggleCopilot = useUIStore((state) => state.toggleCopilot);
 
     return (
-           <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border/40 bg-background/60 px-4 backdrop-blur-xl supports-backdrop-filter:bg-background/40 sm:px-6">
+            <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border/40 bg-background/60 px-4 backdrop-blur-xl supports-backdrop-filter:bg-background/40 sm:px-6">
            <div className="flex w-full items-center justify-between gap-3">
                 {/* Left */}
                 <div className="flex min-w-0 items-center gap-2.5">
@@ -52,7 +52,7 @@ export function AppHeader() {
                     type="button"
                     onClick={() => setCommandOpen(true)}
                     aria-label="Search or jump to (Ctrl or Cmd + K)"
-                    className="group absolute left-1/2 hidden h-9 w-full max-w-70 -translate-x-1/2 items-center gap-2 rounded-lg border border-border/70 bg-white/70 px-3 text-sm text-muted-foreground shadow-xs transition-all hover:border-border hover:bg-muted/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 md:flex lg:max-w-sm"
+                    className="group absolute left-1/2 hidden h-9 w-full max-w-70 -translate-x-1/2 items-center gap-2 rounded-lg border border-border/70 bg-background/70 px-3 text-sm text-muted-foreground shadow-xs transition-all hover:border-border hover:bg-muted/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 md:flex lg:max-w-sm"
                 >
                     <Search className="size-4 shrink-0 transition-colors group-hover:text-foreground" />
 

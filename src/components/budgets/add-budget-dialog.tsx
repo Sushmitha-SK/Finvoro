@@ -41,7 +41,7 @@ export function AddBudgetDialog({
             open={open}
             onOpenChange={setOpen}
         >
-            <DialogTrigger render={<Button />}>
+            <DialogTrigger render={<Button className="gap-1.5 shadow-xs shadow-primary/5 h-10" />}>
                 <Plus className="size-4" />
                 Add budget
             </DialogTrigger>
