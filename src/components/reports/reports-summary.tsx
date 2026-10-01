@@ -39,7 +39,7 @@ export function ReportsSummary({
     return (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {/* Total Income */}
-            <Card className="transition-all hover:shadow-sm">
+            <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">
                         Total income
@@ -59,7 +59,7 @@ export function ReportsSummary({
             </Card>
 
             {/* Total Expenses */}
-            <Card className="transition-all hover:shadow-sm">
+            <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">
                         Total expenses
@@ -79,24 +79,22 @@ export function ReportsSummary({
             </Card>
 
             {/* Net Balance */}
-            <Card className="transition-all hover:shadow-sm">
+            <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">
                         Net balance
                     </CardTitle>
                     <div className={`rounded-full p-2 ${isPositiveBalance ? "bg-emerald-500/10" : "bg-destructive/10"}`}>
                         <Wallet
-                            className={`size-4 ${
-                                isPositiveBalance ? "text-emerald-500" : "text-destructive"
-                            }`}
+                            className={`size-4 ${isPositiveBalance ? "text-emerald-500" : "text-destructive"
+                                }`}
                         />
                     </div>
                 </CardHeader>
                 <CardContent>
                     <p
-                        className={`text-2xl font-bold tracking-tight tabular-nums ${
-                            isPositiveBalance ? "text-foreground" : "text-destructive"
-                        }`}
+                        className={`text-2xl font-bold tracking-tight tabular-nums ${isPositiveBalance ? "text-foreground" : "text-destructive"
+                            }`}
                     >
                         {formatCurrency(netBalance, currency)}
                     </p>
@@ -104,31 +102,29 @@ export function ReportsSummary({
                         {!hasTransactions
                             ? "No activity in this period"
                             : isPositiveBalance
-                            ? "Income exceeds expenses"
-                            : "Expenses exceed income"}
+                                ? "Income exceeds expenses"
+                                : "Expenses exceed income"}
                     </p>
                 </CardContent>
             </Card>
 
             {/* Savings Rate */}
-            <Card className="transition-all hover:shadow-sm">
+            <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">
                         Savings rate
                     </CardTitle>
                     <div className={`rounded-full p-2 ${isPositiveSavings ? "bg-emerald-500/10" : "bg-destructive/10"}`}>
                         <Percent
-                            className={`size-4 ${
-                                isPositiveSavings ? "text-emerald-500" : "text-destructive"
-                            }`}
+                            className={`size-4 ${isPositiveSavings ? "text-emerald-500" : "text-destructive"
+                                }`}
                         />
                     </div>
                 </CardHeader>
                 <CardContent>
                     <p
-                        className={`text-2xl font-bold tracking-tight tabular-nums ${
-                            isPositiveSavings ? "text-foreground" : "text-destructive"
-                        }`}
+                        className={`text-2xl font-bold tracking-tight tabular-nums ${isPositiveSavings ? "text-foreground" : "text-destructive"
+                            }`}
                     >
                         {Math.round(savingsRate)}%
                     </p>
@@ -136,8 +132,8 @@ export function ReportsSummary({
                         {!hasIncome
                             ? "No income to calculate"
                             : isPositiveSavings
-                            ? "Of your income saved"
-                            : "Spending exceeded income"}
+                                ? "Of your income saved"
+                                : "Spending exceeded income"}
                     </p>
                 </CardContent>
             </Card>

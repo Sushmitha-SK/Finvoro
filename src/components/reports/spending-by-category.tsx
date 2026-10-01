@@ -43,7 +43,7 @@ export function SpendingByCategory({
     );
 
     return (
-        <Card>
+        <Card className="surface-card">
             <CardHeader className="pb-4">
                 <div className="flex items-start justify-between gap-4">
                     <div>
@@ -109,26 +109,15 @@ export function SpendingByCategory({
                                             key={category.id}
                                             className="transition-colors hover:bg-muted/30"
                                         >
-                                            {/* Category Name & Icon */}
+                                            {/* Category Name & Color Indicator */}
                                             <td className="py-3.5 pl-6 pr-4">
                                                 <div className="flex min-w-0 items-center gap-3">
                                                     <div
-                                                        className="flex size-9 shrink-0 items-center justify-center rounded-full"
-                                                        style={
-                                                            category.color
-                                                                ? {
-                                                                      backgroundColor: `${category.color}20`,
-                                                                      color: category.color,
-                                                                  }
-                                                                : undefined
-                                                        }
-                                                    >
-                                                        {category.icon ? (
-                                                            <span className="text-xs">{category.icon}</span>
-                                                        ) : (
-                                                            <FolderOpen className="size-4 text-muted-foreground" />
-                                                        )}
-                                                    </div>
+                                                        className="size-3 shrink-0 rounded-full"
+                                                        style={{
+                                                            backgroundColor: barColor,
+                                                        }}
+                                                    />
                                                     <span className="truncate font-medium leading-none">
                                                         {category.name}
                                                     </span>
@@ -138,7 +127,7 @@ export function SpendingByCategory({
                                             {/* Progress Distribution Bar */}
                                             <td className="px-4 py-3.5 align-middle">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="h-2 w-full max-w-[120px] overflow-hidden rounded-full bg-muted">
+                                                    <div className="h-2 w-full max-w-30 overflow-hidden rounded-full bg-muted">
                                                         <div
                                                             className="h-full rounded-full transition-all duration-500"
                                                             style={{

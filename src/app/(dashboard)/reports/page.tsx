@@ -174,16 +174,13 @@ export default async function ReportsPage({
     return (
         <div className="p-4 md:p-6">
             <div className="mx-auto max-w-7xl space-y-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                        <h1 className="text-2xl font-semibold tracking-tight">
-                            Reports
-                        </h1>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Understand your financial activity and
-                            spending patterns.
-                        </p>
+                    <div>
+                        <h2 className="font-heading text-2xl font-semibold tracking-tight">
+                            Reports
+                        </h2>
+                        <p className="font-sans py-2 text-sm text-muted-foreground"> Understand your financial activity an spending patterns.</p>
                     </div>
 
                     <ReportsExport />
