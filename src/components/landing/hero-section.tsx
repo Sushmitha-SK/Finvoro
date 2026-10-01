@@ -55,15 +55,19 @@ export function HeroSection() {
   return (
     <section className="relative isolate overflow-hidden border-b bg-background">
       <div className="absolute inset-0 -z-10">
-        <Image
-          src={assets.heroBackground.src}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover dark:opacity-30"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-background/40 via-background/80 to-background" />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          className="absolute inset-0 size-full object-cover opacity-80 dark:opacity-35"
+        >
+          <source src="/clouds.mp4" type="video/mp4" />
+        </video>
+
+        <div className="absolute inset-0 bg-linear-to-b from-background/20 via-background/60 to-background" />
       </div>
 
       <motion.div

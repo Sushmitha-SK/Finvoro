@@ -14,6 +14,7 @@ import {
     type SortDirection,
     type TransactionSortField,
 } from "@/lib/transactions/get-transactions";
+import TransactionHeader from "@/components/transactions/transaction-header";
 
 export const metadata: Metadata = { title: "Transactions" };
 
@@ -24,6 +25,7 @@ type PageProps = {
 const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
 
 export default async function TransactionsPage({ searchParams }: PageProps) {
+
     const userId = await getUserId();
 
     if (!userId) redirect("/sign-in");
@@ -61,14 +63,13 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
 
     return (
         <div className="mx-auto w-full max-w-7xl space-y-5 p-4 sm:p-6">
-            <div>
+            {/* <div>
                 <h2 className="font-heading text-2xl font-semibold tracking-tight">
                     Transactions
                 </h2>
                 <p className="font-sans py-2 text-sm text-muted-foreground">Search, filter, edit and export everything you&apos;ve logged.</p>
-            </div>
-
-
+            </div> */}
+            <TransactionHeader />
 
             <TransactionsSummary
                 count={result.totalCount}

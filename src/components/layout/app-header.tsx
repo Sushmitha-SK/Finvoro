@@ -30,7 +30,7 @@ export function AppHeader() {
     const toggleCopilot = useUIStore((state) => state.toggleCopilot);
 
     return (
-            <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border/40 bg-background/60 px-4 backdrop-blur-xl supports-backdrop-filter:bg-background/40 sm:px-6">
+        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border/40 bg-white dark:bg-background px-4 sm:px-6">
            <div className="flex w-full items-center justify-between gap-3">
                 {/* Left */}
                 <div className="flex min-w-0 items-center gap-2.5">
@@ -141,4 +141,3 @@ export function AppHeader() {
         </header>
     );
 }
-
