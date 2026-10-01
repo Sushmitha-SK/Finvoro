@@ -168,7 +168,7 @@ export function SettingsView({ name, email }: { name: string; email: string }) {
     return (
         <div className="space-y-6 max-w-4xl mx-auto pb-10">
             {/* Profile Overview Card */}
-            <Card className="border-border/50 bg-gradient-to-br from-card to-card/50 shadow-xs">
+            <Card className="border-border/50 bg-linear-to-br from-card to-card/50 shadow-xs">
                 <CardHeader className="py-6">
                     <div className="flex items-center gap-4">
                         <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-lg font-bold text-primary shadow-inner">
@@ -185,14 +185,14 @@ export function SettingsView({ name, email }: { name: string; email: string }) {
             </Card>
 
             <Tabs defaultValue="preferences" className="space-y-4">
-                <TabsList className="grid grid-cols-3 h-11 p-1 bg-muted/60 backdrop-blur-sm rounded-xl">
-                    <TabsTrigger value="preferences" className="rounded-lg gap-2 text-xs sm:text-sm">
+                <TabsList className="grid grid-cols-3 h-11 p-1 bg-muted/60 backdrop-blur-sm rounded-md">
+                    <TabsTrigger value="preferences" className="rounded-md gap-2 text-xs sm:text-sm">
                         <Sliders className="size-4" /> Preferences
                     </TabsTrigger>
-                    <TabsTrigger value="ai" className="rounded-lg gap-2 text-xs sm:text-sm">
+                    <TabsTrigger value="ai" className="rounded-md gap-2 text-xs sm:text-sm">
                         <Cpu className="size-4" /> AI & Privacy
                     </TabsTrigger>
-                    <TabsTrigger value="data" className="rounded-lg gap-2 text-xs sm:text-sm">
+                    <TabsTrigger value="data" className="rounded-md gap-2 text-xs sm:text-sm">
                         <Database className="size-4" /> Data Management
                     </TabsTrigger>
                 </TabsList>

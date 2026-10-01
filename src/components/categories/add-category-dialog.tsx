@@ -25,12 +25,13 @@ export function AddCategoryDialog() {
         router.refresh();
     };
 
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger
                 render={
-                    <Button>
-                        <Plus />
+                    <Button className="gap-1.5 shadow-xs shadow-primary/5 h-10">
+                        <Plus className="size-4" />
                         Add category
                     </Button>
                 }

@@ -31,17 +31,6 @@ export default async function CategoriesPage() {
     return (
         <div className="p-4 md:p-6">
             <div className="mx-auto max-w-7xl space-y-6">
-                <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                        Categories
-                    </h1>
-
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        Organize your income and expenses with custom
-                        categories.
-                    </p>
-                </div>
-
                 <CategoriesOverview categories={categories} />
             </div>
         </div>

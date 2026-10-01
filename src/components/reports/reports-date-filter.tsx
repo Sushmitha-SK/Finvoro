@@ -394,10 +394,6 @@ export function ReportsDateFilter() {
             >
                 <div className="min-h-0 overflow-hidden">
                     <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">
-                        {/* From/To grouped as one connected control so
-                            they read as a single range, not two loose
-                            fields — and both stay the same height as
-                            the Apply button. */}
                         <div
                             className={cn(
                                 "flex h-10 items-center gap-1.5 rounded-lg border bg-background pl-3 pr-1.5 transition-colors",
