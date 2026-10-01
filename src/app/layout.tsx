@@ -1,6 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import {  Geist_Mono, Manrope, } from "next/font/google";
+import { Geist_Mono, Manrope, Outfit, } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
 
@@ -13,6 +13,12 @@ const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
 });
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+
 
 
 export const metadata: Metadata = {
@@ -29,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={` ${geistMono.variable} ${manrope.variable} h-full antialiased`}
+      className={` ${geistMono.variable} ${manrope.variable} ${outfit.variable} h-full antialiased`}
     >
       <body className="min-h-svh flex flex-col">
         <ClerkProvider>

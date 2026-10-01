@@ -1,4 +1,4 @@
-import {  type LucideIcon, ArrowUpRight, ArrowDownLeft, TrendingDown, Lightbulb, TrendingUp, Mail } from "lucide-react";
+import { type LucideIcon, ArrowUpRight, ArrowDownLeft, TrendingDown, Lightbulb, TrendingUp, Mail, LayoutDashboard, CreditCard, Wallet, Target, BarChart3, Tags } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 //Navbar
@@ -37,6 +37,38 @@ export const transactions = [
         category: "Utilities",
         amount: "-₹1,840",
         icon: ArrowUpRight,
+    },
+];
+
+export const previewNavItems = [
+    { label: "Dashboard", icon: LayoutDashboard },
+    { label: "Transactions", icon: CreditCard },
+    { label: "Budgets", icon: Wallet },
+    { label: "Goals", icon: Target },
+    { label: "Reports", icon: BarChart3 },
+    { label: "Categories", icon: Tags },
+];
+
+export const scoreItems = [
+    {
+        label: "Savings rate",
+        value: "40/40",
+        progress: 100,
+    },
+    {
+        label: "Budget discipline",
+        value: "30/30",
+        progress: 100,
+    },
+    {
+        label: "Spending momentum",
+        value: "16/20",
+        progress: 80,
+    },
+    {
+        label: "Tracking activity",
+        value: "4/10",
+        progress: 40,
     },
 ];
 

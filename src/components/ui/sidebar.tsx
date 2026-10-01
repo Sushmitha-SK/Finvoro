@@ -222,7 +222,8 @@ function Sidebar({
         data-slot="sidebar-container"
         data-side={side}
         className={cn(
-          "fixed inset-y-0 z-20 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:-left-(--sidebar-width) data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:-right-(--sidebar-width) md:flex",
+          // Changed h-svh to h-screen or inset-y-0 with fixed positioning to fix half-height bug
+          "fixed inset-y-0 z-25 hidden h-screen w-(--sidebar-width) transition-[left,right,width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:-left-(--sidebar-width) data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:-right-(--sidebar-width) md:flex",
           variant === "floating" || variant === "inset"
             ? "p-2.5 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+4px)]"
             : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l border-sidebar-border/40",
@@ -234,7 +235,7 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
           className={cn(
-            "flex size-full flex-col bg-sidebar transition-all duration-300",
+            "flex h-full w-full flex-col bg-sidebar transition-all duration-300",
             "group-data-[variant=floating]:rounded-2xl group-data-[variant=floating]:shadow-xl group-data-[variant=floating]:shadow-sidebar-accent/5 group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border/60 group-data-[variant=floating]:bg-sidebar/80 group-data-[variant=floating]:backdrop-blur-xl"
           )}
         >
