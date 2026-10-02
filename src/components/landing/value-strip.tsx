@@ -41,12 +41,13 @@ export function ValueStrip() {
                 <span className="inline-block text-xs font-semibold tracking-wider text-primary uppercase">
                     Your Money. Your Clarity.
                 </span>
-                <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                <h2 className="mt-4 text-3xl sm:text-5xl font-heading  font-bold tracking-tight text-foreground leading-[1.15]">
                     Don't just track your money. Understand it.
                 </h2>
                 <p className="text-sm text-muted-foreground sm:text-base">
                     Everything you need to manage transactions, intelligent budgets, and financial reports in one beautiful workspace.
                 </p>
+
             </motion.div>
 
             <motion.div
@@ -63,12 +64,11 @@ export function ValueStrip() {
                         <motion.div
                             key={item.title}
                             variants={itemVariants}
-                            className={`group relative flex flex-col justify-between rounded-3xl border border-border bg-card p-5 shadow-xs transition-colors duration-300 ${
-                                isOffset ? "lg:translate-y-10" : ""
-                            }`}
+                            className={`group relative flex flex-col justify-between rounded-3xl border border-border bg-card p-5 shadow-xs transition-colors duration-300 ${isOffset ? "lg:translate-y-10" : ""
+                                }`}
                         >
                             <div className="space-y-4">
-                                <div className="relative flex h-50 w-full flex-col items-center justify-between rounded-2xl bg-accent/40 border border-border/60 p-4 overflow-hidden">
+                                <div className="relative flex h-50 sm:h-50 w-full flex-col items-center justify-between rounded-2xl bg-accent/40 border border-border/60 p-4 overflow-hidden">
                                     {index === 0 && (
                                         <>
                                             <motion.div
@@ -83,11 +83,11 @@ export function ValueStrip() {
                                             <div className="w-full space-y-1.5">
                                                 <div className="bg-card rounded-lg p-2 shadow-xs border border-border flex items-center justify-between">
                                                     <div className="h-1.5 w-12 bg-muted-foreground/30 rounded-full" />
-                                                    <div className="text-[10px] font-semibold text-foreground">-$42.50</div>
+                                                    <div className="text-[10px] font-semibold text-foreground">-₹425</div>
                                                 </div>
                                                 <div className="bg-card rounded-lg p-2 shadow-xs border border-border flex items-center justify-between">
                                                     <div className="h-1.5 w-16 bg-muted-foreground/30 rounded-full" />
-                                                    <div className="text-[10px] font-semibold text-primary">+$1,200.00</div>
+                                                    <div className="text-[10px] font-semibold text-primary">+₹1,200</div>
                                                 </div>
                                             </div>
                                             <div className="text-center">
@@ -115,7 +115,7 @@ export function ValueStrip() {
                                                 </div>
                                             </div>
                                             <div className="text-center">
-                                                <p className="text-lg font-bold tracking-tight text-foreground">$2,450</p>
+                                                <p className="text-lg font-bold tracking-tight text-foreground">₹2,450</p>
                                                 <p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">SAVED THIS MONTH</p>
                                             </div>
                                         </>
@@ -130,12 +130,12 @@ export function ValueStrip() {
                                                         initial={{ height: 0 }}
                                                         whileInView={{ height: `${h}%` }}
                                                         viewport={{ once: true }}
-                                                        transition={{ 
-                                                            duration: 0.8, 
-                                                            delay: 0.08 * i, 
-                                                            type: "spring", 
-                                                            stiffness: 100, 
-                                                            damping: 12 
+                                                        transition={{
+                                                            duration: 0.8,
+                                                            delay: 0.08 * i,
+                                                            type: "spring",
+                                                            stiffness: 100,
+                                                            damping: 12
                                                         }}
                                                         className="w-full bg-primary rounded-t-xs"
                                                     />

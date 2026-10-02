@@ -59,7 +59,7 @@ export function LandingNavbar() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                            className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
                         >
                             {item.label}
                         </Link>
@@ -133,7 +133,7 @@ export function LandingNavbar() {
                                     key={item.href}
                                     href={item.href}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center justify-between py-3 px-3 rounded-xl text-base font-medium text-muted-foreground transition-all hover:text-foreground hover:bg-muted/40"
+                                    className="flex items-center justify-between py-3 px-3 rounded-xl text-base font-medium text-foreground/70 transition-all hover:text-foreground hover:bg-muted/40"
                                     style={{
                                         transitionDelay: `${index * 30}ms`
                                     }}

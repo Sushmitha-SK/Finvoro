@@ -49,7 +49,7 @@ export function DashboardPreview() {
 
     return (
         <div
-            className="mx-auto w-full max-w-6xl"
+            className="mx-auto w-full max-w-5xl"
             style={{ perspective: "1400px" }}
         >
             <motion.div
