@@ -4,8 +4,6 @@ import { useUser } from "@clerk/nextjs";
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import { FinvoroLogo } from "@/components/layout/finvoro-logo";
 import {
     Sidebar,
     SidebarContent,
@@ -28,6 +26,8 @@ import {
 } from "@/config/navigation";
 import { useAppStore } from "@/stores/app-store";
 import { useNotificationsStore } from "@/stores/notifications-store";
+import Image from "next/image";
+import assets from "@/assets/assets";
 
 function NavGroup({ label, items }: { label: string; items: NavItem[] }) {
     const pathname = usePathname();
@@ -79,8 +79,38 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" tooltip="Finvoro" render={<Link href="/dashboard" />}>
-                            <FinvoroLogo />
+
+                        <SidebarMenuButton
+                            size="lg"
+                            tooltip="Finvoro"
+                            render={<Link href="/" />}
+                        >
+                            <Image
+                                src={assets.logo.src}
+                                alt="Finvoro Logo"
+                                width={120}
+                                height={32}
+                                className="h-11 w-auto object-contain dark:hidden group-data-[collapsible=icon]:hidden"
+                                priority
+                            />
+
+                            <Image
+                                src={assets.logoDark?.src || assets.logo.src}
+                                alt="Finvoro Logo"
+                                width={120}
+                                height={32}
+                                className="hidden h-11 w-auto object-contain dark:block group-data-[collapsible=icon]:hidden!"
+                                priority
+                            />
+
+                            <Image
+                                src={assets.logoIcon.src}
+                                alt="Finvoro"
+                                width={28}
+                                height={28}
+                                className="hidden size-7 object-contain group-data-[collapsible=icon]:block!"
+                                priority
+                            />
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

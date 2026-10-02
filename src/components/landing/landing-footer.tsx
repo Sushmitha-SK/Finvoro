@@ -6,6 +6,8 @@ import { motion, Variants } from "framer-motion";
 import { Button } from "../ui/button";
 import { Show } from "@clerk/nextjs";
 import { accountLinks, legalLinks, productLinks, resourceLinks, socialLinks } from "@/config/landing-content";
+import Image from "next/image";
+import assets from "@/assets/assets";
 
 const navLinkClass =
     "inline-block rounded-sm text-sm text-foreground/70 transition-colors duration-200 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
@@ -55,13 +57,23 @@ export function LandingFooter() {
                 >
                     {/* Brand column */}
                     <motion.div variants={itemVariants} className="max-w-sm">
-                        <Link href="/" className="inline-flex items-center gap-2.5">
-                            <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                                <CircleDollarSign className="size-4.5" />
-                            </span>
-                            <span className="text-lg font-semibold tracking-tight text-foreground">
-                                Finvoro
-                            </span>
+
+                        <Link href="/" className="inline-flex items-center">
+                            <Image
+                                src={assets.logo.src}
+                                alt="Finvoro"
+                                width={120}
+                                height={32}
+                                className="h-12 w-auto object-contain dark:hidden"
+                            />
+
+                            <Image
+                                src={assets.logoDark.src}
+                                alt="Finvoro"
+                                width={120}
+                                height={32}
+                                className="hidden h-12 w-auto object-contain dark:block"
+                            />
                         </Link>
 
                         <p className="mt-4 max-w-[30ch] text-sm leading-relaxed text-muted-foreground">
@@ -192,7 +204,7 @@ export function LandingFooter() {
                 </motion.div>
             </div>
 
-          
+
         </footer>
     );
 }

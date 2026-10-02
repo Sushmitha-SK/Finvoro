@@ -148,7 +148,7 @@ export function BudgetOverview({
                             return (
                                 <TableRow
                                     key={budget.id}
-                                    className={`group transition-all hover:bg-muted/30 border-border/40 ${isExceeded ? "bg-destructive/[0.02]" : ""
+                                    className={`group transition-all hover:bg-muted/30 border-border/40 ${isExceeded ? "bg-destructive/2" : ""
                                         }`}
                                 >
                                     <TableCell className="py-4 pl-6 font-medium text-foreground">
