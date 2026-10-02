@@ -2,7 +2,13 @@
 
 import assets from "@/assets/assets";
 import { previewNavItems, scoreItems } from "@/config/landing-content";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+    motion,
+    useReducedMotion,
+    useScroll,
+    useTransform,
+} from "framer-motion";
+import { useRef } from "react";
 import {
     Bell,
     Eye,
@@ -13,7 +19,6 @@ import {
     TrendingUp,
     Wallet,
     Info,
-    CircleDollarSignIcon,
     PanelLeftIcon,
     Sun,
     PiggyBank,
@@ -21,44 +26,49 @@ import {
 import Image from "next/image";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
-const scrollTransform = {
-    from: {
-        opacity: 1,
-        scale: 0.8,
-        rotateX: 20,
-        x: 0,
-        y: -80,
-    },
-    to: {
-        opacity: 1,
-        scale: 1,
-        rotateX: 0,
-        x: 0,
-        y: 0,
-    },
-    transition: {
-        type: "spring" as const,
-        stiffness: 400,
-        damping: 100,
-        mass: 1,
-    },
-};
 
 export function DashboardPreview() {
     const reduceMotion = useReducedMotion();
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "center center"],
+    });
+
+    const scale = useTransform(
+        scrollYProgress,
+        [0, 1],
+        reduceMotion ? [1, 1] : [0.8, 1],
+    );
+
+    const rotateX = useTransform(
+        scrollYProgress,
+        [0, 1],
+        reduceMotion ? [0, 0] : [20, 0],
+    );
+
+    const y = useTransform(
+        scrollYProgress,
+        [0, 1],
+        reduceMotion ? [0, 0] : [-80, 0],
+    );
+
 
     return (
         <div
+            ref={containerRef}
             className="mx-auto w-full max-w-5xl"
             style={{ perspective: "1400px" }}
         >
             <motion.div
                 className="relative will-change-transform"
-                initial={reduceMotion ? false : scrollTransform.from}
-                whileInView={scrollTransform.to}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={scrollTransform.transition}
-                style={{ transformOrigin: "center center" }}
+                style={{
+                    scale,
+                    rotateX,
+                    y,
+                    transformOrigin: "center center",
+                }}
             >
                 <div className="absolute -inset-8 rounded-[2.5rem] bg-primary/5 blur-3xl" />
 
@@ -70,7 +80,7 @@ export function DashboardPreview() {
                     </div>
                     <div className="flex">
                         <aside className="hidden w-46.25 shrink-0 border-r bg-card lg:flex lg:flex-col">
-                         
+
                             <div className="flex h-14.5 items-center gap-2.5 px-4">
                                 <Image
                                     src={assets.logo.src}
@@ -103,8 +113,8 @@ export function DashboardPreview() {
                                             <div
                                                 key={item.label}
                                                 className={`flex items-center gap-2 rounded-lg px-2.5 py-2 text-[10px] font-medium ${index === 0
-                                                        ? "bg-primary/10 text-primary"
-                                                        : "text-muted-foreground"
+                                                    ? "bg-primary/10 text-primary"
+                                                    : "text-muted-foreground"
                                                     }`}
                                             >
                                                 <Icon className="size-3.5" />
@@ -372,7 +382,7 @@ export function DashboardPreview() {
                                                     </linearGradient>
                                                 </defs>
 
-                                         
+
                                                 <path
                                                     d="M0 190 C100 190 130 190 175 190 C215 190 225 130 270 90 C315 50 335 10 365 12 C410 14 440 100 480 155 C520 180 580 190 700 190 L700 220 L0 220 Z"
                                                     className="fill-primary/15 text-primary"
@@ -383,7 +393,7 @@ export function DashboardPreview() {
                                                     className="fill-destructive/10 text-destructive"
                                                 />
 
-                                              
+
                                                 <path
                                                     d="M0 190 C100 190 130 190 175 190 C215 190 225 130 270 90 C315 50 335 10 365 12 C410 14 440 100 480 155 C520 180 580 190 700 190"
                                                     fill="none"
@@ -392,7 +402,7 @@ export function DashboardPreview() {
                                                     className="text-primary"
                                                 />
 
-                                               
+
                                                 <path
                                                     d="M0 190 C130 190 170 190 220 190 C270 190 285 160 320 145 C355 130 380 145 410 152 C460 165 500 185 700 190"
                                                     fill="none"
@@ -402,7 +412,7 @@ export function DashboardPreview() {
                                                 />
                                             </svg>
 
-                                       
+
                                             <div className="absolute bottom-0 left-9 right-0 flex justify-between text-[7px] text-muted-foreground">
                                                 <span>May 26</span>
                                                 <span>Jun 26</span>
@@ -414,7 +424,7 @@ export function DashboardPreview() {
                                         </div>
                                     </section>
 
-                        
+
                                     <section className="rounded-xl border bg-card p-4">
                                         <div className="flex items-start justify-between">
                                             <div>
@@ -433,7 +443,7 @@ export function DashboardPreview() {
                                         </div>
 
                                         <div className="mt-5 flex items-center gap-4">
-                                       
+
                                             <div className="relative flex size-16 items-center justify-center">
                                                 <svg className="size-full -rotate-90" viewBox="0 0 36 36">
                                                     <path
