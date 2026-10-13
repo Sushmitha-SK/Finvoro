@@ -228,9 +228,11 @@
 }
 
 @layer utilities {
+
   .surface-card {
-    @apply border-border/5 bg-linear-to-b from-card/50 to-card transition-all hover:border-border hover:shadow-xs
+    @apply border-border/20 bg-linear-to-b from-card/50 to-card transition-all hover:border-border hover:shadow-xs
   }
+
 
   .tabular-nums {
     font-variant-numeric: tabular-nums;

@@ -1,15 +1,14 @@
-import { FAQSection } from "@/components/landing/faq-section";
-import { FeaturesSection } from "@/components/landing/features-section";
-import { FinalCTA } from "@/components/landing/final-cta";
-import { HeroSection } from "@/components/landing/hero-section";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { LandingFooter } from "@/components/landing/landing-footer";
-import { LandingNavbar } from "@/components/landing/landing-navbar";
-import { PricingSection } from "@/components/landing/pricing-section";
-import { ProductShowcase } from "@/components/landing/product-showcase";
-import { SmartInsightsSection } from "@/components/landing/smart-insights-section";
-import { ValueStrip } from "@/components/landing/value-strip";
 import { LenisProvider } from "@/components/providers/lenis-provider";
+import { LandingNavbar } from "@/components/landing/landing-navbar";
+import { HeroSection } from "@/components/landing/hero-section";
+import { ValueStrip } from "@/components/landing/value-strip";
+import { FeaturesSection } from "@/components/landing/features-section";
+import { ProductShowcase } from "@/components/landing/product-showcase";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { SmartInsightsSection } from "@/components/landing/smart-insights-section";
+import { FAQSection } from "@/components/landing/faq-section";
+import { FinalCTA } from "@/components/landing/final-cta";
+import { LandingFooter } from "@/components/landing/landing-footer";
 
 export default function Home() {
   return (
@@ -23,7 +22,6 @@ export default function Home() {
           <ProductShowcase />
           <HowItWorks />
           <SmartInsightsSection />
-          <PricingSection />
           <FAQSection />
           <FinalCTA />
         </main>

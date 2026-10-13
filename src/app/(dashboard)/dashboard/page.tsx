@@ -26,7 +26,7 @@ export default async function DashboardPage() {
     const data = await getDashboardData(userId);
 
     return (
-        <div className="mx-auto w-full max-w-7xl space-y-6 p-4 sm:p-6">
+        <div className="mx-auto w-full max-w-8xl space-y-6 p-4 sm:p-6">
             <DashboardHeader monthLabel={data.monthLabel} />
 
             {!data.hasData ? (

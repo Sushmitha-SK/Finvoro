@@ -128,7 +128,7 @@ function PaginationSkeleton() {
 
 export default function Loading() {
     return (
-        <div className="mx-auto w-full max-w-7xl space-y-5 p-4 sm:p-6">
+        <div className="mx-auto w-full max-w-8xl space-y-5 p-4 sm:p-6">
             {/* Page header */}
             <HeaderSkeleton />
 

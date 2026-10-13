@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Check, Sparkles, ShieldCheck } from "lucide-react";
-import { Show } from "@clerk/nextjs";
+import { Show, useClerk } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { DashboardPreview } from "./dashboard-preview";
 import { heroBenefits } from "@/config/landing-content";
@@ -46,6 +46,8 @@ const fadeUpVariants = {
 };
 
 export function HeroSection() {
+  const clerk = useClerk();
+
   const headlineWords = ["Your", "money.", "Your", "clarity."];
   const subtitleText =
     "Finvoro brings your transactions, intelligent budgets, real-time spending insights, and financial reports together in one beautifully simple workspace.";
@@ -83,37 +85,31 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pb-20 pt-20 sm:px-6 sm:pb-40 sm:pt-44 lg:px-8 lg:pb-48">
         <div className="mx-auto max-w-4xl text-center">
-         
+
           <motion.div
             initial={{ opacity: 0, y: -12, scale: 0.9, filter: "blur(8px)" }}
             animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             transition={springTransition}
-            className="mb-6 sm:mb-8 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-background/75 px-3 py-1.5 text-xs 
-            font-medium text-foreground/80 shadow-sm shadow-primary/5 backdrop-blur-xl"
+            className="mb-6 sm:mb-8 inline-flex items-center gap-1.5 sm:gap-2.5 sm:mt-5 rounded-full border border-border/50 bg-muted/40 px-3 sm:px-3.5 py-1.5 text-[11px] sm:text-xs font-medium text-foreground shadow-sm backdrop-blur-md max-w-full"
           >
             <motion.span
-              animate={{ rotate: [0, 15, -10, 0] }}
-              transition={{
-                duration: 2.4,
-                repeat: Infinity,
-                repeatDelay: 3,
-                ease: "easeInOut",
-              }}
-              className="flex size-5 items-center justify-center rounded-full bg-primary/10"
+              animate={{ rotate: [0, 20, -10, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="flex size-4 sm:size-5 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm"
             >
-              <Sparkles className="size-3 text-primary" />
+              <Sparkles className="size-2.5 sm:size-3" />
             </motion.span>
 
-            <span className="whitespace-nowrap">
+            <span className="bg-linear-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text text-transparent font-medium truncate">
               A simpler way to manage your money
             </span>
 
-            <span className="mx-0.5 h-3 w-px bg-border" />
+            <span className="h-3 w-px bg-border shrink-0" />
 
-            <span className="flex items-center gap-1.5 text-muted-foreground">
-              <ShieldCheck className="size-3.5 text-primary" />
+            <div className="flex items-center gap-1 rounded-full bg-primary/10 px-1.5 sm:px-2 py-0.5 text-primary text-[10px] sm:text-[11px] font-semibold shrink-0">
+              <ShieldCheck className="size-3" />
               <span>Secure</span>
-            </span>
+            </div>
           </motion.div>
 
           <motion.h1
@@ -163,7 +159,7 @@ export function HeroSection() {
             ))}
           </motion.p>
 
-          <motion.div
+          {/* <motion.div
             variants={containerVariants(0.1, 0.9)}
             initial="hidden"
             animate="visible"
@@ -171,21 +167,59 @@ export function HeroSection() {
           >
             <Show when="signed-out">
               <motion.div variants={fadeUpVariants} className="w-full sm:w-auto">
-                <Link
-                  href="/sign-up"
-                  className="group inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-colors hover:bg-primary/90"
+                <button
+                  onClick={() => clerk.openSignUp()}
+                  className="group inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-colors hover:bg-primary/90 cursor-pointer"
                 >
                   Get started free
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                </button>
               </motion.div>
             </Show>
 
             <Show when="signed-in">
-              <motion.div variants={fadeUpVariants} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
+              <motion.div variants={fadeUpVariants} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
                 <Link
                   href="/dashboard"
-                  className="group inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-colors hover:bg-primary/90"
+                  className="group inline-flex h-12 w-full items-center gap-1.5 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground shadow-lg transition-all hover:opacity-95 cursor-pointer">
+                  Go to Dashboard
+                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </motion.div>
+            </Show>
+
+            <motion.div variants={fadeUpVariants} className="w-full sm:w-auto">
+              <Link
+                href="#features"
+                className="inline-flex h-12 w-full sm:w-auto items-center justify-center rounded-xl border border-border/80 bg-background/80 px-8 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
+              >
+                Explore features
+              </Link>
+            </motion.div>
+          </motion.div> */}
+          <motion.div
+            variants={containerVariants(0.1, 0.9)}
+            initial="hidden"
+            animate="visible"
+            className="mt-8 sm:mt-10 flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:gap-4 w-full px-4 sm:px-0"
+          >
+            <Show when="signed-out">
+              <motion.div variants={fadeUpVariants} className="w-full sm:w-auto">
+                <button
+                  onClick={() => clerk.openSignUp()}
+                  className="group inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-colors hover:bg-primary/90 cursor-pointer"
+                >
+                  Get started free
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </motion.div>
+            </Show>
+
+            <Show when="signed-in">
+              <motion.div variants={fadeUpVariants} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
+                <Link
+                  href="/dashboard"
+                  className="group inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-all hover:bg-primary/90 cursor-pointer"
                 >
                   Go to Dashboard
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -241,3 +275,5 @@ export function HeroSection() {
     </section>
   );
 }
+
+

@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,9 +16,9 @@ export function FAQSection() {
         <section id="faq" className="relative border-b bg-muted/30 py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
-                    
+
                     {/* Left Column: Heading & Help Box */}
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -26,9 +26,10 @@ export function FAQSection() {
                         className="lg:col-span-5 flex flex-col justify-start lg:sticky lg:top-8 self-start"
                     >
                         <div>
-                            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                                <MessageCircleQuestion className="size-3.5" />
-                                Support & Info
+                            <div className="inline-flex items-center gap-2 py-1 text-xs font-semibold text-primary">
+                                <span className="inline-block text-xs font-semibold tracking-wider text-primary uppercase">
+                                    Support & Info
+                                </span>
                             </div>
 
                             <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -65,11 +66,10 @@ export function FAQSection() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: index * 0.05 }}
-                                    className={`group rounded-2xl border transition-colors duration-300 ${
-                                        isOpen
-                                            ? "bg-card shadow-lg shadow-black/3 border-primary/30 ring-1 ring-primary/20"
-                                            : "bg-card/40 hover:bg-card hover:border-border"
-                                    }`}
+                                    className={`group rounded-2xl border transition-colors duration-300 ${isOpen
+                                        ? "bg-card shadow-lg shadow-black/3 border-primary/30 ring-1 ring-primary/20"
+                                        : "bg-card/40 hover:bg-card hover:border-border"
+                                        }`}
                                 >
                                     <button
                                         onClick={() => toggleFAQ(index)}
@@ -78,14 +78,13 @@ export function FAQSection() {
                                         <span className={`text-base font-medium transition-colors ${isOpen ? "text-primary" : "text-foreground group-hover:text-foreground"}`}>
                                             {faq.question}
                                         </span>
-                                        <motion.div 
+                                        <motion.div
                                             animate={{ rotate: isOpen ? 180 : 0 }}
                                             transition={{ duration: 0.3, ease: "easeInOut" }}
-                                            className={`flex size-8 shrink-0 items-center justify-center rounded-full transition-colors ${
-                                                isOpen 
-                                                    ? "bg-primary text-primary-foreground" 
-                                                    : "bg-muted text-muted-foreground group-hover:bg-muted/80"
-                                            }`}
+                                            className={`flex size-8 shrink-0 items-center justify-center rounded-full transition-colors ${isOpen
+                                                ? "bg-primary text-primary-foreground"
+                                                : "bg-muted text-muted-foreground group-hover:bg-muted/80"
+                                                }`}
                                         >
                                             <ChevronDown className="size-4" />
                                         </motion.div>

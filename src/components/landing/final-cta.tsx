@@ -1,10 +1,14 @@
-import { ArrowRight, CircleDollarSign } from "lucide-react";
+"use client";
+
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Show } from "@clerk/nextjs";
+import { Show, useClerk } from "@clerk/nextjs";
 import assets from "@/assets/assets";
 
 export function FinalCTA() {
+    const clerk = useClerk();
+
     return (
         <section className="relative overflow-hidden bg-muted/30">
             <div className="absolute inset-0 z-0">
@@ -19,8 +23,14 @@ export function FinalCTA() {
             </div>
 
             <div className="relative z-10 mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-24 lg:py-28">
-                <div className="mx-auto flex size-12 items-center justify-center rounded-2xl border border-border/50 bg-primary/80 shadow-md backdrop-blur-sm">
-                    <CircleDollarSign className="size-6 text-white" />
+                <div className="mx-auto flex size-12 items-center justify-center">
+                    <Image
+                        src={assets.logoIcon.src}
+                        alt="Logo"
+                        width={24}
+                        height={24}
+                        className="size-10 object-contain"
+                    />
                 </div>
 
                 <h2 className="mx-auto mt-6 max-w-3xl text-3xl font-semibold tracking-[-0.04em] sm:text-4xl lg:text-5xl lg:leading-[1.08]">
@@ -32,35 +42,34 @@ export function FinalCTA() {
                     your financial habits with Finvoro.
                 </p>
 
-                <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+                <div className="mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center">
                     <Show when="signed-out">
-                        <Link
-                            href="/sign-up"
-                            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-6 text-sm font-medium text-background shadow-sm transition-all hover:bg-foreground/90 hover:scale-[1.02] active:scale-[0.98]"
+                        <button
+                            onClick={() => clerk.openSignUp()}
+                            className="group inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg transition-all hover:opacity-95 cursor-pointer sm:w-auto"
                         >
                             Get started for free
-                            <ArrowRight className="size-4" />
-                        </Link>
+                            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                        </button>
 
-                        <Link
-                            href="/sign-in"
-                            className="inline-flex h-11 items-center justify-center rounded-lg border border-border/80 bg-background/80 px-6 text-sm font-medium shadow-sm backdrop-blur-sm transition-all hover:bg-muted hover:scale-[1.02] active:scale-[0.98]"
+                        <button
+                            onClick={() => clerk.openSignIn()}
+                            className="inline-flex h-11 w-full cursor-pointer items-center justify-center rounded-lg border border-border/80 bg-background/80 px-6 text-sm font-medium shadow-sm backdrop-blur-sm transition-all hover:bg-muted sm:w-auto"
                         >
                             Sign in
-                        </Link>
+                        </button>
                     </Show>
 
                     <Show when="signed-in">
                         <Link
                             href="/dashboard"
-                            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-medium text-background shadow-sm transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]"
+                            className="group inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg transition-all hover:opacity-95 cursor-pointer sm:w-auto"
                         >
                             Go to Dashboard
-                            <ArrowRight className="size-4" />
+                            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                         </Link>
                     </Show>
                 </div>
-
                 <p className="mt-4 text-xs text-muted-foreground">
                     No complicated setup. Start organizing your finances today.
                 </p>

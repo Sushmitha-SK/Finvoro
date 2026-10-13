@@ -12,5 +12,9 @@ export default async function GoalsPage() {
 
     if (!userId) redirect("/sign-in");
 
-    return <GoalsView goals={await getGoals(userId)} />;
+    return (
+        <div className="mx-auto w-full max-w-8xl space-y-5 p-4 sm:p-6">
+            <GoalsView goals={await getGoals(userId)} />
+        </div>
+    )
 }

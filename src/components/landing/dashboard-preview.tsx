@@ -8,7 +8,7 @@ import {
     useScroll,
     useTransform,
 } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     Bell,
     Eye,
@@ -26,10 +26,25 @@ import {
 import Image from "next/image";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
-
 export function DashboardPreview() {
     const reduceMotion = useReducedMotion();
     const containerRef = useRef<HTMLDivElement>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 1023px)");
+
+        const handleChange = () => {
+            setIsMobile(mediaQuery.matches);
+        };
+
+        handleChange();
+        mediaQuery.addEventListener("change", handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleChange);
+        };
+    }, []);
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -54,7 +69,6 @@ export function DashboardPreview() {
         reduceMotion ? [0, 0] : [-80, 0],
     );
 
-
     return (
         <div
             ref={containerRef}
@@ -64,9 +78,9 @@ export function DashboardPreview() {
             <motion.div
                 className="relative will-change-transform"
                 style={{
-                    scale,
-                    rotateX,
-                    y,
+                    scale: isMobile ? 1 : scale,
+                    rotateX: isMobile ? 0 : rotateX,
+                    y: isMobile ? 0 : y,
                     transformOrigin: "center center",
                 }}
             >
@@ -78,30 +92,31 @@ export function DashboardPreview() {
                         <span className="size-2.5 rounded-full bg-border" />
                         <span className="size-2.5 rounded-full bg-border" />
                     </div>
+
                     <div className="flex">
                         <aside className="hidden w-46.25 shrink-0 border-r bg-card lg:flex lg:flex-col">
-
                             <div className="flex h-14.5 items-center gap-2.5 px-4">
                                 <Image
                                     src={assets.logo.src}
                                     alt="Finvoro"
                                     width={100}
                                     height={28}
-                                    className="h-7 w-auto object-contain block dark:hidden group-data-[collapsible=icon]:hidden"
+                                    className="block h-7 w-auto object-contain dark:hidden group-data-[collapsible=icon]:hidden"
                                     priority
                                 />
+
                                 <Image
                                     src={assets.logoDark.src}
                                     alt="Finvoro"
                                     width={100}
                                     height={28}
-                                    className="h-7 w-auto object-contain hidden dark:block group-data-[collapsible=icon]:hidden"
+                                    className="hidden h-7 w-auto object-contain dark:block group-data-[collapsible=icon]:hidden"
                                     priority
                                 />
                             </div>
 
                             <div className="flex-1 px-3 py-5">
-                                <p className="mb-2 px-2 text-[8px] font-medium uppercase tracking-wider text-muted-foreground text-left">
+                                <p className="mb-2 px-2 text-left text-[8px] font-medium uppercase tracking-wider text-muted-foreground">
                                     Overview
                                 </p>
 
@@ -113,8 +128,8 @@ export function DashboardPreview() {
                                             <div
                                                 key={item.label}
                                                 className={`flex items-center gap-2 rounded-lg px-2.5 py-2 text-[10px] font-medium ${index === 0
-                                                    ? "bg-primary/10 text-primary"
-                                                    : "text-muted-foreground"
+                                                        ? "bg-primary/10 text-primary"
+                                                        : "text-muted-foreground"
                                                     }`}
                                             >
                                                 <Icon className="size-3.5" />
@@ -123,7 +138,8 @@ export function DashboardPreview() {
                                         );
                                     })}
                                 </nav>
-                                <p className="mb-2 mt-7 px-2 text-[8px] font-medium uppercase tracking-wider text-muted-foreground text-left">
+
+                                <p className="mb-2 mt-7 px-2 text-left text-[8px] font-medium uppercase tracking-wider text-muted-foreground">
                                     Intelligence
                                 </p>
 
@@ -134,7 +150,7 @@ export function DashboardPreview() {
                                     </div>
                                 </div>
 
-                                <p className="mb-2 mt-7 px-2 text-[8px] font-medium uppercase tracking-wider text-muted-foreground text-left">
+                                <p className="mb-2 mt-7 px-2 text-left text-[8px] font-medium uppercase tracking-wider text-muted-foreground">
                                     General
                                 </p>
 
@@ -161,6 +177,7 @@ export function DashboardPreview() {
                                         <p className="truncate text-[9px] font-medium">
                                             John Doe
                                         </p>
+
                                         <p className="truncate text-[8px] text-muted-foreground">
                                             john@yourmail.com
                                         </p>
@@ -168,17 +185,21 @@ export function DashboardPreview() {
                                 </div>
                             </div>
                         </aside>
+
                         <div className="min-w-0 flex-1">
                             <header className="flex h-14.5 items-center gap-3 border-b border-border bg-background px-4 sm:px-5">
                                 <div className="flex items-center gap-2 text-[9px] text-muted-foreground">
                                     <PanelLeftIcon className="size-3" />
                                     <span>|</span>
+
                                     <span className="font-medium text-foreground">
                                         Dashboard
                                     </span>
                                 </div>
+
                                 <div className="mx-auto hidden h-7 w-64 items-center gap-2 rounded-lg border bg-muted/20 px-2.5 text-[9px] text-muted-foreground md:flex">
                                     <Search className="size-3" />
+
                                     <span>
                                         Search transactions, pages...
                                     </span>
@@ -205,7 +226,7 @@ export function DashboardPreview() {
                             <main className="bg-muted/20 p-4 sm:p-5">
                                 <div className="mb-4 flex items-end justify-between">
                                     <div>
-                                        <h2 className="text-base font-semibold text-left">
+                                        <h2 className="text-left text-base font-semibold">
                                             Good afternoon, John
                                         </h2>
 
@@ -214,6 +235,7 @@ export function DashboardPreview() {
                                             for October 2026.
                                         </p>
                                     </div>
+
                                     <div className="hidden items-center gap-2 sm:flex">
                                         <button
                                             type="button"
@@ -232,6 +254,7 @@ export function DashboardPreview() {
                                         </button>
                                     </div>
                                 </div>
+
                                 <div className="grid grid-cols-2 gap-2.5 xl:grid-cols-4">
                                     <SummaryCard
                                         title="Total balance"
@@ -321,19 +344,24 @@ export function DashboardPreview() {
 
                                         <div className="relative h-48">
                                             <div className="absolute inset-0 flex flex-col justify-between">
-                                                {["₹1L", "₹75K", "₹50K", "₹25K", "₹0"].map(
-                                                    (label) => (
-                                                        <div
-                                                            key={label}
-                                                            className="flex items-center gap-2"
-                                                        >
-                                                            <span className="w-7 text-right text-[7px] text-muted-foreground">
-                                                                {label}
-                                                            </span>
-                                                            <div className="h-px flex-1 border-t border-dashed border-border" />
-                                                        </div>
-                                                    ),
-                                                )}
+                                                {[
+                                                    "₹1L",
+                                                    "₹75K",
+                                                    "₹50K",
+                                                    "₹25K",
+                                                    "₹0",
+                                                ].map((label) => (
+                                                    <div
+                                                        key={label}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        <span className="w-7 text-right text-[7px] text-muted-foreground">
+                                                            {label}
+                                                        </span>
+
+                                                        <div className="h-px flex-1 border-t border-dashed border-border" />
+                                                    </div>
+                                                ))}
                                             </div>
 
                                             <svg
@@ -355,6 +383,7 @@ export function DashboardPreview() {
                                                             stopColor="currentColor"
                                                             stopOpacity="0.25"
                                                         />
+
                                                         <stop
                                                             offset="100%"
                                                             stopColor="currentColor"
@@ -374,6 +403,7 @@ export function DashboardPreview() {
                                                             stopColor="currentColor"
                                                             stopOpacity="0.16"
                                                         />
+
                                                         <stop
                                                             offset="100%"
                                                             stopColor="currentColor"
@@ -381,7 +411,6 @@ export function DashboardPreview() {
                                                         />
                                                     </linearGradient>
                                                 </defs>
-
 
                                                 <path
                                                     d="M0 190 C100 190 130 190 175 190 C215 190 225 130 270 90 C315 50 335 10 365 12 C410 14 440 100 480 155 C520 180 580 190 700 190 L700 220 L0 220 Z"
@@ -393,7 +422,6 @@ export function DashboardPreview() {
                                                     className="fill-destructive/10 text-destructive"
                                                 />
 
-
                                                 <path
                                                     d="M0 190 C100 190 130 190 175 190 C215 190 225 130 270 90 C315 50 335 10 365 12 C410 14 440 100 480 155 C520 180 580 190 700 190"
                                                     fill="none"
@@ -401,7 +429,6 @@ export function DashboardPreview() {
                                                     strokeWidth="2"
                                                     className="text-primary"
                                                 />
-
 
                                                 <path
                                                     d="M0 190 C130 190 170 190 220 190 C270 190 285 160 320 145 C355 130 380 145 410 152 C460 165 500 185 700 190"
@@ -411,7 +438,6 @@ export function DashboardPreview() {
                                                     className="text-destructive"
                                                 />
                                             </svg>
-
 
                                             <div className="absolute bottom-0 left-9 right-0 flex justify-between text-[7px] text-muted-foreground">
                                                 <span>May 26</span>
@@ -423,7 +449,6 @@ export function DashboardPreview() {
                                             </div>
                                         </div>
                                     </section>
-
 
                                     <section className="rounded-xl border bg-card p-4">
                                         <div className="flex items-start justify-between">
@@ -443,9 +468,11 @@ export function DashboardPreview() {
                                         </div>
 
                                         <div className="mt-5 flex items-center gap-4">
-
                                             <div className="relative flex size-16 items-center justify-center">
-                                                <svg className="size-full -rotate-90" viewBox="0 0 36 36">
+                                                <svg
+                                                    className="size-full -rotate-90"
+                                                    viewBox="0 0 36 36"
+                                                >
                                                     <path
                                                         className="text-muted"
                                                         strokeWidth="3.5"
@@ -453,6 +480,7 @@ export function DashboardPreview() {
                                                         fill="none"
                                                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                                     />
+
                                                     <path
                                                         className="text-emerald-500"
                                                         strokeDasharray="90, 100"
@@ -463,10 +491,12 @@ export function DashboardPreview() {
                                                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                                     />
                                                 </svg>
+
                                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                                                     <p className="text-sm font-semibold leading-none">
                                                         90
                                                     </p>
+
                                                     <p className="mt-0.5 text-[5px] uppercase text-muted-foreground">
                                                         OUT OF 100
                                                     </p>
@@ -492,6 +522,7 @@ export function DashboardPreview() {
                                             <p className="text-[8px] font-medium uppercase text-muted-foreground">
                                                 Score breakdown
                                             </p>
+
                                             <span className="text-[7px] text-muted-foreground">
                                                 4 factors
                                             </span>
@@ -505,6 +536,7 @@ export function DashboardPreview() {
                                                             {item.label}
                                                             <Info className="size-2.5 text-muted-foreground" />
                                                         </span>
+
                                                         <span className="text-muted-foreground">
                                                             {item.value}
                                                         </span>
@@ -573,7 +605,7 @@ function SummaryCard({
     const currentTone = toneConfig[tone];
 
     return (
-        <div className="rounded-lg border bg-card p-2 flex flex-col justify-between">
+        <div className="flex flex-col justify-between rounded-lg border bg-card p-2">
             <div>
                 <div className="flex items-center justify-between">
                     <span className="text-[8px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -586,7 +618,7 @@ function SummaryCard({
                 </div>
 
                 <div className="mt-3">
-                    <p className="text-base font-semibold tracking-tight text-foreground text-left">
+                    <p className="text-left text-base font-semibold tracking-tight text-foreground">
                         {value}
                     </p>
                 </div>
@@ -599,6 +631,7 @@ function SummaryCard({
                             {badge}
                         </span>
                     ) : null}
+
                     <span className="text-[7px] text-muted-foreground">
                         {subtitle}
                     </span>
@@ -608,14 +641,35 @@ function SummaryCard({
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
                             data={chartData}
-                            margin={{ top: 2, right: 0, left: 0, bottom: 0 }}
+                            margin={{
+                                top: 2,
+                                right: 0,
+                                left: 0,
+                                bottom: 0,
+                            }}
                         >
                             <defs>
-                                <linearGradient id={`gradient-${tone}`} x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor={currentTone.stroke} stopOpacity={0.3} />
-                                    <stop offset="95%" stopColor={currentTone.stroke} stopOpacity={0} />
+                                <linearGradient
+                                    id={`gradient-${tone}`}
+                                    x1="0"
+                                    y1="0"
+                                    x2="0"
+                                    y2="1"
+                                >
+                                    <stop
+                                        offset="5%"
+                                        stopColor={currentTone.stroke}
+                                        stopOpacity={0.3}
+                                    />
+
+                                    <stop
+                                        offset="95%"
+                                        stopColor={currentTone.stroke}
+                                        stopOpacity={0}
+                                    />
                                 </linearGradient>
                             </defs>
+
                             <Area
                                 type="monotone"
                                 dataKey="v"
