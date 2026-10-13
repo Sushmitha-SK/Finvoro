@@ -1,16 +1,13 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
     ArrowRight,
-    BrainCircuit,
     CheckCircle2,
     ChevronRight,
 } from "lucide-react";
 import { insights } from "@/config/landing-content";
-
-
 
 type Insight = (typeof insights)[number];
 
@@ -52,8 +49,6 @@ function InsightCard({
     const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
     const Icon = insight.icon;
     const styles = typeStyles[insight.type];
-
-
 
     return (
         <div
@@ -146,9 +141,10 @@ export function SmartInsightsSection() {
             <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
                 <div className="grid items-start gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
                     <div className="lg:sticky lg:top-28">
-                        <div className="inline-flex items-center gap-2 rounded-full border bg-background px-3 py-1.5 text-xs font-medium">
-                            <BrainCircuit className="size-3.5" />
-                            Financial intelligence
+                        <div className="inline-flex items-center text-center max-w-2xl mx-auto">
+                            <span className="inline-block text-xs font-semibold tracking-wider text-primary uppercase">
+                                Financial intelligence
+                            </span>
                         </div>
 
                         <h2 className="mt-5 max-w-xl text-3xl font-semibold tracking-[-0.03em] sm:text-4xl lg:text-[2.65rem] lg:leading-tight">
@@ -176,10 +172,8 @@ export function SmartInsightsSection() {
                             ))}
                         </div>
 
-                        <a
-                            href="#features"
-                            className="mt-8 inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-muted-foreground"
-                        >
+                        <a href="#features"
+                            className="mt-8 inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary">
                             Explore Finvoro features
                             <ArrowRight className="size-4" />
                         </a>

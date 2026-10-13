@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export type TransactionType = "income" | "expense";
 
 export type InsightKind =
@@ -146,3 +148,6 @@ export type DashboardData = {
     health: HealthScore;
     heuristicInsights: Insight[];
 };
+
+
+

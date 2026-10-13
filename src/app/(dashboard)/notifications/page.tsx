@@ -8,8 +8,8 @@ export default function NotificationsPage() {
     return (
 
         <div className="p-4 md:p-6">
-            <div className="mx-auto max-w-7xl space-y-6">
- 
+            <div className="mx-auto max-w-8xl space-y-6">
+
                 <div>
                     <h2 className="font-heading text-2xl font-semibold tracking-tight">
                         Notifications

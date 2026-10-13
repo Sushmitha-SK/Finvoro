@@ -1,10 +1,10 @@
 'use client'
 
 import Link from "next/link";
-import { ArrowUp, CircleDollarSign, Mail } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { Button } from "../ui/button";
-import { Show } from "@clerk/nextjs";
+import { Show, useClerk } from "@clerk/nextjs";
 import { accountLinks, legalLinks, productLinks, resourceLinks, socialLinks } from "@/config/landing-content";
 import Image from "next/image";
 import assets from "@/assets/assets";
@@ -32,6 +32,7 @@ const itemVariants: Variants = {
 
 export function LandingFooter() {
     const currentYear = new Date().getFullYear();
+    const clerk = useClerk();
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -140,9 +141,21 @@ export function LandingFooter() {
                                 <ul className="space-y-3">
                                     {accountLinks.map((item) => (
                                         <li key={item.label}>
-                                            <Link href={item.href} className={navLinkClass}>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const label = item.label.toLowerCase();
+
+                                                    if (label.includes("sign up") || label.includes("get started") || label.includes("register")) {
+                                                        clerk.openSignUp();
+                                                    } else if (label.includes("sign in") || label.includes("log in") || label.includes("login")) {
+                                                        clerk.openSignIn();
+                                                    }
+                                                }}
+                                                className={navLinkClass}
+                                            >
                                                 {item.label}
-                                            </Link>
+                                            </button>
                                         </li>
                                     ))}
                                 </ul>

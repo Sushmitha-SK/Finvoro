@@ -1,4 +1,9 @@
-import { type LucideIcon, ArrowUpRight, ArrowDownLeft, TrendingDown, Lightbulb, TrendingUp, Mail, LayoutDashboard, CreditCard, Wallet, Target, BarChart3, Tags } from "lucide-react";
+import {
+    type LucideIcon, ArrowUpRight, ArrowDownLeft, TrendingDown, Lightbulb,
+    TrendingUp, Mail, LayoutDashboard, CreditCard, Wallet, Target, BarChart3,
+    Tags, Smartphone, Landmark, PieChart, RefreshCw, ShieldCheck,
+    AlertTriangle
+} from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 //Navbar
@@ -7,7 +12,8 @@ export const navItems = [
     { label: "Features", href: "#features" },
     { label: "How it works", href: "#how-it-works" },
     { label: "Insights", href: "#insights" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "FAQ", href: "#faq" },
+
 ];
 
 //Hero section
@@ -113,44 +119,58 @@ export const categoryData = [
     { name: "Utilities", value: "₹2,840", width: "28%" },
 ];
 
-//Hpw it works section
+//How it works section
+
+
 export const insights = [
     {
-        icon: TrendingDown,
+        icon: AlertTriangle,
         label: "Spending trend",
-        title: "Dining expenses are trending down",
-        description: "Your dining spending is 18% lower than your previous month, mostly driven by fewer weekend reservations.",
-        metric: "-$142.50",
-        metricLabel: "vs last month",
-        type: "positive" as const,
-        actionText: "View category breakdown",
+        title: "Spending is running ahead of last month",
+        description: "At this pace you'll spend about ₹63,794 by month end (+57%).",
+        metric: "₹63,794",
+        metricLabel: "+57% projected",
+        type: "warning" as const,
+        actionText: "View spending forecast",
         timestamp: "Updated today at 9:41 AM",
+    },
+    {
+        icon: ShieldCheck,
+        label: "Savings insight",
+        title: "Saving 72% of your income",
+        description: "That's well above the common 20% guideline. Consider putting the surplus toward a goal.",
+        metric: "72%",
+        metricLabel: "vs 20% guideline",
+        type: "positive" as const,
+        actionText: "Allocate to goals",
+        timestamp: "Updated today at 8:00 AM",
+    },
+    {
+        icon: TrendingUp,
+        label: "Category focus",
+        title: "Rent makes up 77% of spending",
+        description: "₹22,000 this month. A concentrated category is where small changes matter most.",
+        metric: "₹22,000",
+        metricLabel: "77% of total",
+        type: "neutral" as const,
+        actionText: "Analyze category breakdown",
+        timestamp: "Updated yesterday",
     },
     {
         icon: Lightbulb,
         label: "Smart observation",
-        title: "Subscriptions could be optimized",
-        description: "Recurring subscriptions account for a noticeable part of your monthly spending with 2 services showing low usage.",
-        metric: "$54.00 /mo",
-        metricLabel: "4 active services",
-        type: "neutral" as const,
-        actionText: "Review subscriptions",
-        timestamp: "Updated yesterday",
-    },
-    {
-        icon: TrendingUp,
-        label: "Budget alert",
-        title: "Shopping is approaching its limit",
-        description: "You've used 82% of your monthly shopping budget with 9 days remaining in the billing cycle.",
-        metric: "$328 / $400",
-        progress: 82,
+        title: "Recurring charges are over 10% of income",
+        description: "₹25,267 a month goes to detected subscriptions. Cancel any you no longer use.",
+        metric: "₹25,267 /mo",
+        progress: 10,
         type: "warning" as const,
-        actionText: "Adjust budget limit",
+        actionText: "Review subscriptions",
         timestamp: "Updated 3 hours ago",
     },
 ] as const;
 
-//Pricimg section
+//Pricing section
+
 export const plans = [
     {
         name: "Free",
@@ -199,7 +219,6 @@ export const plans = [
     },
 ];
 
-
 //FAQ section
 export const faqs = [
     {
@@ -240,7 +259,6 @@ export const faqs = [
 export const productLinks = [
     { label: "Features", href: "#features" },
     { label: "Insights", href: "#insights" },
-    { label: "Pricing", href: "#pricing" },
 ];
 
 export const resourceLinks = [
@@ -259,7 +277,6 @@ export const legalLinks = [
 ];
 
 export const socialLinks = [
-    { label: "GitHub", href: "https://github.com", icon: FaGithub },
     { label: "LinkedIn", href: "https://linkedin.com", icon: FaLinkedin },
     { label: "Email", href: "mailto:hello@finvoro.app", icon: Mail },
 ];

@@ -2,6 +2,7 @@
 
 import assets from "@/assets/assets";
 import { categoryData } from "@/config/landing-content";
+import { Show, useClerk } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import {
     ArrowDown,
@@ -17,17 +18,21 @@ import {
     TrendingUp,
     Wallet,
 } from "lucide-react";
+import Link from "next/link";
 
 
 export function ProductShowcase() {
+    const clerk = useClerk();
     return (
         <section className="overflow-hidden border-b bg-muted/20 font-sans">
             <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
                 <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
                     <div>
-                        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-accent px-3.5 py-1 text-xs font-semibold text-accent-foreground shadow-sm">
-                            <Sparkles className="size-3.5 text-primary" />
-                            <span>Financial Clarity Suite</span>
+                        <div className="inline-flex w-fit items-center gap-2 py-1 text-xs font-semibold text-accent-foreground">
+
+                            <span className="inline-block text-xs font-semibold tracking-wider text-primary uppercase">
+                                Financial Clarity Suite
+                            </span>
                         </div>
 
                         <h2 className="mt-5 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl text-foreground">
@@ -71,13 +76,25 @@ export function ProductShowcase() {
                         </div>
 
                         <div className="mt-10 flex flex-wrap items-center gap-4">
-                            <button
-                                type="button"
-                                className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-xl hover:opacity-90 transition-all duration-200 hover:scale-[1.02]"
-                            >
-                                <span>Try Finvoro free</span>
-                                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                            </button>
+                            <Show when="signed-out">
+                                <button
+                                    onClick={() => clerk.openSignUp()}
+                                    className="group inline-flex h-11 items-center gap-1.5 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground shadow-lg transition-all hover:opacity-95 cursor-pointer"
+                                >
+                                    Try Finvoro free
+                                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                                </button>
+                            </Show>
+                            <Show when="signed-in">
+                                <Link
+                                    href="/dashboard"
+                                    className="group inline-flex h-11 items-center gap-1.5 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground shadow-lg transition-all hover:opacity-95"
+                                >
+                                    Go to Dashboard
+                                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                                </Link>
+                            </Show>
+
                             <span className="text-xs text-muted-foreground font-medium">No credit card required • Instant setup</span>
                         </div>
 

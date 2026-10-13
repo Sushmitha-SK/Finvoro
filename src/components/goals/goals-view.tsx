@@ -69,7 +69,7 @@ export function GoalsView({ goals }: { goals: GoalSummary[] }) {
     }
 
     return (
-        <div className="mx-auto w-full max-w-7xl space-y-6 p-4 sm:p-6">
+        <div className="mx-auto space-y-6 ">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <h2 className="font-heading text-2xl font-semibold tracking-tight">
