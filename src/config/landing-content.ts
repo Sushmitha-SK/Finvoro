@@ -169,7 +169,55 @@ export const insights = [
     },
 ] as const;
 
+//Pricing section
 
+export const plans = [
+    {
+        name: "Free",
+        description: "Everything you need to get started.",
+        price: "₹0",
+        period: "forever",
+        features: [
+            "Track transactions",
+            "Create categories",
+            "Basic budgets",
+            "Monthly overview",
+        ],
+        cta: "Get started",
+        featured: false,
+    },
+    {
+        name: "Pro",
+        description: "More insight, deep reporting, and complete control over your everyday finances.",
+        price: "₹299",
+        period: "per month",
+        features: [
+            "Everything in Free",
+            "Advanced reports & exports",
+            "Smart financial insights",
+            "Detailed spending analysis",
+            "Custom budget alerts",
+            "Priority features access",
+        ],
+        cta: "Start with Pro",
+        featured: true,
+    },
+    {
+        name: "Premium",
+        description: "For users who want the complete experience.",
+        price: "₹599",
+        period: "per month",
+        features: [
+            "Everything in Pro",
+            "Advanced financial analytics",
+            "Extended insights",
+            "Unlimited financial history",
+            "Premium support",
+        ],
+        cta: "Choose Premium",
+        featured: false,
+    },
+];
 
 //FAQ section
 export const faqs = [
