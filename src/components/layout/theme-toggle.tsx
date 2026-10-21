@@ -19,7 +19,6 @@ export function ThemeToggle() {
             <DropdownMenuTrigger
                 render={<Button variant="ghost" size="icon" aria-label="Change theme" />}
             >
-                {/* CSS-driven so server and client markup always match */}
                 <Sun className="size-4 dark:hidden" />
                 <Moon className="hidden size-4 dark:block" />
             </DropdownMenuTrigger>

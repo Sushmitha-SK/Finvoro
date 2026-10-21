@@ -7,12 +7,6 @@ import { useAppStore } from "@/stores/app-store";
 import { useCopilotStore } from "@/stores/copilot-store";
 import { useUIStore } from "@/stores/ui-store";
 
-/**
- * Side effects that belong to the signed-in shell:
- *  - restore the Copilot conversation (per user) from localStorage
- *  - poll notifications
- *  - global keyboard shortcuts
- */
 export function AppEffects({ userId }: { userId: string }) {
     const aiEnabled = useAppStore((state) => state.aiEnabled);
 

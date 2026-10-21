@@ -1,10 +1,3 @@
-/**
- * CSV helpers shared by every export endpoint.
- *
- * Spreadsheet apps evaluate cells starting with = + - @ as formulas, which lets
- * a malicious transaction description exfiltrate data when the CSV is opened
- * (CSV injection). We neutralise those by prefixing a single quote.
- */
 export function escapeCsvValue(value: string | number | null | undefined) {
     let text = value === null || value === undefined ? "" : String(value);
 

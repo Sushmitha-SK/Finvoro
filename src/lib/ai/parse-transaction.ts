@@ -18,7 +18,6 @@ const SYSTEM = (categories: string[], today: string, currency: string) => `You e
 - If a value is truly unknown use a sensible default and lower "confidence".
 - ${UNTRUSTED_DATA_RULE}`;
 
-/** Validates model output against the user's real categories and today's date. */
 export async function normaliseParsed(
     parsed: ParsedTransaction,
     userId: string,

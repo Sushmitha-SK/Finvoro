@@ -38,7 +38,6 @@ export function ReportsSummary({
 
     return (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {/* Total Income */}
             <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -58,7 +57,6 @@ export function ReportsSummary({
                 </CardContent>
             </Card>
 
-            {/* Total Expenses */}
             <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -77,8 +75,6 @@ export function ReportsSummary({
                     </p>
                 </CardContent>
             </Card>
-
-            {/* Net Balance */}
             <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -107,8 +103,6 @@ export function ReportsSummary({
                     </p>
                 </CardContent>
             </Card>
-
-            {/* Savings Rate */}
             <Card className="surface-card">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium text-muted-foreground">

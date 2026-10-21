@@ -3,16 +3,12 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-/**
- * Renders model output. react-markdown never injects raw HTML, so a prompt-injected
- * <script> or <img onerror> in a transaction description stays inert text.
- */
 export function Markdown({ children }: { children: string }) {
     return (
         <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
-                p: ({ children }) => <p className="leading-relaxed [&:not(:last-child)]:mb-2">{children}</p>,
+                p: ({ children }) => <p className="leading-relaxed not-last:mb-2">{children}</p>,
                 ul: ({ children }) => <ul className="mb-2 list-disc space-y-1 pl-5 last:mb-0">{children}</ul>,
                 ol: ({ children }) => <ol className="mb-2 list-decimal space-y-1 pl-5 last:mb-0">{children}</ol>,
                 strong: ({ children }) => <strong className="font-semibold">{children}</strong>,

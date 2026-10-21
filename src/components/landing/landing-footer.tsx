@@ -56,7 +56,6 @@ export function LandingFooter() {
                     viewport={{ once: true, amount: 0.2 }}
                     className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)]"
                 >
-                    {/* Brand column */}
                     <motion.div variants={itemVariants} className="max-w-sm">
 
                         <Link href="/" className="inline-flex items-center">
@@ -178,7 +177,6 @@ export function LandingFooter() {
                     </motion.nav>
                 </motion.div>
 
-                {/* Bottom bar */}
                 <motion.div
                     variants={itemVariants}
                     initial="hidden"

@@ -60,7 +60,6 @@ function Kpi({
                     </span>
                 </div>
 
-                {/* Main Content & Sparkline */}
                 <div className="flex items-end justify-between gap-4">
                     <div className="space-y-1.5 min-w-0">
                         <p className="truncate text-2xl font-bold tracking-tight text-foreground">{value}</p>

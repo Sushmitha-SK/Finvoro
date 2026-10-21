@@ -101,7 +101,6 @@ export const toolDeclarations: FunctionDeclaration[] = [
     },
 ];
 
-/* ------------------------------ arg validation ------------------------------ */
 
 const optionalDate = z
     .string()
@@ -141,7 +140,6 @@ const draftArgs = z.object({
     notes: z.string().max(250).optional(),
 });
 
-/* -------------------------------- executors -------------------------------- */
 
 export type ToolContext = { userId: string; today: string };
 export type ToolResult = { output: unknown; event?: ChatEvent };

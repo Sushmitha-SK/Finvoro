@@ -80,7 +80,6 @@ const contributeSchema = z.object({
     amount: z.number().finite().refine((value) => value !== 0, "Enter an amount."),
 });
 
-/** Add to (or, with a negative amount, withdraw from) a goal. Never below zero. */
 export async function contributeToGoal(id: string, amount: number): Promise<ActionResult> {
     const { userId } = await auth();
 

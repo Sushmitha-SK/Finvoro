@@ -381,17 +381,13 @@ export function ReportsDateFilter() {
                     </span>
                 )}
             </div>
-
-            {/* Height-animated reveal so the panel expands/collapses
-                smoothly instead of popping in. */}
             <div
                 className={cn(
                     "grid transition-[grid-template-rows,opacity,margin] duration-200 ease-out",
                     showCustomFields
                         ? "mt-4 grid-rows-[1fr] opacity-100"
                         : "grid-rows-[0fr] opacity-0",
-                )}
-            >
+                )}>
                 <div className="min-h-0 overflow-hidden">
                     <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">
                         <div
@@ -400,8 +396,7 @@ export function ReportsDateFilter() {
                                 hasInvalidRange
                                     ? "border-destructive"
                                     : "border-input focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
-                            )}
-                        >
+                            )}>
                             <Input
                                 type="date"
                                 value={from}
@@ -438,8 +433,7 @@ export function ReportsDateFilter() {
                                     ? "default"
                                     : "secondary"
                             }
-                            className="h-10"
-                        >
+                            className="h-10">
                             Apply
                         </Button>
 
@@ -451,8 +445,7 @@ export function ReportsDateFilter() {
                                     statusMessage.tone === "error"
                                         ? "text-destructive"
                                         : "text-muted-foreground",
-                                )}
-                            >
+                                )}>
                                 {statusMessage.tone === "error" && (
                                     <AlertCircle className="size-3.5 shrink-0" />
                                 )}

@@ -171,7 +171,6 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
 
     return (
         <div className="space-y-3">
-            {/* Floating Selection Banner */}
             {selectedIds.length > 0 && (
                 <div className="sticky top-20 z-20 flex items-center justify-between gap-3 rounded-xl border bg-popover/90 px-4 py-2.5 shadow-lg backdrop-blur-md animate-in fade-in slide-in-from-top-2">
                     <div className="flex items-center gap-2">
@@ -191,7 +190,6 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
                 </div>
             )}
 
-            {/* Main Table Card */}
             <Card className={cn("overflow-hidden p-0 surface-card", pending && "opacity-60")}>
                 <Table>
                     <TableHeader className="bg-muted/60 border-b">
@@ -323,7 +321,6 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
                 </Table>
             </Card>
 
-            {/* Pagination & Footer Counts */}
             <div className="flex flex-col items-center justify-between gap-3 px-1 text-sm text-muted-foreground sm:flex-row">
                 <div className="flex items-center gap-3">
                     <span className="text-xs">
@@ -368,7 +365,6 @@ export function TransactionsTable({ rows, totalCount, currentPage, totalPages, p
                 </div>
             </div>
 
-            {/* Delete Confirmation Dialog */}
             <AlertDialog open={deleteIds !== null} onOpenChange={(open) => !open && !deleting && setDeleteIds(null)}>
                 <AlertDialogContent>
                     <AlertDialogHeader>

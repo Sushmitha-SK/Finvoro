@@ -17,10 +17,6 @@ export function aiErrorResponse(error: unknown) {
     );
 }
 
-/**
- * Every AI endpoint goes through this: session -> user opt-in -> configuration
- * -> rate limit. Returns a ready-made Response when any check fails.
- */
 export async function guardAi(bucket: (typeof BUCKETS)[keyof typeof BUCKETS]) {
     const userId = await getUserId();
 

@@ -1,14 +1,4 @@
-/**
- * Pure analytics helpers - no database or framework imports, so everything in
- * here can be unit-tested with plain arrays.
- */
-import {
-    daysInMonth,
-    monthKey,
-    monthLabel,
-    startOfMonth,
-    toDateInput,
-} from "@/lib/dates";
+import { daysInMonth, monthKey, monthLabel, startOfMonth, toDateInput, } from "@/lib/dates";
 import { formatCurrency } from "@/lib/format-currency";
 import type {
     BudgetProgress,
@@ -36,9 +26,8 @@ const clamp = (value: number, min: number, max: number) =>
 export const percentChange = (current: number, previous: number) =>
     previous === 0 ? null : ((current - previous) / previous) * 100;
 
-/* -------------------------------------------------------------------------- */
-/*  Cash-flow                                                                  */
-/* -------------------------------------------------------------------------- */
+
+//Cash-flow
 
 export function buildCashflow(txns: TxnLite[], months: Date[]): CashflowPoint[] {
     const buckets = new Map<string, CashflowPoint>(
@@ -74,10 +63,9 @@ export function buildCashflow(txns: TxnLite[], months: Date[]): CashflowPoint[] 
     }));
 }
 
-/**
- * Cumulative expense per day of a month. `upToDay` truncates the series
- * (used for the current, still-running month).
- */
+
+// Cumulative expense per day of a month. 
+
 export function cumulativeDailyExpenses(
     txns: TxnLite[],
     monthStart: Date,
@@ -123,9 +111,7 @@ export function buildSpendingPace(
     }));
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Spending by category                                                       */
-/* -------------------------------------------------------------------------- */
+// Spending by category 
 
 export type CategoryMeta = {
     id: string;
@@ -171,9 +157,7 @@ export function buildSpendingCategories(
         .sort((a, b) => b.amount - a.amount);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Subscriptions / recurring detection                                        */
-/* -------------------------------------------------------------------------- */
+// Subscriptions / recurring detection    
 
 const NOISE_WORDS =
     /\b(payment|subscription|monthly|bill|recurring|charge|autopay|auto|renewal|membership|fee|for|the|inc|ltd|pvt)\b/g;
@@ -247,7 +231,7 @@ export function detectSubscriptions(
                 ? (Math.max(...amounts) - Math.min(...amounts)) / medianAmount
                 : 1;
 
-     
+
         const tolerance = sorted.length >= 3 ? 0.2 : 0.01;
 
         if (spread > tolerance) continue;
@@ -296,9 +280,7 @@ export function detectSubscriptions(
     };
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Forecast                                                                   */
-/* -------------------------------------------------------------------------- */
+// Forecast  
 
 export function computeForecast(input: {
     expensesSoFar: number;
@@ -346,9 +328,7 @@ export function computeForecast(input: {
     };
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Health score                                                               */
-/* -------------------------------------------------------------------------- */
+//  Health score   
 
 export function computeHealthScore(input: {
     savingsRate: number;
@@ -420,9 +400,7 @@ export function computeHealthScore(input: {
     };
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Rule-based insights (fallback when Gemini is unavailable)                   */
-/* -------------------------------------------------------------------------- */
+// Rule-based insights (fallback when Gemini is unavailable)-------------------------------------------------------------------------- */
 
 const impactRank = { high: 0, medium: 1, low: 2 } as const;
 

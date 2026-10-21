@@ -12,7 +12,6 @@ import { useCopilotStore } from "@/stores/copilot-store";
 import { useInsightsStore } from "@/stores/insights-store";
 import { useUIStore } from "@/stores/ui-store";
 
-/** Human-in-the-loop: the model proposes, the user confirms. Nothing is saved until "Add". */
 export function DraftCard({
     draft,
     messageId,

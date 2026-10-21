@@ -1,7 +1,3 @@
-/**
- * Central place for optional AI configuration.
- * (Database and Clerk variables are validated by their own SDKs.)
- */
 export const aiEnv = {
     get apiKey() {
         return process.env.GEMINI_API_KEY?.trim() || "";

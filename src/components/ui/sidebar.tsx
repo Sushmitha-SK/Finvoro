@@ -222,7 +222,6 @@ function Sidebar({
         data-slot="sidebar-container"
         data-side={side}
         className={cn(
-          // Changed h-svh to h-screen or inset-y-0 with fixed positioning to fix half-height bug
           "fixed inset-y-0 z-25 hidden h-screen w-(--sidebar-width) transition-[left,right,width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:-left-(--sidebar-width) data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:-right-(--sidebar-width) md:flex",
           variant === "floating" || variant === "inset"
             ? "p-2.5 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+4px)]"

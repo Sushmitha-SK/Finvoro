@@ -1,16 +1,7 @@
-/**
- * Date helpers.
- *
- * Finvoro stores a transaction date as the *server-local* midnight of the day
- * the user picked. Everything that builds month ranges or parses form input
- * goes through this file so that the convention lives in exactly one place.
- */
-
 export function parseDateInput(value: string): Date {
     return new Date(`${value}T00:00:00`);
 }
 
-/** yyyy-mm-dd in local time (not UTC, so it never shifts the day). */
 export function toDateInput(date: Date): string {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -46,7 +37,6 @@ export function daysInMonth(date: Date): number {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 }
 
-/** Last N calendar months ending with (and including) the month of `now`. */
 export function lastMonths(now: Date, count: number): Date[] {
     return Array.from({ length: count }, (_, index) =>
         startOfMonth(now, index - (count - 1)),

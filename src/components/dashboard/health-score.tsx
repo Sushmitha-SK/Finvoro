@@ -63,7 +63,6 @@ export function HealthScoreCard({ health }: { health: HealthScore }) {
             </CardHeader>
 
             <CardContent className="relative space-y-6">
-                {/* Score */}
                 <div className="flex items-center gap-5">
                     <div
                         className="relative size-28 shrink-0"

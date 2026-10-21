@@ -109,7 +109,6 @@ export function SpendingByCategory({
                                             key={category.id}
                                             className="transition-colors hover:bg-muted/30"
                                         >
-                                            {/* Category Name & Color Indicator */}
                                             <td className="py-3.5 pl-6 pr-4">
                                                 <div className="flex min-w-0 items-center gap-3">
                                                     <div
@@ -124,7 +123,6 @@ export function SpendingByCategory({
                                                 </div>
                                             </td>
 
-                                            {/* Progress Distribution Bar */}
                                             <td className="px-4 py-3.5 align-middle">
                                                 <div className="flex items-center gap-3">
                                                     <div className="h-2 w-full max-w-30 overflow-hidden rounded-full bg-muted">
@@ -142,7 +140,6 @@ export function SpendingByCategory({
                                                 </div>
                                             </td>
 
-                                            {/* Amount */}
                                             <td className="py-3.5 pl-4 pr-6 text-right font-semibold tabular-nums">
                                                 {formatCurrency(category.amount, currency)}
                                             </td>

@@ -86,7 +86,6 @@ export type Forecast = {
     projectedExpenses: number;
     projectedSavings: number;
     expectedIncome: number;
-    /** Spending pace vs last month, as a percentage (positive = spending faster). */
     paceVsLastMonth: number | null;
     dailyAllowance: number | null;
     daysLeft: number;
@@ -131,7 +130,6 @@ export type DashboardData = {
         net: number;
         savingsRate: number;
     };
-    /** Last month up to the same day-of-month, for like-for-like comparisons. */
     previousToDate: {
         income: number;
         expenses: number;

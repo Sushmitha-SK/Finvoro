@@ -9,7 +9,6 @@ import { useUIStore } from "@/stores/ui-store";
 
 import { CopilotChat } from "./copilot-chat";
 
-/** Slide-over Copilot available on every page (⌘J). The /copilot page has its own full-size chat. */
 export function CopilotSheet() {
     const pathname = usePathname();
     const aiEnabled = useAppStore((state) => state.aiEnabled);

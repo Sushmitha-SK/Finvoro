@@ -4,7 +4,6 @@ type SparklineProps = {
     className?: string;
 };
 
-/** Tiny dependency-free trend line (SVG). */
 export function Sparkline({ values, color, className }: SparklineProps) {
     const width = 96;
     const height = 32;

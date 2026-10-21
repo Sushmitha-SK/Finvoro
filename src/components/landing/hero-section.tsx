@@ -159,44 +159,6 @@ export function HeroSection() {
             ))}
           </motion.p>
 
-          {/* <motion.div
-            variants={containerVariants(0.1, 0.9)}
-            initial="hidden"
-            animate="visible"
-            className="mt-8 sm:mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4 w-full px-4 sm:px-0"
-          >
-            <Show when="signed-out">
-              <motion.div variants={fadeUpVariants} className="w-full sm:w-auto">
-                <button
-                  onClick={() => clerk.openSignUp()}
-                  className="group inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-colors hover:bg-primary/90 cursor-pointer"
-                >
-                  Get started free
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </button>
-              </motion.div>
-            </Show>
-
-            <Show when="signed-in">
-              <motion.div variants={fadeUpVariants} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
-                <Link
-                  href="/dashboard"
-                  className="group inline-flex h-12 w-full items-center gap-1.5 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground shadow-lg transition-all hover:opacity-95 cursor-pointer">
-                  Go to Dashboard
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              </motion.div>
-            </Show>
-
-            <motion.div variants={fadeUpVariants} className="w-full sm:w-auto">
-              <Link
-                href="#features"
-                className="inline-flex h-12 w-full sm:w-auto items-center justify-center rounded-xl border border-border/80 bg-background/80 px-8 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground"
-              >
-                Explore features
-              </Link>
-            </motion.div>
-          </motion.div> */}
           <motion.div
             variants={containerVariants(0.1, 0.9)}
             initial="hidden"

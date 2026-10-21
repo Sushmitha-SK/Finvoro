@@ -23,7 +23,6 @@ export async function getCategoryOptions(
     }));
 }
 
-/** Find a category by name (case-insensitive) or create it. */
 export async function findOrCreateCategory(
     clerkUserId: string,
     rawName: string,

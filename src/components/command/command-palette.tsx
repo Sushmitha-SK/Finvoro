@@ -57,8 +57,6 @@ export function CommandPalette() {
                 <DialogDescription className="sr-only">
                     Search transactions, jump to a page, or ask the AI Copilot.
                 </DialogDescription>
-
-                {/* Mounted only while open, so query/results reset every time. */}
                 <PaletteBody />
             </DialogContent>
         </Dialog>

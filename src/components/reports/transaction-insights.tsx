@@ -72,15 +72,12 @@ export function TransactionInsights({
                 </p>
             </div>
 
-            {/* Two Column Layout Wrapper */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {/* Overview Statistics (List Style Layout) */}
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-base font-semibold">Overview Statistics</CardTitle>
                     </CardHeader>
                     <CardContent className="divide-y divide-border/60 p-0">
-                        {/* Transactions Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div>
                                 <p className="text-sm font-medium">Transactions</p>
@@ -92,7 +89,6 @@ export function TransactionInsights({
                             </div>
                         </div>
 
-                        {/* Average Transaction Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div>
                                 <p className="text-sm font-medium">Average transaction</p>
@@ -106,7 +102,6 @@ export function TransactionInsights({
                             </div>
                         </div>
 
-                        {/* Average Expense Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div>
                                 <p className="text-sm font-medium">Average expense</p>
@@ -120,7 +115,6 @@ export function TransactionInsights({
                             </div>
                         </div>
 
-                        {/* Top Category Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div>
                                 <p className="text-sm font-medium">Top category</p>
@@ -140,13 +134,11 @@ export function TransactionInsights({
                     </CardContent>
                 </Card>
 
-                {/* Activity Breakdown (List Style Layout) */}
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-base font-semibold">Activity Breakdown</CardTitle>
                     </CardHeader>
                     <CardContent className="divide-y divide-border/60 p-0">
-                        {/* Largest Expense Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div className="flex items-center gap-3.5">
                                 <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/50">
@@ -175,7 +167,6 @@ export function TransactionInsights({
                             </div>
                         </div>
 
-                        {/* Largest Income Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div className="flex items-center gap-3.5">
                                 <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/50">
@@ -204,7 +195,6 @@ export function TransactionInsights({
                             </div>
                         </div>
 
-                        {/* Highest Spending Day Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div className="flex items-center gap-3.5">
                                 <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/50">
@@ -231,7 +221,6 @@ export function TransactionInsights({
                             </div>
                         </div>
 
-                        {/* Spending Focus Row */}
                         <div className="flex items-center justify-between px-6 py-4">
                             <div className="flex items-center gap-3.5">
                                 <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/50">

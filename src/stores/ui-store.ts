@@ -6,17 +6,14 @@ export type TransactionPrefill = Partial<TransactionFormValues>;
 
 type TransactionDialogState = {
     open: boolean;
-    /** Set when editing an existing transaction. */
     editingId: string | null;
     prefill: TransactionPrefill | null;
-    /** Where the prefill came from, used to show an "AI filled this in" hint. */
     source: "manual" | "ai";
 };
 
 type UIState = {
     commandOpen: boolean;
     copilotOpen: boolean;
-    /** A prompt queued for the Copilot to send as soon as it is visible. */
     pendingPrompt: string | null;
     transactionDialog: TransactionDialogState;
 

@@ -1,7 +1,6 @@
 import { getUserId, unauthorized } from "@/lib/auth";
 import { transactionsCsvResponse } from "@/lib/data/transaction-export";
 
-/** Exports exactly what the transactions table is currently filtered to. */
 export async function GET(request: Request) {
     const userId = await getUserId();
 

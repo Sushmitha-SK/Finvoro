@@ -7,16 +7,10 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import type { CategoryOption } from "@/lib/data/categories";
 import { formatCurrency } from "@/lib/format-currency";
 
-/**
- * User-specific state that is rendered on the server (currency, categories).
- * It lives in a per-request store created by the provider - a module-level
- * store would be shared by every user hitting the same server process.
- */
 export type AppState = {
     currency: string;
     aiEnabled: boolean;
     categories: CategoryOption[];
-    /** Privacy mode: mask money amounts. Persisted per browser. */
     hideAmounts: boolean;
 
     setCurrency: (currency: string) => void;
@@ -88,7 +82,6 @@ export function useAppStore<T>(selector: (state: AppState) => T): T {
     return useStore(store, selector);
 }
 
-/** Currency formatter bound to the user's preference and privacy mode. */
 export function useMoney() {
     const currency = useAppStore((state) => state.currency);
     const hide = useAppStore((state) => state.hideAmounts);

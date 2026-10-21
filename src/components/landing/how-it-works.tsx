@@ -152,12 +152,9 @@ export function HowItWorks() {
                             className="relative flex flex-col justify-between rounded-[2rem] border border-border/80 bg-card p-6 shadow-xs backdrop-blur-xl sm:p-8 transition-all duration-300 hover:border-primary/40 hover:shadow-sm"
                         >
                             <div>
-                                {/* Step Badge */}
                                 <div className="inline-flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold text-xs shadow-md mb-6">
                                     {step.number}
                                 </div>
-
-                                {/* Visual Mockup Box */}
                                 <div className="mb-8">
                                     {step.visual}
                                 </div>

@@ -11,7 +11,6 @@ import { prisma } from "@/lib/prisma";
 
 export const maxDuration = 60;
 
-/** Round to a "human" number: nearest 50 under 5k, 100 under 50k, else 500. */
 function niceAmount(value: number) {
     const step = value < 5000 ? 50 : value < 50000 ? 100 : 500;
 

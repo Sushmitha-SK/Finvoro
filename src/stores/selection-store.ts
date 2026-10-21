@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-/** Row selection for bulk actions, shared by the table and the floating action bar. */
 type SelectionState = {
     selected: Record<string, true>;
     toggle: (id: string) => void;

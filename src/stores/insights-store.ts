@@ -21,7 +21,6 @@ type InsightsState = {
     invalidateAll: () => void;
 };
 
-/** Gemini calls cost money, so results are reused for a while. */
 const TTL_MS = 30 * 60 * 1000;
 const inflight = new Map<string, Promise<void>>();
 

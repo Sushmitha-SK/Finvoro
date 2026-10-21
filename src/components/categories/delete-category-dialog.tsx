@@ -105,7 +105,6 @@ export function DeleteCategoryDialog({
                     sm:max-w-lg
                 "
             >
-                {/* Header */}
                 <DialogHeader className="border-b bg-muted/20 px-6 py-5">
                     <div className="flex items-start gap-3">
                         <div
@@ -136,7 +135,6 @@ export function DeleteCategoryDialog({
                     </div>
                 </DialogHeader>
 
-                {/* Body Content */}
                 <div className="px-6 py-5 space-y-4">
                     {error && (
                         <p className="rounded-lg bg-destructive/10 p-3 text-xs text-destructive">

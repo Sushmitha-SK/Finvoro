@@ -1,10 +1,3 @@
-/**
- * Sliding-window limiter, per user and bucket.
- *
- * In-memory on purpose: zero dependencies and fine for a single instance. On
- * serverless/multi-instance deployments each instance keeps its own window, so
- * swap this for Upstash Redis (@upstash/ratelimit) if you need a hard global cap.
- */
 type Bucket = { name: string; limit: number; windowMs: number };
 
 export const BUCKETS = {

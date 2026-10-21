@@ -14,10 +14,6 @@ type GenerateJsonOptions<S extends z.ZodType> = {
     signal?: AbortSignal;
 };
 
-/**
- * Structured output: Gemini is constrained to our JSON schema, and the result
- * is still validated with zod before it goes anywhere near the UI.
- */
 export async function generateJson<S extends z.ZodType>({
     model,
     system,

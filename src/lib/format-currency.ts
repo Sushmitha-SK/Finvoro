@@ -20,7 +20,6 @@ export function formatPercent(value: number, fractionDigits = 0) {
     return `${value.toFixed(fractionDigits)}%`;
 }
 
-/** "+12%" / "-4%" style delta used on KPI chips. */
 export function formatDelta(value: number, fractionDigits = 0) {
     const sign = value > 0 ? "+" : "";
 
