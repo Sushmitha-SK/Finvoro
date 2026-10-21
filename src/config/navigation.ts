@@ -42,7 +42,6 @@ export const allNavigation: NavItem[] = [
     ...secondaryNavigation,
 ];
 
-/** Used by the header breadcrumb. */
 export function titleForPath(pathname: string) {
     const match = allNavigation.find(
         (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),

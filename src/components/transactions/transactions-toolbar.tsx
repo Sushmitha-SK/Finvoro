@@ -60,10 +60,7 @@ export function TransactionsToolbar() {
             "group relative flex flex-col gap-3 rounded-xl border border-border/40 bg-card/40 p-4 backdrop-blur-xl transition-all duration-200",
             pending && "opacity-60 pointer-events-none"
         )}>
-            {/* Top Row: Search, Segmented Tabs, and Export */}
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center justify-between">
-                
-                {/* Linear-style Search Input */}
                 <div className="relative flex-1 lg:max-w-md">
                     <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground/60 transition-colors group-focus-within:text-foreground" />
                     <Input
@@ -89,8 +86,8 @@ export function TransactionsToolbar() {
                                 onClick={() => update({ type: option.value })}
                                 className={cn(
                                     "inline-flex items-center justify-center rounded-md px-3 py-1 text-xs font-medium transition-all",
-                                    type === option.value 
-                                        ? "bg-background text-foreground shadow-xs font-semibold" 
+                                    type === option.value
+                                        ? "bg-background text-foreground shadow-xs font-semibold"
                                         : "text-muted-foreground hover:text-foreground hover:bg-background/40",
                                 )}
                             >
@@ -106,18 +103,15 @@ export function TransactionsToolbar() {
                         nativeButton={false}
                         render={<a href={`/api/transactions/export${exportParams.size ? `?${exportParams}` : ""}`} />}
                     >
-                        <Download className="size-3.5 text-muted-foreground" /> 
+                        <Download className="size-3.5 text-muted-foreground" />
                         <span>Export</span>
                     </Button>
                 </div>
             </div>
 
-            {/* Bottom Row: Secondary Filters (Category & Date Range) */}
             <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-border/30">
                 <div className="flex items-center gap-2">
                     <SlidersHorizontal className="size-3.5 text-muted-foreground ml-0.5 mr-1" />
-                    
-                    {/* Custom Styled Select Trigger Replacement */}
                     <select
                         className="h-8 rounded-lg border border-border/60 bg-background/50 px-2.5 text-xs text-foreground outline-none transition-all hover:border-border focus:border-ring focus:ring-1 focus:ring-ring"
                         value={category}
@@ -133,27 +127,26 @@ export function TransactionsToolbar() {
                     </select>
                 </div>
 
-                {/* Date Range Inputs */}
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground ml-auto">
                     <div className="relative">
-                        <Input 
-                            type="date" 
-                            value={from} 
-                            max={to || undefined} 
-                            onChange={(event) => update({ from: event.target.value })} 
-                            className="h-8 w-36 text-xs bg-background/50 border-border/60" 
-                            aria-label="From date" 
+                        <Input
+                            type="date"
+                            value={from}
+                            max={to || undefined}
+                            onChange={(event) => update({ from: event.target.value })}
+                            className="h-8 w-36 text-xs bg-background/50 border-border/60"
+                            aria-label="From date"
                         />
                     </div>
                     <span className="text-muted-foreground/60">to</span>
                     <div className="relative">
-                        <Input 
-                            type="date" 
-                            value={to} 
-                            min={from || undefined} 
-                            onChange={(event) => update({ to: event.target.value })} 
-                            className="h-8 w-36 text-xs bg-background/50 border-border/60" 
-                            aria-label="To date" 
+                        <Input
+                            type="date"
+                            value={to}
+                            min={from || undefined}
+                            onChange={(event) => update({ to: event.target.value })}
+                            className="h-8 w-36 text-xs bg-background/50 border-border/60"
+                            aria-label="To date"
                         />
                     </div>
 
@@ -167,7 +160,7 @@ export function TransactionsToolbar() {
                                 update({ search: null, type: null, category: null, from: null, to: null });
                             }}
                         >
-                            <X className="size-3 text-muted-foreground" /> 
+                            <X className="size-3 text-muted-foreground" />
                             <span>Reset</span>
                         </Button>
                     )}

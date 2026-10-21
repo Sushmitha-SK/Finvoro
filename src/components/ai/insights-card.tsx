@@ -30,10 +30,8 @@ const KIND_STYLE: Record<InsightKind, { icon: LucideIcon; tone: string; borderTo
 };
 
 type Props = {
-    /** Cache key - one per screen/period. */
     scopeKey: string;
     request: InsightsRequest;
-    /** Rule-based insights shown when AI is off, unconfigured or failing. */
     fallback: Insight[];
     title?: string;
     description?: string;

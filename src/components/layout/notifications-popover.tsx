@@ -98,7 +98,6 @@ export function NotificationsPopover() {
     );
 }
 
-/** Loads notifications and keeps them fresh while the tab is visible. */
 export function useNotificationPolling(intervalMs = 60_000) {
     const fetchNotifications = useNotificationsStore((state) => state.fetch);
 

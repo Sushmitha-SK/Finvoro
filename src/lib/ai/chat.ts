@@ -12,7 +12,6 @@ import {
     type ToolContext,
 } from "./tools";
 
-/** The slice of the SDK we depend on - lets tests inject a fake. */
 export type GeminiLike = {
     models: {
         generateContentStream(params: {
@@ -37,13 +36,6 @@ export function toContents(messages: ChatMessage[]): Content[] {
     }));
 }
 
-/**
- * Streams a tool-using conversation.
- *
- * Loop: stream the model -> if it asked for tools, run them on the server,
- * feed results back, and stream again. Text is forwarded as it arrives so the
- * UI feels instant even when tools are involved.
- */
 export async function* runChat(options: {
     ai: GeminiLike;
     system: string;

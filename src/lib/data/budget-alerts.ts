@@ -3,10 +3,6 @@ import { prisma } from "@/lib/prisma";
 
 import { getUserPreferences } from "./preferences";
 
-/**
- * After an expense changes, raise a one-off notification when the category's
- * budget for that month crosses 80% or 100%.
- */
 export async function checkBudgetNotification({
     userId,
     categoryId,

@@ -15,7 +15,6 @@ export function colorForIndex(index: number) {
     return CATEGORY_PALETTE[index % CATEGORY_PALETTE.length];
 }
 
-/** Stable colour for a name, used when a category has no colour saved. */
 export function colorForName(name: string) {
     let hash = 0;
 

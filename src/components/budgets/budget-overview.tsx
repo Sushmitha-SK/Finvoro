@@ -84,9 +84,7 @@ export function BudgetOverview({
 
     return (
         <div className="space-y-6">
-            {/* SaaS Metrics Summary Header */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Card 1: Total Budget Limit */}
                 <div className="p-5 rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl shadow-xs space-y-1">
                     <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Budget Limit</span>
                     <p className="text-2xl font-bold tracking-tight text-foreground">
@@ -94,7 +92,6 @@ export function BudgetOverview({
                     </p>
                 </div>
 
-                {/* Card 2: Total Outflows */}
                 <div className="p-5 rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl shadow-xs space-y-1">
                     <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Outflows</span>
                     <p className="text-2xl font-bold tracking-tight text-foreground">
@@ -102,7 +99,6 @@ export function BudgetOverview({
                     </p>
                 </div>
 
-                {/* Card 3: Overall Utilization (Standard Progress Bar) */}
                 <div className="p-5 rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl shadow-xs space-y-3">
                     <div className="flex justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                         <span>Overall Utilization</span>
@@ -120,7 +116,6 @@ export function BudgetOverview({
                 </div>
             </div>
 
-            {/* Premium Table Container */}
             <div className="rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl shadow-sm overflow-hidden">
                 <Table>
                     <TableHeader className="bg-muted/40">
@@ -138,7 +133,6 @@ export function BudgetOverview({
                             const isExceeded = budget.spent > budget.amount;
                             const isNearLimit = !isExceeded && budget.percentage >= 80;
 
-                            // Neutral progress bar for normal usage, amber for warning, destructive only if exceeded
                             const progressBarColor = isExceeded
                                 ? "bg-destructive"
                                 : isNearLimit

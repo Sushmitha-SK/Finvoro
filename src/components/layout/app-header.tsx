@@ -32,7 +32,6 @@ export function AppHeader() {
     return (
         <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border/40 bg-white dark:bg-background px-4 sm:px-6">
            <div className="flex w-full items-center justify-between gap-3">
-                {/* Left */}
                 <div className="flex min-w-0 items-center gap-2.5">
                     <SidebarTrigger
                         className="size-9 rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -66,9 +65,7 @@ export function AppHeader() {
                     </kbd>
                 </button>
 
-                {/* Right */}
                 <div className="ml-auto flex items-center gap-0.5 sm:gap-1">
-                    {/* Mobile Search */}
                     <Button
                         variant="ghost"
                         size="icon"

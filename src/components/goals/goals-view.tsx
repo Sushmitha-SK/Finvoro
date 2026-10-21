@@ -120,7 +120,6 @@ export function GoalsView({ goals }: { goals: GoalSummary[] }) {
 
                                 return (
                                     <TableRow key={goal.id} className="transition-colors group">
-                                        {/* Goal Name & Date */}
                                         <TableCell className="py-4 font-medium align-middle">
                                             <div className="flex items-center gap-3">
                                                 <span
@@ -140,7 +139,6 @@ export function GoalsView({ goals }: { goals: GoalSummary[] }) {
                                             </div>
                                         </TableCell>
 
-                                        {/* Progress Bar & Amounts */}
                                         <TableCell className="py-4 align-middle w-[320px]">
                                             <div className="space-y-2">
                                                 <div className="flex items-center justify-between text-xs">
@@ -165,7 +163,6 @@ export function GoalsView({ goals }: { goals: GoalSummary[] }) {
                                             </div>
                                         </TableCell>
 
-                                        {/* Status / Monthly Needed */}
                                         <TableCell className="py-4 align-middle">
                                             {done ? (
                                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
@@ -181,7 +178,6 @@ export function GoalsView({ goals }: { goals: GoalSummary[] }) {
                                             )}
                                         </TableCell>
 
-                                        {/* Actions */}
                                         <TableCell className="py-4 text-right align-middle">
                                             <div className="flex items-center justify-end gap-2">
                                                 <Button

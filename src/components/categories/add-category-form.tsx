@@ -146,9 +146,7 @@ export function AddCategoryForm({
         <form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4"
-            noValidate
-        >
-            {/* Category Name */}
+            noValidate>
             <div className="space-y-1.5">
                 <Label htmlFor="category-name">
                     Category name
@@ -168,7 +166,6 @@ export function AddCategoryForm({
                 )}
             </div>
 
-            {/* Icon Selector */}
             <div className="space-y-1.5">
                 <Label>Icon</Label>
 
@@ -202,7 +199,6 @@ export function AddCategoryForm({
                 </div>
             </div>
 
-            {/* Color Selector */}
             <div className="space-y-1.5">
                 <Label>Colour</Label>
 
@@ -237,7 +233,6 @@ export function AddCategoryForm({
                 </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex justify-end gap-2 pt-1">
                 <Button
                     type="button"

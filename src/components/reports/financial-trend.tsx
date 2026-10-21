@@ -84,7 +84,6 @@ export function FinancialTrend({
                     </p>
                 </div>
 
-                {/* View Mode Toggle Buttons */}
                 {hasTransactions && (
                     <div className="flex items-center gap-1 rounded-lg bg-muted p-1 text-muted-foreground">
                         <button
@@ -113,7 +112,7 @@ export function FinancialTrend({
 
             <CardContent>
                 {!hasTransactions ? (
-                    <div className="flex min-h-[320px] items-center justify-center text-center">
+                    <div className="flex min-h-80 items-center justify-center text-center">
                         <div>
                             <p className="font-medium text-foreground">
                                 No transactions for this period

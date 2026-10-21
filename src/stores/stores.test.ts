@@ -12,7 +12,6 @@ import { useNotificationsStore } from "./notifications-store";
 import { useSelectionStore } from "./selection-store";
 import { useUIStore } from "./ui-store";
 
-/** Build a streaming Response whose body arrives in the given raw chunks. */
 function streamResponse(chunks: string[], init: ResponseInit = { status: 200 }) {
     const encoder = new TextEncoder();
 
@@ -227,7 +226,7 @@ describe("notifications store", () => {
     it("loads items and toasts only genuinely new unread ones on later polls", async () => {
         fetchMock.mockResolvedValueOnce(jsonResponse({ notifications: [item("a")], unreadCount: 1 }));
         await useNotificationsStore.getState().fetch();
-        expect(toast).not.toHaveBeenCalled(); // first load is silent
+        expect(toast).not.toHaveBeenCalled(); 
 
         fetchMock.mockResolvedValueOnce(jsonResponse({ notifications: [item("b"), item("a")], unreadCount: 2 }));
         await useNotificationsStore.getState().fetch();
@@ -296,7 +295,7 @@ describe("insights store", () => {
         expect(fetchMock).toHaveBeenCalledTimes(1);
 
         await load("k", { scope: "dashboard" });
-        expect(fetchMock).toHaveBeenCalledTimes(1); // served from cache
+        expect(fetchMock).toHaveBeenCalledTimes(1); 
 
         await load("k", { scope: "dashboard" }, { force: true });
         expect(fetchMock).toHaveBeenCalledTimes(2);

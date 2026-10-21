@@ -20,7 +20,6 @@ export type CopilotMessage = {
 };
 
 type CopilotState = {
-    /** Clerk user the persisted history belongs to. */
     ownerId: string | null;
     messages: CopilotMessage[];
     status: "idle" | "streaming";

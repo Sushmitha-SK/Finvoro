@@ -5,7 +5,6 @@ import { toDateInput } from "@/lib/dates";
 import { prisma } from "@/lib/prisma";
 import { buildTransactionWhere } from "@/lib/transactions/get-transactions";
 
-/** Lightweight transaction search used by the command palette. */
 export async function GET(request: Request) {
     const userId = await getUserId();
 

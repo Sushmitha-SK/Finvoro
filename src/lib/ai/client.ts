@@ -24,11 +24,6 @@ export function getGemini() {
     return client;
 }
 
-/**
- * Gemini 3-family models take a thinking *level*. Keep it low for our
- * latency-sensitive product features. Set GEMINI_THINKING=off to omit it
- * entirely (useful for older models).
- */
 export function thinkingConfig(level: "minimal" | "low" = "low") {
     if ((process.env.GEMINI_THINKING ?? "").toLowerCase() === "off") {
         return undefined;

@@ -14,10 +14,6 @@ export type BudgetRow = BudgetProgress & {
     year: number;
 };
 
-/**
- * Budgets with how much has been spent against each, using ONE aggregate
- * query for every budget (the old implementation ran one query per budget).
- */
 export async function getBudgetRows(
     clerkUserId: string,
     filter?: { month: number; year: number },

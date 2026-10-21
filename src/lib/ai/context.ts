@@ -2,10 +2,6 @@ import type { DashboardData } from "@/types/finance";
 
 const round = (value: number) => Math.round(value * 100) / 100;
 
-/**
- * A compact, model-friendly view of the user's finances (~1-2k tokens).
- * Anything deeper is fetched on demand through tools.
- */
 export function buildSnapshot(data: DashboardData, today: string) {
     return {
         today,

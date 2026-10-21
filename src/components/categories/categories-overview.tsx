@@ -89,7 +89,6 @@ export function CategoriesOverview({
                                         key={category.id}
                                         className="transition-colors hover:bg-muted/30 group"
                                     >
-                                        {/* Category Name & Custom Icon/Dot */}
                                         <TableCell className="py-3.5 pl-6 pr-4 font-medium text-foreground">
                                             <div className="flex items-center gap-3">
                                                 <div
@@ -100,12 +99,10 @@ export function CategoriesOverview({
                                             </div>
                                         </TableCell>
 
-                                        {/* Color Hex / Status */}
                                         <TableCell className="px-4 py-3.5 text-muted-foreground text-xs font-mono">
                                             {category.color ?? "Default"}
                                         </TableCell>
 
-                                        {/* Type */}
                                         <TableCell className="px-4 py-3.5">
                                             <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2 py-0.5 text-xs text-muted-foreground font-medium">
                                                 <Tag className="size-3" />
@@ -113,7 +110,6 @@ export function CategoriesOverview({
                                             </span>
                                         </TableCell>
 
-                                        {/* Actions */}
                                         <TableCell className="py-3.5 pl-4 pr-6 text-right">
                                             <div className="flex items-center justify-end gap-1">
                                                 <EditCategoryDialog category={category} />

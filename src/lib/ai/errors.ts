@@ -22,7 +22,6 @@ export class AiError extends Error {
     }
 }
 
-/** Turns anything thrown by the Gemini SDK into a safe, user-facing AiError. */
 export function toAiError(error: unknown): AiError {
     if (error instanceof AiError) {
         return error;
@@ -79,7 +78,6 @@ export function toAiError(error: unknown): AiError {
     return new AiError("unknown", "Something went wrong while contacting the AI service.", 500);
 }
 
-/** Some model families reject thinkingConfig; we detect that and retry without it. */
 export function isThinkingUnsupported(error: unknown) {
     return (
         error instanceof ApiError &&

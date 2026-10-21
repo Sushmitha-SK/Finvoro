@@ -65,26 +65,18 @@ function PreferencesSkeleton() {
     );
 }
 
-
-
 export default function Loading() {
     return (
         <div className="p-4 md:p-6">
             <div className="mx-auto max-w-8xl space-y-6">
-                {/* Page Header */}
                 <div className="space-y-2">
                     <Skeleton className="h-8 w-28" />
                     <Skeleton className="h-4 w-80 max-w-full" />
                 </div>
-
-                {/* Settings Content */}
                 <div className="mx-auto max-w-4xl space-y-6 pb-10">
                     <ProfileSkeleton />
-
                     <div className="space-y-4">
                         <TabsSkeleton />
-
-                        {/* Default tab: Preferences */}
                         <PreferencesSkeleton />
                     </div>
                 </div>

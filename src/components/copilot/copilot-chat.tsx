@@ -120,7 +120,6 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
 
     return (
         <div className={cn("flex min-h-0 flex-1 flex-col bg-background relative", variant === "page" && "mx-auto w-full max-w-3xl")}>
-            {/* Message Stream with Thin Scrollbar */}
             <div className="flex-1 space-y-6 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/40 scrollbar-track-transparent" aria-live="polite">
                 {messages.length === 0 ? (
                     <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-6 text-center px-4">
@@ -166,8 +165,7 @@ export function CopilotChat({ variant }: { variant: "panel" | "page" }) {
                 <div ref={endRef} />
             </div>
 
-            {/* Input Toolbar Area */}
-            <div className="p-4 bg-gradient-to-t from-background via-background/90 to-transparent">
+            <div className="p-4 bg-linear-to-t from-background via-background/90 to-transparent">
                 {(messages.length > 0 || canRetry) && (
                     <div className="mb-3 flex items-center justify-between px-1">
                         {canRetry ? (

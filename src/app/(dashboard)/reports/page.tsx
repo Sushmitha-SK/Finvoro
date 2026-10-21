@@ -264,7 +264,6 @@ export default async function ReportsPage({
                     </div>
                 ) : (
                     <div className="space-y-6">
-                        {/* Row 1: Smart Insights & Financial Trend side-by-side */}
                         <div className="grid gap-6 lg:grid-cols-2">
                             <SmartInsights
                                 totalIncome={
@@ -302,7 +301,6 @@ export default async function ReportsPage({
                             />
                         </div>
 
-                        {/* Row 2: Transaction Insights in its own separate full-width row */}
                         <div>
                             <TransactionInsights
                                 transactionCount={
@@ -330,7 +328,6 @@ export default async function ReportsPage({
                             />
                         </div>
 
-                        {/* Row 3: Spending By Category */}
                         <div>
                             <SpendingByCategory
                                 categories={

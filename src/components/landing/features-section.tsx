@@ -109,9 +109,7 @@ export function FeaturesSection() {
                             </p>
                         </div>
 
-                        {/* Interactive UI Mockup matching dashboard design */}
                         <div className="mt-6 bg-secondary/40 rounded-2xl p-4 border border-border shadow-xs">
-                            {/* Top Search & Filter Bar */}
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-3 mb-3 border-b border-border">
                                 <div className="relative w-full sm:w-52">
                                     <Search className="absolute left-3 top-2.5 size-3.5 text-muted-foreground" />
@@ -141,14 +139,12 @@ export function FeaturesSection() {
                                 </div>
                             </div>
 
-                            {/* Table Header simulation */}
                             <div className="grid grid-cols-12 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider px-2 pb-2 border-b border-border/60">
                                 <span className="col-span-5">Description</span>
                                 <span className="col-span-4">Category</span>
                                 <span className="col-span-3 text-right">Amount</span>
                             </div>
 
-                            {/* Transactions List */}
                             <div className="space-y-1.5 mt-2 max-h-65 overflow-y-auto pr-1">
                                 {filteredTransactions.length === 0 ? (
                                     <p className="text-xs text-center py-6 text-muted-foreground">No transactions found.</p>
@@ -180,8 +176,6 @@ export function FeaturesSection() {
                         </div>
                     </motion.div>
 
-                    {/* Smart Budgets Card */}
-                    {/* Smart Budgets Card */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -209,7 +203,6 @@ export function FeaturesSection() {
                             </p>
                         </div>
 
-                        {/* Interactive UI Mockups Container */}
                         <div className="mt-6 flex flex-col gap-3">
                             {[
                                 {
@@ -242,8 +235,6 @@ export function FeaturesSection() {
                                 return (
                                     <div key={index} className="bg-secondary/40 rounded-2xl p-4 border border-border shadow-xs">
                                         <div className="flex items-center justify-between flex-wrap gap-4">
-
-                                            {/* Left Section: Dot, Category, & Date Badge */}
                                             <div className="flex items-center gap-3">
                                                 <span className={`size-2 rounded-full ${item.dotColor}`}></span>
                                                 <span className="text-xs font-semibold text-foreground">{item.budgetCategory}</span>
@@ -255,14 +246,10 @@ export function FeaturesSection() {
                                                     <span className="text-xs font-medium">{item.budgetMonth}</span>
                                                 </div>
                                             </div>
-
-                                            {/* Middle Section: Spent & Cap Amount */}
                                             <div className="flex flex-col">
                                                 <span className="text-xs font-bold text-foreground">₹{item.spentAmount.toLocaleString()}</span>
                                                 <span className="text-xs text-muted-foreground">cap: ₹{item.budgetLimit.toLocaleString()}</span>
                                             </div>
-
-                                            {/* Progress Bar & Status Section */}
                                             <div className="flex-1 min-w-50 max-w-sm flex flex-col gap-1.5">
                                                 <div className="flex justify-between items-center text-xs font-medium">
                                                     <span className="text-muted-foreground">
@@ -281,8 +268,6 @@ export function FeaturesSection() {
                                                     />
                                                 </div>
                                             </div>
-
-                                            {/* Right Section: Status Badge */}
                                             <div className="flex items-center">
                                                 <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border ${item.badgeClass}`}>
                                                     {item.statusType === "near" && (

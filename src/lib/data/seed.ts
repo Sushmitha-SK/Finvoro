@@ -2,7 +2,6 @@ import { colorForName } from "@/lib/colors";
 import { startOfMonth } from "@/lib/dates";
 import { prisma } from "@/lib/prisma";
 
-/** Small deterministic PRNG so sample data is reproducible. */
 function mulberry32(seed: number) {
     let a = seed;
 

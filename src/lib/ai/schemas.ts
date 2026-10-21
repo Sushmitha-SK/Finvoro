@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-/** Gemini's responseJsonSchema wants plain JSON Schema without the $schema marker. */
 export function toGeminiSchema(schema: z.ZodType) {
     const json = z.toJSONSchema(schema) as Record<string, unknown>;
 
@@ -66,7 +65,6 @@ export const budgetSuggestionsOutputSchema = z.object({
         .max(12),
 });
 
-/* ---------------------------- request bodies ---------------------------- */
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 

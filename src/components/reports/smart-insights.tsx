@@ -249,11 +249,9 @@ export function SmartInsights({
 
             <CardContent>
                 <div className="grid gap-6 lg:grid-cols-12 items-center py-2">
-                    {/* Left: Circular Score Graphic */}
                     <div className="lg:col-span-4 flex flex-col items-center justify-center p-4 bg-muted/20 rounded-2xl border border-border/40">
                         <div className="relative flex items-center justify-center size-36">
                             <svg className="size-full -rotate-90" viewBox="0 0 96 96">
-                                {/* Background track */}
                                 <circle
                                     cx="48"
                                     cy="48"
@@ -263,7 +261,6 @@ export function SmartInsights({
                                     stroke="currentColor"
                                     fill="transparent"
                                 />
-                                {/* Progress track */}
                                 <circle
                                     cx="48"
                                     cy="48"
@@ -288,7 +285,6 @@ export function SmartInsights({
                         </div>
                     </div>
 
-                    {/* Right: Dynamic Message & Insight Bullet Points */}
                     <div className="lg:col-span-8 flex flex-col justify-center space-y-4">
                         <div className="space-y-1">
                             <h3 className="text-lg font-semibold tracking-tight text-foreground">
@@ -301,7 +297,6 @@ export function SmartInsights({
                             </p>
                         </div>
 
-                        {/* Bulleted Insights List matching style */}
                         <div className="space-y-2.5 pt-1">
                             {insights.map((insight, index) => (
                                 <div
@@ -316,7 +311,6 @@ export function SmartInsights({
                     </div>
                 </div>
 
-                {/* Optional footer metric metrics grid if you still want quick visibility of changes */}
                 <div className="grid grid-cols-3 gap-3 pt-6 mt-6 border-t border-border/40">
                     <div className="space-y-1">
                         <span className="text-xs text-muted-foreground font-medium">Income</span>

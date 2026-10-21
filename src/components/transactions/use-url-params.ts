@@ -3,7 +3,6 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useTransition } from "react";
 
-/** Filters, sorting and pagination live in the URL so views are shareable and survive refresh. */
 export function useUrlParams() {
     const router = useRouter();
     const pathname = usePathname();

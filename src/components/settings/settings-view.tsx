@@ -167,7 +167,6 @@ export function SettingsView({ name, email }: { name: string; email: string }) {
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto pb-10">
-            {/* Profile Overview Card */}
             <Card className="border-border/50 bg-linear-to-br from-card to-card/50 shadow-xs">
                 <CardHeader className="py-6">
                     <div className="flex items-center gap-4">
@@ -197,7 +196,6 @@ export function SettingsView({ name, email }: { name: string; email: string }) {
                     </TabsTrigger>
                 </TabsList>
 
-                {/* Preferences Tab */}
                 <TabsContent value="preferences" className="space-y-4">
                     <Card className="border-border/50">
                         <CardHeader>
@@ -228,7 +226,6 @@ export function SettingsView({ name, email }: { name: string; email: string }) {
                     </Card>
                 </TabsContent>
 
-                {/* AI & Privacy Tab */}
                 <TabsContent value="ai" className="space-y-4">
                     <Card className="border-border/50">
                         <CardHeader>
@@ -265,7 +262,6 @@ export function SettingsView({ name, email }: { name: string; email: string }) {
                     </Card>
                 </TabsContent>
 
-                {/* Data Management Tab */}
                 <TabsContent value="data" className="space-y-4">
                     <Card className="border-border/50">
                         <CardHeader>
@@ -309,7 +305,6 @@ export function SettingsView({ name, email }: { name: string; email: string }) {
                 </TabsContent>
             </Tabs>
 
-            {/* Confirmation Dialog */}
             <AlertDialog
                 open={confirmOpen}
                 onOpenChange={(open) => {

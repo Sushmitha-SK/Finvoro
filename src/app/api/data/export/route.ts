@@ -1,7 +1,6 @@
 import { getUserId, unauthorized } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-/** Full account export (JSON) - the "your data is yours" feature. */
 export async function GET() {
     const userId = await getUserId();
 
