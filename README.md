@@ -10,9 +10,8 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?style=flat&logo=prisma&logoColor=white)](https://www.prisma.io/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](#-license)
 
-[Live Demo](https://finvoro-finance.vercel.app/) 
+[Live Demo](https://finvoro-finance.vercel.app/)
 
 </div>
 
@@ -28,7 +27,7 @@
 - [Available Scripts](#-available-scripts)
 - [Project Structure](#-project-structure)
 - [Deployment](#-deployment)
-- [License](#-license)
+- [Conclusion](#-conclusion)
 
 ---
 
@@ -43,6 +42,7 @@ Data is scoped per user through Clerk authentication, and AI features can be swi
 ## ✨ Features
 
 **Core finance tracking**
+
 - 💸 **Transactions**: add, edit, and delete income and expenses with search, filters, and URL-synced table state
 - 🏷️ **Categories**: custom categories with icons and colors
 - 📅 **Budgets**: per-category monthly budgets with progress tracking and over-budget alerts
@@ -50,12 +50,14 @@ Data is scoped per user through Clerk authentication, and AI features can be swi
 - 🔔 **Notifications**: in-app alerts, including budget warnings
 
 **Dashboard and reports**
+
 - 📊 **Dashboard**: KPI cards, cashflow chart, spending breakdown, budget progress, recent transactions, goals, and detected subscriptions
 - ❤️ **Financial health score** and **cashflow forecast**
 - 📈 **Reports**: date-range filtering, spending by category, income/expense trends, and smart insights
 - 📤 **CSV export** for transactions and reports, plus a full data export
 
 **AI (Google Gemini)**
+
 - 🤖 **Copilot chat** with tool calling against your own financial data and draft transactions you can confirm before saving
 - 🧠 **Natural-language entry**: "Lunch 450 yesterday" becomes a structured transaction
 - 🧾 **Receipt scanning** from an image
@@ -64,6 +66,7 @@ Data is scoped per user through Clerk authentication, and AI features can be swi
 - 🔒 Per-user opt-out, plus in-memory rate limiting on AI routes
 
 **Experience**
+
 - 🌗 Light and dark themes
 - ⌨️ Command palette (`cmdk`) with global search
 - 💱 Configurable display currency (defaults to INR)
@@ -75,6 +78,7 @@ Data is scoped per user through Clerk authentication, and AI features can be swi
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Framework:** Next.js 16 (App Router), React 19, TypeScript 5
 - **Styling:** Tailwind CSS 4, `tw-animate-css`, shadcn/ui components built on `@base-ui/react`
 - **State:** Zustand
@@ -83,6 +87,7 @@ Data is scoped per user through Clerk authentication, and AI features can be swi
 - **UX:** Framer Motion, Lenis, Sonner (toasts), `next-themes`, Lucide icons
 
 ### Backend and Database
+
 - **Database:** PostgreSQL
 - **ORM:** Prisma 7 with the `@prisma/adapter-pg` driver adapter
 - **Auth:** Clerk (`@clerk/nextjs`)
@@ -90,6 +95,7 @@ Data is scoped per user through Clerk authentication, and AI features can be swi
 - **API:** Next.js Route Handlers and Server Actions
 
 ### Tools
+
 - **Testing:** Vitest
 - **Linting:** ESLint 9 with `eslint-config-next`
 - **Scripting:** `tsx`
@@ -164,15 +170,15 @@ Open [http://localhost:3000](http://localhost:3000). Sign up, then go to **Setti
 
 ## 🔐 Environment Variables
 
-| Variable | Required | Example | Description |
-| --- | :---: | --- | --- |
-| `DATABASE_URL` | ✅ | `postgresql://user:pass@host:5432/finvoro` | PostgreSQL connection string used by Prisma at runtime and by the Prisma CLI for migrations. |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | ✅ | `pk_test_...` | Clerk publishable key, exposed to the browser. |
-| `CLERK_SECRET_KEY` | ✅ | `sk_test_...` | Clerk secret key, server-side only. Never commit it. |
-| `GEMINI_API_KEY` | ➖ | `AIza...` | Enables the AI copilot, insights, receipt scanning, parsing, and categorization. Without it, AI features report as unconfigured. |
-| `GEMINI_MODEL` | ➖ | `gemini-3.5-flash` | Main model for chat and reasoning. This is the default when unset. |
-| `GEMINI_FAST_MODEL` | ➖ | `gemini-3.5-flash-lite` | Lighter model for latency-sensitive structured tasks. This is the default when unset. |
-| `GEMINI_THINKING` | ➖ | `off` | Set to `off` to disable the model's thinking step and reduce latency. |
+| Variable                            | Required | Example                                    | Description                                                                                                                      |
+| ----------------------------------- | :------: | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                      |    ✅    | `postgresql://user:pass@host:5432/finvoro` | PostgreSQL connection string used by Prisma at runtime and by the Prisma CLI for migrations.                                     |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` |    ✅    | `pk_test_...`                              | Clerk publishable key, exposed to the browser.                                                                                   |
+| `CLERK_SECRET_KEY`                  |    ✅    | `sk_test_...`                              | Clerk secret key, server-side only. Never commit it.                                                                             |
+| `GEMINI_API_KEY`                    |    ➖    | `AIza...`                                  | Enables the AI copilot, insights, receipt scanning, parsing, and categorization. Without it, AI features report as unconfigured. |
+| `GEMINI_MODEL`                      |    ➖    | `gemini-3.5-flash`                         | Main model for chat and reasoning. This is the default when unset.                                                               |
+| `GEMINI_FAST_MODEL`                 |    ➖    | `gemini-3.5-flash-lite`                    | Lighter model for latency-sensitive structured tasks. This is the default when unset.                                            |
+| `GEMINI_THINKING`                   |    ➖    | `off`                                      | Set to `off` to disable the model's thinking step and reduce latency.                                                            |
 
 > **Clerk routes:** if you customize sign-in or sign-up paths, also set Clerk's `NEXT_PUBLIC_CLERK_SIGN_IN_URL` and `NEXT_PUBLIC_CLERK_SIGN_UP_URL`. The app ships with `/sign-in` and `/sign-up` routes.
 
@@ -180,16 +186,16 @@ Open [http://localhost:3000](http://localhost:3000). Sign up, then go to **Setti
 
 ## 📜 Available Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the Next.js development server at `http://localhost:3000`. |
-| `npm run build` | Generate the Prisma client, then create a production build. |
-| `npm run start` | Serve the production build (run `build` first). |
-| `npm run lint` | Lint the codebase with ESLint. |
-| `npm run typecheck` | Generate Next.js route types and run `tsc --noEmit`. |
-| `npm run test` | Run the Vitest suite once. |
-| `npm run db:generate` | Regenerate the Prisma client. |
-| `npm run db:migrate` | Apply pending migrations (`prisma migrate deploy`). |
+| Command               | Description                                                                                                                                                                                                 |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`         | Start the Next.js development server at `http://localhost:3000`.                                                                                                                                            |
+| `npm run build`       | Generate the Prisma client, then create a production build.                                                                                                                                                 |
+| `npm run start`       | Serve the production build (run `build` first).                                                                                                                                                             |
+| `npm run lint`        | Lint the codebase with ESLint.                                                                                                                                                                              |
+| `npm run typecheck`   | Generate Next.js route types and run `tsc --noEmit`.                                                                                                                                                        |
+| `npm run test`        | Run the Vitest suite once.                                                                                                                                                                                  |
+| `npm run db:generate` | Regenerate the Prisma client.                                                                                                                                                                               |
+| `npm run db:migrate`  | Apply pending migrations (`prisma migrate deploy`).                                                                                                                                                         |
 | `npm run verify:data` | Run `scripts/verify-data.ts`, an integration check of seeding, budgets, reports, AI tools, and per-user data isolation. It writes to the database in `DATABASE_URL`, so run it against a dev database only. |
 
 ---
@@ -291,3 +297,6 @@ vercel --prod
 
 ---
 
+## Conclusion
+
+Finvoro is a comprehensive personal finance management application designed to help users track income and expenses, manage budgets, set savings goals, and analyze their financial habits. By combining an intuitive interface with interactive dashboards, detailed reports, and AI-powered features, it simplifies financial planning and supports informed decision-making. Built using modern technologies such as Next.js, React, TypeScript, PostgreSQL, and Prisma, the application provides a structured and user-focused approach to managing personal finances. Overall, Finvoro aims to make financial management more accessible, efficient, and organized, helping users gain better control over their money and work toward their financial goals.
