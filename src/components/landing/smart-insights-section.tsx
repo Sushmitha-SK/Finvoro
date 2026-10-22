@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import {
     motion,
+    MotionValue,
     useReducedMotion,
     useScroll,
     useTransform,
