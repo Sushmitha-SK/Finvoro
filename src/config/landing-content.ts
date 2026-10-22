@@ -1,10 +1,12 @@
 import {
-    type LucideIcon, ArrowUpRight, ArrowDownLeft, TrendingDown, Lightbulb,
+    type LucideIcon, ArrowUpRight, ArrowDownLeft, Lightbulb,
     TrendingUp, Mail, LayoutDashboard, CreditCard, Wallet, Target, BarChart3,
-    Tags, Smartphone, Landmark, PieChart, RefreshCw, ShieldCheck,
-    AlertTriangle
+    Tags, PieChart, ShieldCheck,
+    AlertTriangle,
+    ChartPie,
+    CalendarDays
 } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
 
 //Navbar
 
@@ -111,6 +113,62 @@ export const featureTransactions = [
     { id: 3, name: "Netflix Subscription", category: "Entertainment", amount: "-$15.99", type: "expense", date: "Oct 24" },
 ];
 
+export const transactionFilters = ['all', 'income', 'expense'] as const;
+
+export const budgets = [
+    {
+        budgetCategory: 'Food & Dining',
+        budgetMonth: 'Sept 2026',
+        spentAmount: 2450,
+        budgetLimit: 3000,
+        dotColor: 'bg-orange-500',
+        barColor: 'bg-orange-500',
+        badgeText: 'Near limit',
+        badgeClass:
+            'text-orange-600 bg-orange-500/10 border-orange-500/20',
+        statusType: 'near',
+    },
+    {
+        budgetCategory: 'Entertainment',
+        budgetMonth: 'Aug 2026',
+        spentAmount: 4649,
+        budgetLimit: 3000,
+        dotColor: 'bg-red-500',
+        barColor: 'bg-red-500',
+        badgeText: 'Limit reached',
+        badgeClass: 'text-red-600 bg-red-500/10 border-red-500/20',
+        statusType: 'over',
+    },
+] as const;
+
+export const featureCards = [
+    {
+        title: 'Categories',
+        description:
+            'Group your spending into meaningful categories and discover where your money goes.',
+        label: 'Organization',
+        action: 'Explore categories',
+        Icon: ChartPie,
+    },
+    {
+        title: 'Financial reports',
+        description:
+            'Turn your financial activity into clear visual reports that are easy to understand.',
+        label: 'Visual Analytics',
+        action: 'Explore reports',
+        Icon: BarChart3,
+    },
+    {
+        title: 'Smart insights',
+        description:
+            'Spot spending patterns and meaningful trends without digging through spreadsheets.',
+        label: 'AI Powered',
+        action: 'Explore insights',
+        Icon: Lightbulb,
+    },
+] as const;
+
+
 //Product showcase section
 export const categoryData = [
     { name: "Food & Dining", value: "₹8,420", width: "78%" },
@@ -118,6 +176,28 @@ export const categoryData = [
     { name: "Transport", value: "₹3,640", width: "36%" },
     { name: "Utilities", value: "₹2,840", width: "28%" },
 ];
+
+export const productFeatureItems = [
+    {
+        title: 'Understand trends instantly',
+        description:
+            'Quickly identify changes in your monthly income and spending patterns.',
+        Icon: TrendingUp,
+    },
+    {
+        title: 'Find savings opportunities',
+        description:
+            'Pinpoint which category consumes the largest portion of your monthly budget.',
+        Icon: ShieldCheck,
+    },
+] as const;
+
+export const productCapabilities = [
+    { label: 'Analytics', Icon: PieChart },
+    { label: 'Budgets', Icon: Wallet },
+    { label: 'Ledger', Icon: CreditCard },
+    { label: 'Reports', Icon: CalendarDays },
+] as const;
 
 //How it works section
 
@@ -168,6 +248,8 @@ export const insights = [
         timestamp: "Updated 3 hours ago",
     },
 ] as const;
+
+
 
 //Pricing section
 

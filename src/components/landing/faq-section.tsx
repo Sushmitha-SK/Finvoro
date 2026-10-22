@@ -1,107 +1,178 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, MessageCircleQuestion, ArrowRight } from "lucide-react";
+import { useId, useState } from "react";
+import {
+    AnimatePresence,
+    motion,
+    useReducedMotion,
+} from "framer-motion";
+import {
+    ArrowRight,
+    ChevronDown,
+} from "lucide-react";
+
 import { faqs } from "@/config/landing-content";
 
 export function FAQSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
+    const shouldReduceMotion = useReducedMotion();
+    const sectionId = useId();
 
     const toggleFAQ = (index: number) => {
-        setOpenIndex(openIndex === index ? null : index);
+        setOpenIndex((currentIndex) =>
+            currentIndex === index ? null : index
+        );
     };
 
+    const animationTransition = shouldReduceMotion
+        ? { duration: 0 }
+        : { duration: 0.3, ease: "easeInOut" as const };
+
     return (
-        <section id="faq" className="relative border-b bg-muted/30 py-24 sm:py-32">
+        <section
+            id="faq"
+            aria-labelledby={`${sectionId}-heading`}
+            className="relative border-b bg-muted/30 py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
-
-                    {/* Left Column: Heading & Help Box */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={
+                            shouldReduceMotion
+                                ? false
+                                : { opacity: 0, y: 20 }
+                        }
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className="lg:col-span-5 flex flex-col justify-start lg:sticky lg:top-8 self-start"
-                    >
+                        transition={animationTransition}
+                        className="flex flex-col justify-start self-start lg:sticky lg:top-8 lg:col-span-5">
                         <div>
                             <div className="inline-flex items-center gap-2 py-1 text-xs font-semibold text-primary">
-                                <span className="inline-block text-xs font-semibold tracking-wider text-primary uppercase">
-                                    Support & Info
+                                <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                                    Support &amp; Info
                                 </span>
                             </div>
 
-                            <h2 className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                            <h2
+                                id={`${sectionId}-heading`}
+                                className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                                 Frequently asked questions
                             </h2>
 
                             <p className="mt-4 text-base leading-7 text-muted-foreground">
-                                Everything you need to know about getting started, managing your budgets, and using Finvoro effectively.
+                                Everything you need to know about getting started,
+                                managing your budgets, and using Finvoro effectively.
                             </p>
                         </div>
 
-                        {/* Optional Help Box */}
                         <div className="mt-10 hidden rounded-2xl border bg-card p-6 shadow-sm lg:block">
-                            <h4 className="font-semibold text-foreground">Still have questions?</h4>
+                            <h3 className="font-semibold text-foreground">
+                                Still have questions?
+                            </h3>
+
                             <p className="mt-1 text-sm text-muted-foreground">
-                                Can't find the answer you're looking for? Reach out to our friendly support team.
+                                Can&apos;t find the answer you&apos;re looking for?
+                                Reach out to our friendly support team.
                             </p>
+
                             <a
                                 href="#contact"
-                                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
-                            >
-                                Contact support <ArrowRight className="size-4" />
+                                className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-sm text-sm font-medium text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                Contact support
+                                <ArrowRight
+                                    className="size-4"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                />
                             </a>
                         </div>
                     </motion.div>
 
-                    <div className="lg:col-span-7 space-y-3">
+                    <div className="space-y-3 lg:col-span-7">
                         {faqs.map((faq, index) => {
                             const isOpen = openIndex === index;
+                            const triggerId = `${sectionId}-trigger-${index}`;
+                            const panelId = `${sectionId}-panel-${index}`;
+
                             return (
                                 <motion.div
                                     key={faq.question}
-                                    initial={{ opacity: 0, y: 20 }}
+                                    initial={
+                                        shouldReduceMotion
+                                            ? false
+                                            : { opacity: 0, y: 20 }
+                                    }
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                                    className={`group rounded-2xl border transition-colors duration-300 ${isOpen
-                                        ? "bg-card shadow-lg shadow-black/3 border-primary/30 ring-1 ring-primary/20"
-                                        : "bg-card/40 hover:bg-card hover:border-border"
-                                        }`}
-                                >
-                                    <button
-                                        onClick={() => toggleFAQ(index)}
-                                        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors"
-                                    >
-                                        <span className={`text-base font-medium transition-colors ${isOpen ? "text-primary" : "text-foreground group-hover:text-foreground"}`}>
-                                            {faq.question}
-                                        </span>
-                                        <motion.div
-                                            animate={{ rotate: isOpen ? 180 : 0 }}
-                                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                                            className={`flex size-8 shrink-0 items-center justify-center rounded-full transition-colors ${isOpen
-                                                ? "bg-primary text-primary-foreground"
-                                                : "bg-muted text-muted-foreground group-hover:bg-muted/80"
-                                                }`}
-                                        >
-                                            <ChevronDown className="size-4" />
-                                        </motion.div>
-                                    </button>
+                                    transition={
+                                        shouldReduceMotion
+                                            ? { duration: 0 }
+                                            : {
+                                                duration: 0.4,
+                                                delay: index * 0.05,
+                                            }
+                                    }
+                                    className={`group rounded-2xl border transition-colors duration-300 motion-reduce:transition-none ${isOpen
+                                            ? "border-primary/30 bg-card shadow-lg shadow-black/3 ring-1 ring-primary/20"
+                                            : "bg-card/40 hover:border-border hover:bg-card"
+                                        }`}>
+                                    <h3>
+                                        <button
+                                            id={triggerId}
+                                            type="button"
+                                            aria-expanded={isOpen}
+                                            aria-controls={panelId}
+                                            onClick={() => toggleFAQ(index)}
+                                            className="flex min-h-11 w-full items-center justify-between gap-4 rounded-2xl px-6 py-5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+                                            <span
+                                                className={`text-base font-medium transition-colors motion-reduce:transition-none ${isOpen
+                                                        ? "text-primary"
+                                                        : "text-foreground group-hover:text-foreground"
+                                                    }`}>
+                                                {faq.question}
+                                            </span>
+
+                                            <motion.span
+                                                aria-hidden="true"
+                                                animate={{
+                                                    rotate: isOpen ? 180 : 0,
+                                                }}
+                                                transition={animationTransition}
+                                                className={`flex size-8 shrink-0 items-center justify-center rounded-full transition-colors motion-reduce:transition-none ${isOpen
+                                                        ? "bg-primary text-primary-foreground"
+                                                        : "bg-muted text-muted-foreground group-hover:bg-muted/80"
+                                                    }`}>
+                                                <ChevronDown
+                                                    className="size-4"
+                                                    aria-hidden="true"
+                                                    focusable="false"
+                                                />
+                                            </motion.span>
+                                        </button>
+                                    </h3>
 
                                     <AnimatePresence initial={false}>
                                         {isOpen && (
                                             <motion.div
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                            >
-                                                <div className="overflow-hidden">
-                                                    <div className="px-6 pb-6 pt-0 text-sm leading-relaxed text-muted-foreground">
-                                                        {faq.answer}
-                                                    </div>
+                                                id={panelId}
+                                                role="region"
+                                                aria-labelledby={triggerId}
+                                                initial={
+                                                    shouldReduceMotion
+                                                        ? false
+                                                        : { height: 0, opacity: 0 }
+                                                }
+                                                animate={{
+                                                    height: "auto",
+                                                    opacity: 1,
+                                                }}
+                                                exit={{
+                                                    height: 0,
+                                                    opacity: 0,
+                                                }}
+                                                transition={animationTransition}
+                                                className="overflow-hidden">
+                                                <div className="px-6 pb-6 pt-0 text-sm leading-relaxed text-muted-foreground">
+                                                    {faq.answer}
                                                 </div>
                                             </motion.div>
                                         )}
@@ -110,7 +181,6 @@ export function FAQSection() {
                             );
                         })}
                     </div>
-
                 </div>
             </div>
         </section>

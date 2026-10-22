@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", ],
+  weight: ["400", "500", "600", "700", "800",],
 });
 
 const inter = Inter({
@@ -21,15 +21,44 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
 });
 
-
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL;
 
 export const metadata: Metadata = {
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  applicationName: "Finvoro",
   title: {
-    default: "Finvoro",
+    default: "Finvoro | Personal Finance Management",
     template: "%s | Finvoro",
   },
   description:
-    "A smarter way to manage your personal finances, track expenses, and reach your financial goals.",
+    "Manage your personal finances with Finvoro. Track expenses, understand your spending, and work toward your financial goals.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Finvoro",
+    title: "Finvoro | Personal Finance Management",
+    description:
+      "Track expenses, manage your money, and work toward your financial goals with Finvoro.",
+    images: ["/og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Finvoro | Personal Finance Management",
+    description:
+      "Track expenses, manage your money, and work toward your financial goals.",
+    images: ["/og-image.png"],
+  },
+
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

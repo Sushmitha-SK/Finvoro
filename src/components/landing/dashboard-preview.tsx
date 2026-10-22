@@ -8,7 +8,7 @@ import {
     useScroll,
     useTransform,
 } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import {
     Bell,
     Eye,
@@ -27,9 +27,10 @@ import Image from "next/image";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
 export function DashboardPreview() {
-    const reduceMotion = useReducedMotion();
+    const reduceMotion = useReducedMotion() ?? false;
     const containerRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
+    const chartId = useId();
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(max-width: 1023px)");
@@ -74,27 +75,33 @@ export function DashboardPreview() {
             ref={containerRef}
             className="mx-auto w-full max-w-5xl"
             style={{ perspective: "1400px" }}
+            aria-label="Preview of the Finvoro financial dashboard"
         >
             <motion.div
                 className="relative will-change-transform"
                 style={{
-                    scale: isMobile ? 1 : scale,
-                    rotateX: isMobile ? 0 : rotateX,
-                    y: isMobile ? 0 : y,
+                    scale: isMobile || reduceMotion ? 1 : scale,
+                    rotateX: isMobile || reduceMotion ? 0 : rotateX,
+                    y: isMobile || reduceMotion ? 0 : y,
                     transformOrigin: "center center",
                 }}
             >
-                <div className="absolute -inset-8 rounded-[2.5rem] bg-primary/5 blur-3xl" />
+                <div
+                    aria-hidden="true"
+                    className="absolute -inset-8 rounded-[2.5rem] bg-primary/5 blur-3xl"
+                />
 
                 <div className="relative overflow-hidden rounded-2xl border border-border bg-background shadow-2xl shadow-black/10">
-                    <div className="flex h-10 items-center gap-2 border-b bg-muted/40 px-4">
+                    <div aria-hidden="true" className="flex h-10 items-center gap-2 border-b bg-muted/40 px-4">
                         <span className="size-2.5 rounded-full bg-border" />
                         <span className="size-2.5 rounded-full bg-border" />
                         <span className="size-2.5 rounded-full bg-border" />
                     </div>
 
                     <div className="flex">
-                        <aside className="hidden w-46.25 shrink-0 border-r bg-card lg:flex lg:flex-col">
+                        <aside
+                            aria-label="Dashboard navigation preview"
+                            className="hidden w-46.25 shrink-0 border-r bg-card lg:flex lg:flex-col">
                             <div className="flex h-14.5 items-center gap-2.5 px-4">
                                 <Image
                                     src={assets.logo.src}
@@ -102,8 +109,7 @@ export function DashboardPreview() {
                                     width={100}
                                     height={28}
                                     className="block h-7 w-auto object-contain dark:hidden group-data-[collapsible=icon]:hidden"
-                                    priority
-                                />
+                                    priority />
 
                                 <Image
                                     src={assets.logoDark.src}
@@ -111,8 +117,7 @@ export function DashboardPreview() {
                                     width={100}
                                     height={28}
                                     className="hidden h-7 w-auto object-contain dark:block group-data-[collapsible=icon]:hidden"
-                                    priority
-                                />
+                                    priority />
                             </div>
 
                             <div className="flex-1 px-3 py-5">
@@ -120,7 +125,7 @@ export function DashboardPreview() {
                                     Overview
                                 </p>
 
-                                <nav className="space-y-0.5">
+                                <nav aria-label="Preview overview navigation" className="space-y-0.5">
                                     {previewNavItems.map((item, index) => {
                                         const Icon = item.icon;
 
@@ -128,11 +133,13 @@ export function DashboardPreview() {
                                             <div
                                                 key={item.label}
                                                 className={`flex items-center gap-2 rounded-lg px-2.5 py-2 text-[10px] font-medium ${index === 0
-                                                        ? "bg-primary/10 text-primary"
-                                                        : "text-muted-foreground"
-                                                    }`}
-                                            >
-                                                <Icon className="size-3.5" />
+                                                    ? "bg-primary/10 text-primary"
+                                                    : "text-muted-foreground"
+                                                    }`}>
+                                                <Icon
+                                                    aria-hidden="true"
+                                                    focusable="false"
+                                                    className="size-3.5"/>
                                                 {item.label}
                                             </div>
                                         );
@@ -145,7 +152,7 @@ export function DashboardPreview() {
 
                                 <div className="space-y-0.5">
                                     <div className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-[10px] text-muted-foreground">
-                                        <Sparkles className="size-3.5" />
+                                        <Sparkles aria-hidden="true" className="size-3.5" />
                                         Ai Copilot
                                     </div>
                                 </div>
@@ -156,12 +163,12 @@ export function DashboardPreview() {
 
                                 <div className="space-y-0.5">
                                     <div className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-[10px] text-muted-foreground">
-                                        <Bell className="size-3.5" />
+                                        <Bell aria-hidden="true" className="size-3.5" />
                                         Notifications
                                     </div>
 
                                     <div className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-[10px] text-muted-foreground">
-                                        <Settings className="size-3.5" />
+                                        <Settings aria-hidden="true" className="size-3.5" />
                                         Settings
                                     </div>
                                 </div>
@@ -169,7 +176,9 @@ export function DashboardPreview() {
 
                             <div className="p-3 text-left">
                                 <div className="flex items-center gap-2">
-                                    <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-[9px] font-medium">
+                                    <div
+                                        aria-hidden="true"
+                                        className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-[9px] font-medium">
                                         H
                                     </div>
 
@@ -187,29 +196,41 @@ export function DashboardPreview() {
                         </aside>
 
                         <div className="min-w-0 flex-1">
-                            <header className="flex h-14.5 items-center gap-3 border-b border-border bg-background px-4 sm:px-5">
+                            <header
+                                aria-label="Dashboard preview toolbar"
+                                className="flex h-14.5 items-center gap-3 border-b border-border bg-background px-4 sm:px-5">
                                 <div className="flex items-center gap-2 text-[9px] text-muted-foreground">
-                                    <PanelLeftIcon className="size-3" />
-                                    <span>|</span>
+                                    <PanelLeftIcon
+                                        aria-hidden="true"
+                                        className="size-3"
+                                    />
+                                    <span aria-hidden="true">|</span>
 
                                     <span className="font-medium text-foreground">
                                         Dashboard
                                     </span>
                                 </div>
 
-                                <div className="mx-auto hidden h-7 w-64 items-center gap-2 rounded-lg border bg-muted/20 px-2.5 text-[9px] text-muted-foreground md:flex">
-                                    <Search className="size-3" />
+                                <div
+                                    aria-label="Search transactions and pages preview"
+                                    className="mx-auto hidden h-7 w-64 items-center gap-2 rounded-lg border bg-muted/20 px-2.5 text-[9px] text-muted-foreground md:flex">
+                                    <Search aria-hidden="true" className="size-3" />
 
                                     <span>
                                         Search transactions, pages...
                                     </span>
 
-                                    <span className="ml-auto rounded border bg-background px-1 py-0.5 text-[7px]">
+                                    <span
+                                        aria-hidden="true"
+                                        className="ml-auto rounded border bg-background px-1 py-0.5 text-[7px]">
                                         ⌘&nbsp;K
                                     </span>
                                 </div>
 
-                                <div className="ml-auto flex items-center gap-3 text-muted-foreground">
+                                <div
+                                    aria-hidden="true"
+                                    className="ml-auto flex items-center gap-3 text-muted-foreground"
+                                >
                                     <Sparkles className="size-3.5" />
                                     <Eye className="size-3.5" />
                                     <Sun className="size-3.5" />
@@ -223,7 +244,7 @@ export function DashboardPreview() {
                                 </div>
                             </header>
 
-                            <main className="bg-muted/20 p-4 sm:p-5">
+                            <div className="bg-muted/20 p-4 sm:p-5">
                                 <div className="mb-4 flex items-end justify-between">
                                     <div>
                                         <h2 className="text-left text-base font-semibold">
@@ -239,17 +260,19 @@ export function DashboardPreview() {
                                     <div className="hidden items-center gap-2 sm:flex">
                                         <button
                                             type="button"
+                                            aria-label="Ask Copilot preview"
                                             className="inline-flex items-center gap-1 rounded-lg border border-primary/20 bg-primary/5 px-3 py-1 text-[9px] font-medium text-primary hover:bg-primary/10"
                                         >
-                                            <Sparkles className="size-3" />
+                                            <Sparkles aria-hidden="true" className="size-3" />
                                             Ask Copilot
                                         </button>
 
                                         <button
                                             type="button"
+                                            aria-label="Add transaction preview"
                                             className="hidden items-center gap-1 rounded-lg bg-primary px-3 py-1 text-[9px] font-medium text-primary-foreground sm:flex"
                                         >
-                                            <span className="text-sm">+</span>
+                                            <span aria-hidden="true" className="text-sm">+</span>
                                             Add transaction
                                         </button>
                                     </div>
@@ -262,14 +285,9 @@ export function DashboardPreview() {
                                         subtitle="vs last month"
                                         icon={Wallet}
                                         chartData={[
-                                            { v: 20 },
-                                            { v: 25 },
-                                            { v: 30 },
-                                            { v: 45 },
-                                            { v: 60 },
-                                            { v: 75 },
-                                            { v: 85 },
-                                            { v: 95 },
+                                            { v: 20 }, { v: 25 }, { v: 30 },
+                                            { v: 45 }, { v: 60 }, { v: 75 },
+                                            { v: 85 }, { v: 95 },
                                         ]}
                                         tone="blue"
                                         badge="↗ +₹72K"
@@ -281,14 +299,9 @@ export function DashboardPreview() {
                                         subtitle="vs last month"
                                         icon={TrendingUp}
                                         chartData={[
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 70 },
-                                            { v: 20 },
-                                            { v: 45 },
-                                            { v: 75 },
+                                            { v: 20 }, { v: 20 }, { v: 20 },
+                                            { v: 20 }, { v: 70 }, { v: 20 },
+                                            { v: 45 }, { v: 75 },
                                         ]}
                                         tone="green"
                                     />
@@ -299,12 +312,8 @@ export function DashboardPreview() {
                                         subtitle="vs last month"
                                         icon={TrendingDown}
                                         chartData={[
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 65 },
-                                            { v: 25 },
-                                            { v: 20 },
+                                            { v: 20 }, { v: 20 }, { v: 20 },
+                                            { v: 65 }, { v: 25 }, { v: 20 },
                                             { v: 18 },
                                         ]}
                                         tone="red"
@@ -317,12 +326,8 @@ export function DashboardPreview() {
                                         subtitle="vs last month"
                                         icon={PiggyBank}
                                         chartData={[
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 20 },
-                                            { v: 85 },
-                                            { v: 50 },
+                                            { v: 20 }, { v: 20 }, { v: 20 },
+                                            { v: 20 }, { v: 85 }, { v: 50 },
                                             { v: 95 },
                                         ]}
                                         tone="purple"
@@ -330,9 +335,12 @@ export function DashboardPreview() {
                                 </div>
 
                                 <div className="mt-3 grid gap-3 xl:grid-cols-[1fr_265px]">
-                                    <section className="rounded-xl border bg-card p-4 text-left">
+                                    <section
+                                        aria-labelledby={`${chartId}-cash-flow-title`}
+                                        className="rounded-xl border bg-card p-4 text-left"
+                                    >
                                         <div className="mb-4">
-                                            <h3 className="text-xs font-semibold">
+                                            <h3 id={`${chartId}-cash-flow-title`} className="text-xs font-semibold">
                                                 Cash flow
                                             </h3>
 
@@ -343,14 +351,11 @@ export function DashboardPreview() {
                                         </div>
 
                                         <div className="relative h-48">
-                                            <div className="absolute inset-0 flex flex-col justify-between">
-                                                {[
-                                                    "₹1L",
-                                                    "₹75K",
-                                                    "₹50K",
-                                                    "₹25K",
-                                                    "₹0",
-                                                ].map((label) => (
+                                            <div
+                                                aria-hidden="true"
+                                                className="absolute inset-0 flex flex-col justify-between"
+                                            >
+                                                {["₹1L", "₹75K", "₹50K", "₹25K", "₹0"].map((label) => (
                                                     <div
                                                         key={label}
                                                         className="flex items-center gap-2"
@@ -368,47 +373,38 @@ export function DashboardPreview() {
                                                 viewBox="0 0 700 220"
                                                 preserveAspectRatio="none"
                                                 className="absolute bottom-4 left-9 right-0 h-43.75 w-[calc(100%-36px)]"
-                                                aria-label="Cash flow chart"
+                                                role="img"
+                                                aria-labelledby={`${chartId}-cash-flow-svg-title`}
+                                                aria-describedby={`${chartId}-cash-flow-svg-desc`}
                                             >
+                                                <title id={`${chartId}-cash-flow-svg-title`}>
+                                                    Cash flow chart
+                                                </title>
+                                                <desc id={`${chartId}-cash-flow-svg-desc`}>
+                                                    Illustrative income and expense trends from May through October 2026.
+                                                </desc>
+
                                                 <defs>
                                                     <linearGradient
-                                                        id="incomeFill"
+                                                        id={`${chartId}-incomeFill`}
                                                         x1="0"
                                                         y1="0"
                                                         x2="0"
                                                         y2="1"
                                                     >
-                                                        <stop
-                                                            offset="0%"
-                                                            stopColor="currentColor"
-                                                            stopOpacity="0.25"
-                                                        />
-
-                                                        <stop
-                                                            offset="100%"
-                                                            stopColor="currentColor"
-                                                            stopOpacity="0"
-                                                        />
+                                                        <stop offset="0%" stopColor="currentColor" stopOpacity="0.25" />
+                                                        <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
                                                     </linearGradient>
 
                                                     <linearGradient
-                                                        id="expenseFill"
+                                                        id={`${chartId}-expenseFill`}
                                                         x1="0"
                                                         y1="0"
                                                         x2="0"
                                                         y2="1"
                                                     >
-                                                        <stop
-                                                            offset="0%"
-                                                            stopColor="currentColor"
-                                                            stopOpacity="0.16"
-                                                        />
-
-                                                        <stop
-                                                            offset="100%"
-                                                            stopColor="currentColor"
-                                                            stopOpacity="0"
-                                                        />
+                                                        <stop offset="0%" stopColor="currentColor" stopOpacity="0.16" />
+                                                        <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
                                                     </linearGradient>
                                                 </defs>
 
@@ -439,7 +435,10 @@ export function DashboardPreview() {
                                                 />
                                             </svg>
 
-                                            <div className="absolute bottom-0 left-9 right-0 flex justify-between text-[7px] text-muted-foreground">
+                                            <div
+                                                aria-hidden="true"
+                                                className="absolute bottom-0 left-9 right-0 flex justify-between text-[7px] text-muted-foreground"
+                                            >
                                                 <span>May 26</span>
                                                 <span>Jun 26</span>
                                                 <span>Jul 26</span>
@@ -450,10 +449,13 @@ export function DashboardPreview() {
                                         </div>
                                     </section>
 
-                                    <section className="rounded-xl border bg-card p-4">
+                                    <section
+                                        aria-labelledby={`${chartId}-financial-health-title`}
+                                        className="rounded-xl border bg-card p-4"
+                                    >
                                         <div className="flex items-start justify-between">
                                             <div>
-                                                <h3 className="text-xs font-semibold">
+                                                <h3 id={`${chartId}-financial-health-title`} className="text-xs font-semibold">
                                                     Financial health
                                                 </h3>
 
@@ -462,14 +464,22 @@ export function DashboardPreview() {
                                                 </p>
                                             </div>
 
-                                            <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600">
+                                            <div
+                                                aria-hidden="true"
+                                                className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600"
+                                            >
                                                 <TrendingUp className="size-3.5" />
                                             </div>
                                         </div>
 
                                         <div className="mt-5 flex items-center gap-4">
-                                            <div className="relative flex size-16 items-center justify-center">
+                                            <div
+                                                role="img"
+                                                aria-label="Illustrative financial health score: 90 out of 100"
+                                                className="relative flex size-16 items-center justify-center"
+                                            >
                                                 <svg
+                                                    aria-hidden="true"
                                                     className="size-full -rotate-90"
                                                     viewBox="0 0 36 36"
                                                 >
@@ -492,11 +502,8 @@ export function DashboardPreview() {
                                                     />
                                                 </svg>
 
-                                                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                                    <p className="text-sm font-semibold leading-none">
-                                                        90
-                                                    </p>
-
+                                                <div aria-hidden="true" className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                                    <p className="text-sm font-semibold leading-none">90</p>
                                                     <p className="mt-0.5 text-[5px] uppercase text-muted-foreground">
                                                         OUT OF 100
                                                     </p>
@@ -534,7 +541,10 @@ export function DashboardPreview() {
                                                     <div className="mb-1 flex items-center justify-between text-[7px]">
                                                         <span className="flex items-center gap-1">
                                                             {item.label}
-                                                            <Info className="size-2.5 text-muted-foreground" />
+                                                            <Info
+                                                                aria-hidden="true"
+                                                                className="size-2.5 text-muted-foreground"
+                                                            />
                                                         </span>
 
                                                         <span className="text-muted-foreground">
@@ -542,8 +552,16 @@ export function DashboardPreview() {
                                                         </span>
                                                     </div>
 
-                                                    <div className="h-1 rounded-full bg-muted">
+                                                    <div
+                                                        role="progressbar"
+                                                        aria-label={`${item.label} score`}
+                                                        aria-valuemin={0}
+                                                        aria-valuemax={100}
+                                                        aria-valuenow={item.progress}
+                                                        className="h-1 rounded-full bg-muted"
+                                                    >
                                                         <div
+                                                            aria-hidden="true"
                                                             className="h-full rounded-full bg-emerald-500"
                                                             style={{
                                                                 width: `${item.progress}%`,
@@ -555,7 +573,7 @@ export function DashboardPreview() {
                                         </div>
                                     </section>
                                 </div>
-                            </main>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -603,16 +621,24 @@ function SummaryCard({
     };
 
     const currentTone = toneConfig[tone];
+    const gradientId = useId();
 
     return (
-        <div className="flex flex-col justify-between rounded-lg border bg-card p-2">
+        <div
+            role="group"
+            aria-label={`${title}: ${value}, ${subtitle}`}
+            className="flex flex-col justify-between rounded-lg border bg-card p-2"
+        >
             <div>
                 <div className="flex items-center justify-between">
                     <span className="text-[8px] font-semibold uppercase tracking-wide text-muted-foreground">
                         {title}
                     </span>
 
-                    <div className="flex size-7 items-center justify-center rounded-lg bg-muted/70">
+                    <div
+                        aria-hidden="true"
+                        className="flex size-7 items-center justify-center rounded-lg bg-muted/70"
+                    >
                         <Icon className="size-3.5 text-muted-foreground" />
                     </div>
                 </div>
@@ -637,10 +663,15 @@ function SummaryCard({
                     </span>
                 </div>
 
-                <div className="h-9 w-20 shrink-0">
+                <div
+                    className="h-9 w-20 shrink-0"
+                    role="img"
+                    aria-label={`${title} trend chart`}
+                >
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
                             data={chartData}
+                            accessibilityLayer={false}
                             margin={{
                                 top: 2,
                                 right: 0,
@@ -650,7 +681,7 @@ function SummaryCard({
                         >
                             <defs>
                                 <linearGradient
-                                    id={`gradient-${tone}`}
+                                    id={`gradient-${tone}-${gradientId}`}
                                     x1="0"
                                     y1="0"
                                     x2="0"
@@ -676,7 +707,8 @@ function SummaryCard({
                                 stroke={currentTone.stroke}
                                 strokeWidth={1.5}
                                 fillOpacity={1}
-                                fill={`url(#gradient-${tone})`}
+                                fill={`url(#gradient-${tone}-${gradientId})`}
+                                isAnimationActive={!useReducedMotion()}
                             />
                         </AreaChart>
                     </ResponsiveContainer>
