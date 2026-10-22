@@ -79,7 +79,7 @@ export function FinalCTA() {
                   className="size-4 h-12 gap-2 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none"
                 />
               </Button>
-          
+
 
               <Button
                 type="button"
@@ -91,19 +91,20 @@ export function FinalCTA() {
               </Button>
             </Show>
 
+
             <Show when="signed-in">
-              <Button
-                className="group h-11 w-full gap-1.5 rounded-xl px-6 text-sm font-medium shadow-lg transition-opacity hover:opacity-95 sm:w-auto"
+              <Link
+                href="/dashboard"
+                className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-primary-foreground shadow-lg transition-opacity hover:opacity-95 sm:w-auto"
               >
-                <Link href="/dashboard">
-                  Go to Dashboard
-                  <ArrowRight
-                    aria-hidden="true"
-                    className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none"
-                  />
-                </Link>
-              </Button>
+                Go to Dashboard
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none"
+                />
+              </Link>
             </Show>
+
           </div>
 
           <p className="mt-4 text-xs leading-5 text-muted-foreground">
