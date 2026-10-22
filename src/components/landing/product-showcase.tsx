@@ -77,7 +77,7 @@ export function ProductShowcase() {
                                 <Button
                                     type="button"
                                     onClick={() => clerk.openSignUp()}
-                                    className="group min-h-11 gap-1.5 rounded-xl shadow-lg transition-opacity hover:opacity-95 focus-visible:ring-offset-2 motion-reduce:transition-none"
+                                    className="group min-h-11 gap-1.5 px-5 rounded-xl shadow-sm transition-opacity hover:opacity-95  motion-reduce:transition-none"
                                 >
                                     Try Finvoro free
                                     <ArrowRight

@@ -1,18 +1,28 @@
 "use client";
 
+import "lenis/dist/lenis.css";
 import Lenis from "lenis";
 import { ReactNode, useEffect } from "react";
 
 export function LenisProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      autoRaf: true, 
-    });
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
 
-    return () => lenis.destroy();
+    const lenis = new Lenis({
+      lerp: 0.1,       
+      smoothWheel: true,
+      anchors: true,    
+      autoRaf: true,
+    });
+    
+    const onLoad = () => lenis.resize();
+    window.addEventListener("load", onLoad);
+
+    return () => {
+      window.removeEventListener("load", onLoad);
+      lenis.destroy();
+    };
   }, []);
 
   return <>{children}</>;

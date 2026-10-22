@@ -178,7 +178,7 @@ export function HowItWorks() {
                         <motion.article
                             key={step.number}
                             variants={shouldReduceMotion ? undefined : howItWorksItemVariants}
-                            className="relative flex flex-col justify-between rounded-[2rem] border border-border/80 bg-card p-6 shadow-xs backdrop-blur-xl transition-[border-color,box-shadow] duration-300 hover:border-primary/40 hover:shadow-sm motion-reduce:transition-none sm:p-8"
+                            className="relative flex flex-col justify-between rounded-[2rem] border border-border/80 bg-card p-6 shadow-xs backdrop-blur-xl transition-[border-color,box-shadow] duration-300 hover:border-primary/20 hover:shadow-xs motion-reduce:transition-none sm:p-8"
                         >
                             <div>
                                 <div

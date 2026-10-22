@@ -1,21 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Check, Sparkles, ShieldCheck, } from "lucide-react";
+import { ArrowRight, Check, Sparkles, ShieldCheck } from "lucide-react";
 import { Show, useClerk } from "@clerk/nextjs";
-import { motion, useReducedMotion, } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { getAccessibleMotionVariants, springTransition, } from "@/lib/motion-variants";
+import { motion, useReducedMotion } from "framer-motion";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import {
+  getAccessibleMotionVariants,
+  springTransition,
+} from "@/lib/motion-variants";
 import { DashboardPreview } from "./dashboard-preview";
 import { heroBenefits } from "@/config/landing-content";
 import { CloudShader } from "../ui/cloud-shader";
+
+const primaryButtonClass =
+  "group inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:w-auto motion-reduce:transition-none";
 
 export function HeroSection() {
   const clerk = useClerk();
   const shouldReduceMotion = useReducedMotion() ?? false;
 
-  const motionVariants =
-    getAccessibleMotionVariants(shouldReduceMotion);
+  const motionVariants = getAccessibleMotionVariants(shouldReduceMotion);
 
   const headlineWords = ["Your", "money.", "Your", "clarity."];
 
@@ -28,30 +34,28 @@ export function HeroSection() {
       className="relative isolate overflow-hidden bg-background"
     >
       <div className="absolute inset-0 -z-10">
-        <CloudShader className="absolute inset-0" />
+        <CloudShader className="absolute inset-0" renderScale={0.5} maxFps={30} />
         <div className="absolute inset-0 bg-linear-to-b from-background/20 via-background/60 to-background" />
       </div>
 
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 left-1/2 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/15 blur-3xl sm:h-96 sm:w-96"
+        className="pointer-events-none absolute top-1/4 left-1/2 -z-10 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full sm:h-120 sm:w-120"
+        style={{
+          background:
+            "radial-gradient(closest-side, color-mix(in srgb, var(--primary) 25%, transparent), transparent)",
+        }}
         animate={
           shouldReduceMotion
             ? { scale: 1, opacity: 0.6 }
-            : {
-              scale: [1, 1.15, 1],
-              opacity: [0.6, 0.9, 0.6],
-            }
+            : { scale: [1, 1.15, 1], opacity: [0.6, 0.9, 0.6] }
         }
         transition={
           shouldReduceMotion
             ? { duration: 0 }
-            : {
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }
-        } />
+            : { duration: 8, repeat: Infinity, ease: "easeInOut" }
+        }
+      />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pb-20 pt-20 sm:px-6 sm:pb-40 sm:pt-44 lg:px-8 lg:pb-48">
         <div className="mx-auto max-w-4xl text-center">
@@ -59,25 +63,12 @@ export function HeroSection() {
             initial={
               shouldReduceMotion
                 ? false
-                : {
-                  opacity: 0,
-                  y: -12,
-                  scale: 0.9,
-                  filter: "blur(8px)",
-                }
+                : { opacity: 0, y: -12, scale: 0.9, filter: "blur(8px)" }
             }
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              filter: "blur(0px)",
-            }}
-            transition={
-              shouldReduceMotion
-                ? { duration: 0 }
-                : springTransition
-            }
-            className="mb-6 inline-flex max-w-full items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 px-3 py-1.5 text-[11px] font-medium text-foreground shadow-sm backdrop-blur-md sm:mb-8 sm:mt-5 sm:gap-2.5 sm:px-3.5 sm:text-xs">
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            transition={shouldReduceMotion ? { duration: 0 } : springTransition}
+            className="mb-6 inline-flex max-w-full items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 px-3 py-1.5 text-[11px] font-medium text-foreground shadow-sm sm:mb-8 sm:mt-5 sm:gap-2.5 sm:px-3.5 sm:text-xs"
+          >
             <motion.span
               aria-hidden="true"
               animate={
@@ -88,13 +79,10 @@ export function HeroSection() {
               transition={
                 shouldReduceMotion
                   ? { duration: 0 }
-                  : {
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }
+                  : { duration: 3, repeat: Infinity, ease: "easeInOut" }
               }
-              className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm sm:size-5">
+              className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm sm:size-5"
+            >
               <Sparkles className="size-2.5 sm:size-3" />
             </motion.span>
 
@@ -115,7 +103,8 @@ export function HeroSection() {
             variants={motionVariants.container(0.1, 0.05)}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap justify-center gap-x-2 text-balance font-heading text-3xl font-extrabold tracking-tight sm:gap-x-3 sm:text-6xl lg:text-7xl">
+            className="flex flex-wrap justify-center gap-x-2 text-balance font-heading text-3xl font-extrabold tracking-tight sm:gap-x-3 sm:text-6xl lg:text-7xl"
+          >
             {headlineWords.map((word, index) => {
               const isHighlighted = index >= 2;
 
@@ -130,25 +119,13 @@ export function HeroSection() {
                       className="inline-block bg-linear-to-r from-primary via-primary/70 to-primary/60 bg-clip-text text-transparent bg-size-[200%_auto]"
                       animate={
                         shouldReduceMotion
-                          ? {
-                            backgroundPosition: "0% center",
-                          }
-                          : {
-                            backgroundPosition: [
-                              "0% center",
-                              "100% center",
-                              "0% center",
-                            ],
-                          }
+                          ? { backgroundPosition: "0% center" }
+                          : { backgroundPosition: ["0% center", "100% center"] }
                       }
                       transition={
                         shouldReduceMotion
                           ? { duration: 0 }
-                          : {
-                            duration: 6,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }
+                          : { duration: 2.5, ease: "easeInOut", delay: 1.5 }
                       }
                     >
                       {word}
@@ -165,7 +142,8 @@ export function HeroSection() {
             variants={motionVariants.container(0.03, 0.35)}
             initial="hidden"
             animate="visible"
-            className="mx-auto mt-4 flex max-w-2xl flex-wrap justify-center gap-x-1.5 px-2 text-pretty text-base leading-relaxed text-foreground/80 sm:mt-6 sm:px-0 sm:text-lg">
+            className="mx-auto mt-4 flex max-w-2xl flex-wrap justify-center gap-x-1.5 px-2 text-pretty text-base leading-relaxed text-foreground/80 sm:mt-6 sm:px-0 sm:text-lg"
+          >
             {subtitleText.split(" ").map((word, index) => (
               <motion.span
                 key={`${word}-${index}`}
@@ -181,15 +159,17 @@ export function HeroSection() {
             variants={motionVariants.container(0.1, 0.9)}
             initial="hidden"
             animate="visible"
-            className="mt-8 flex w-full flex-col items-center justify-center gap-3.5 px-4 sm:mt-10 sm:w-auto sm:flex-row sm:gap-4 sm:px-0">
+            className="mt-8 flex w-full flex-col items-center justify-center gap-3.5 px-4 sm:mt-10 sm:w-auto sm:flex-row sm:gap-4 sm:px-0"
+          >
             <Show when="signed-out">
               <motion.div
                 variants={motionVariants.fade}
-                className="w-full sm:w-auto">
+                className="w-full sm:w-auto"
+              >
                 <Button
                   type="button"
                   onClick={() => clerk.openSignUp()}
-                  className="group inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:w-auto motion-reduce:transition-none"
+                  className={primaryButtonClass}
                 >
                   Get started free
                   <ArrowRight
@@ -203,35 +183,35 @@ export function HeroSection() {
             <Show when="signed-in">
               <motion.div
                 variants={motionVariants.fade}
-                whileTap={
-                  shouldReduceMotion
-                    ? undefined
-                    : { scale: 0.97 }
-                }
-                className="w-full sm:w-auto">
-                <Button
-                  className="group inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 transition-all hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:w-auto motion-reduce:transition-none">
-                  <Link href="/dashboard">
-                    Go to Dashboard
-                    <ArrowRight
-                      aria-hidden="true"
-                      className="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
-                    />
-                  </Link>
-                </Button>
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+                className="w-full sm:w-auto"
+              >
+                <Link
+                  href="/dashboard"
+                  className={cn(buttonVariants(), primaryButtonClass)}
+                >
+                  Go to Dashboard
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
+                  />
+                </Link>
               </motion.div>
             </Show>
 
             <motion.div
               variants={motionVariants.fade}
-              className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                className="inline-flex h-12 w-full items-center justify-center rounded-xl border border-border/80 bg-background/80 px-8 text-sm font-semibold backdrop-blur-sm transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:w-auto motion-reduce:transition-none">
-                <Link href="#features">
-                  Explore features
-                </Link>
-              </Button>
+              className="w-full sm:w-auto"
+            >
+              <Link
+                href="#features"
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  "inline-flex h-12 w-full items-center justify-center rounded-xl border border-border/80 bg-background/80 px-8 text-sm font-semibold transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:w-auto motion-reduce:transition-none",
+                )}
+              >
+                Explore features
+              </Link>
             </motion.div>
           </motion.div>
 
@@ -239,29 +219,25 @@ export function HeroSection() {
             variants={motionVariants.container(0.08, 1.1)}
             initial="hidden"
             animate="visible"
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 px-2 sm:mt-10 sm:gap-x-8 sm:gap-y-3">
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 px-2 sm:mt-10 sm:gap-x-8 sm:gap-y-3"
+          >
             {heroBenefits.map((benefit) => (
               <motion.div
                 key={benefit}
                 variants={motionVariants.fade}
-                className="flex items-center gap-2 text-xs font-medium text-muted-foreground sm:text-sm">
+                className="flex items-center gap-2 text-xs font-medium text-muted-foreground sm:text-sm"
+              >
                 <motion.span
                   aria-hidden="true"
-                  initial={
-                    shouldReduceMotion
-                      ? false
-                      : { scale: 0 }
-                  }
+                  initial={shouldReduceMotion ? false : { scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={
                     shouldReduceMotion
                       ? { duration: 0 }
-                      : {
-                        ...springTransition,
-                        delay: 1.2,
-                      }
+                      : { ...springTransition, delay: 1.2 }
                   }
-                  className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-foreground/80 sm:size-5">
+                  className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-foreground/80 sm:size-5"
+                >
                   <Check className="size-2.5 stroke-[2.5] sm:size-3" />
                 </motion.span>
 
@@ -272,29 +248,15 @@ export function HeroSection() {
         </div>
 
         <motion.div
-          initial={
-            shouldReduceMotion
-              ? false
-              : {
-                opacity: 0,
-                y: 40,
-                filter: "blur(10px)",
-              }
-          }
-          animate={{
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-          }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={
             shouldReduceMotion
               ? { duration: 0 }
-              : {
-                ...springTransition,
-                delay: 1.3,
-              }
+              : { ...springTransition, delay: 1.3 }
           }
-          className="mt-10 -mb-16 sm:mt-20 sm:-mb-36 lg:-mb-62">
+          className="mt-10 -mb-16 sm:mt-20 sm:-mb-36 lg:-mb-62"
+        >
           <DashboardPreview />
         </motion.div>
       </div>

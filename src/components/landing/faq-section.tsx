@@ -2,7 +2,6 @@
 
 import { useId, useState } from "react";
 import {
-    AnimatePresence,
     motion,
     useReducedMotion,
 } from "framer-motion";
@@ -112,8 +111,8 @@ export function FAQSection() {
                                             }
                                     }
                                     className={`group rounded-2xl border transition-colors duration-300 motion-reduce:transition-none ${isOpen
-                                            ? "border-primary/30 bg-card shadow-lg shadow-black/3 ring-1 ring-primary/20"
-                                            : "bg-card/40 hover:border-border hover:bg-card"
+                                        ? "border-primary/10 bg-card shadow-lg shadow-black/2 ring-1 ring-primary/10"
+                                        : "bg-card/40 hover:border-border hover:bg-card"
                                         }`}>
                                     <h3>
                                         <button
@@ -125,8 +124,8 @@ export function FAQSection() {
                                             className="flex min-h-11 w-full items-center justify-between gap-4 rounded-2xl px-6 py-5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
                                             <span
                                                 className={`text-base font-medium transition-colors motion-reduce:transition-none ${isOpen
-                                                        ? "text-primary"
-                                                        : "text-foreground group-hover:text-foreground"
+                                                    ? "text-primary"
+                                                    : "text-foreground group-hover:text-foreground"
                                                     }`}>
                                                 {faq.question}
                                             </span>
@@ -138,8 +137,8 @@ export function FAQSection() {
                                                 }}
                                                 transition={animationTransition}
                                                 className={`flex size-8 shrink-0 items-center justify-center rounded-full transition-colors motion-reduce:transition-none ${isOpen
-                                                        ? "bg-primary text-primary-foreground"
-                                                        : "bg-muted text-muted-foreground group-hover:bg-muted/80"
+                                                    ? "bg-primary text-primary-foreground"
+                                                    : "bg-muted text-muted-foreground group-hover:bg-muted/80"
                                                     }`}>
                                                 <ChevronDown
                                                     className="size-4"
@@ -150,33 +149,20 @@ export function FAQSection() {
                                         </button>
                                     </h3>
 
-                                    <AnimatePresence initial={false}>
-                                        {isOpen && (
-                                            <motion.div
-                                                id={panelId}
-                                                role="region"
-                                                aria-labelledby={triggerId}
-                                                initial={
-                                                    shouldReduceMotion
-                                                        ? false
-                                                        : { height: 0, opacity: 0 }
-                                                }
-                                                animate={{
-                                                    height: "auto",
-                                                    opacity: 1,
-                                                }}
-                                                exit={{
-                                                    height: 0,
-                                                    opacity: 0,
-                                                }}
-                                                transition={animationTransition}
-                                                className="overflow-hidden">
-                                                <div className="px-6 pb-6 pt-0 text-sm leading-relaxed text-muted-foreground">
-                                                    {faq.answer}
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
+                                    <div
+                                        id={panelId}
+                                        role="region"
+                                        aria-labelledby={triggerId}
+                                        inert={!isOpen}
+                                        className={`grid transition-[grid-template-rows,opacity] duration-300 motion-reduce:transition-none ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                                            }`}
+                                    >
+                                        <div className="overflow-hidden">
+                                            <div className="px-6 pb-6 pt-0 text-sm leading-relaxed text-muted-foreground">
+                                                {faq.answer}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </motion.div>
                             );
                         })}

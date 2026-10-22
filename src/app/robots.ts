@@ -8,7 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: "*",
             allow: "/",
-            // Add disallow rules for private routes if appropriate.
         },
         ...(baseUrl
             ? { sitemap: `${baseUrl.replace(/\/$/, "")}/sitemap.xml` }

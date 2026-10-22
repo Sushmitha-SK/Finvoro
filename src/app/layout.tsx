@@ -66,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={` ${geistMono.variable} ${manrope.variable} ${inter.variable} h-full antialiased`}
+      className={` ${geistMono.variable} ${manrope.variable} ${inter.variable} antialiased`}
     >
       <body className="min-h-svh flex flex-col">
         <ClerkProvider>
