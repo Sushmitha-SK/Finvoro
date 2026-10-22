@@ -240,7 +240,7 @@ export function SmartInsightsSection() {
         <section
             id="insights"
             aria-labelledby="insights-heading"
-            className="border-b bg-muted/20"
+            className="bg-muted/20"
         >
             <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
                 <div className="grid items-start gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">

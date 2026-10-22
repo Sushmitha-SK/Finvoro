@@ -28,7 +28,7 @@ export function ProductShowcase() {
     return (
         <section
             aria-labelledby="product-showcase-heading"
-            className="overflow-hidden border-b border-border bg-muted/20 font-sans">
+            className="overflow-hidden border-border bg-muted/20 font-sans">
             <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
                 <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
                     <div>

@@ -31,7 +31,7 @@ export function FAQSection() {
         <section
             id="faq"
             aria-labelledby={`${sectionId}-heading`}
-            className="relative border-b bg-muted/30 py-24 sm:py-32">
+            className="relative bg-muted/30 py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
                     <motion.div

@@ -140,7 +140,7 @@ export function HowItWorks() {
         <section
             id="how-it-works"
             aria-labelledby="how-it-works-heading"
-            className="relative overflow-hidden border-b border-border bg-muted/20"
+            className="relative overflow-hidden border-border bg-muted/20"
         >
             <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
                 <motion.div
